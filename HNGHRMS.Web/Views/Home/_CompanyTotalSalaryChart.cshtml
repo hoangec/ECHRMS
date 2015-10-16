@@ -1,0 +1,20 @@
+﻿@Html.DevExpress().Chart(chartSettings =>
+{
+    chartSettings.Name = "CompanySalaryChart";
+    chartSettings.CallbackRouteValues = new {Controller = "Home",Action="GetCompanyTotalSalaryChart" };
+    chartSettings.Width = 900;
+    chartSettings.Height = 400;
+    Series series = new Series("Companies", DevExpress.XtraCharts.ViewType.Pie);
+    if(ViewData["Options"] == "P")
+    {
+        series.Label.TextPattern = "{A}: {VP:p0}";
+    }
+    else
+    {
+        series.Label.TextPattern = "{A}: {V:C0}";
+    }
+    chartSettings.EmptyChartText.Text = "Không có dự liệu";
+    series.ArgumentDataMember = "Name";
+    series.ValueDataMembers[0] = "Area";
+    chartSettings.Series.Add(series);
+}).Bind(Model).GetHtml()

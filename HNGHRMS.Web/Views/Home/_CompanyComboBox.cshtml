@@ -1,0 +1,8 @@
+﻿@Html.DevExpress().ComboBox(set =>
+{
+    set.Name = "companySelect";
+    set.Properties.ValueField = "Value";
+    set.Properties.TextField = "Text";
+    set.Properties.ValueType = typeof(int);
+    set.Properties.ClientSideEvents.ValueChanged = "CompanySelectChanged";
+}).BindList(ViewData["companies"]).Bind(ViewData["SelectedCompany"]).GetHtml()

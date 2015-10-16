@@ -1,0 +1,129 @@
+﻿@model HNGHRMS.Web.ViewModels.EmployeeTerminatedFormModel
+@using HNGHRMS.Web.Controllers;
+@Html.DevExpress().CallbackPanel(settings =>
+{
+    settings.Name = "cbpEmployeeTerminatedInformation";
+    settings.CallbackRouteValues = new { Controller = "Employee", Action = "EmployeeInformationById" };
+    settings.ClientSideEvents.BeginCallback = "OnBeginCbpEmployeeCallback";
+    settings.SetContent(() =>
+    {
+        Html.DevExpress().FormLayout(formSetting =>
+        {
+            formSetting.Name = "EmployeeInforForm";            
+            formSetting.Items.AddGroupItem(groupItemSettings =>
+            {
+                groupItemSettings.Caption = "Thông tin nhân viên";
+                groupItemSettings.ColCount = 3;
+                groupItemSettings.Items.Add(m => m.EmployeeId, item =>
+                {
+                    item.Caption = "Mã Nhân viên";
+                    item.NestedExtension().TextBox(s => { s.ReadOnly = true; });
+                });
+                groupItemSettings.Items.Add(m => m.Name, item =>
+                {
+                    item.Caption = "Họ tên";
+                    item.NestedExtension().TextBox(s => { s.ReadOnly = true; });
+                });
+                groupItemSettings.Items.Add(m => m.GenderName, item =>
+                {
+                    item.Caption = "Giới tính";
+                    item.NestedExtension().TextBox(s => { s.ReadOnly = true; });
+                });
+                groupItemSettings.Items.Add(m => m.Address, item =>
+                {
+                    item.Caption = "Địa chỉ";
+                    item.ColSpan = 2;
+                    item.NestedExtension().Memo(s => { s.ReadOnly = true; s.Width = Unit.Percentage(100); });
+                });
+                groupItemSettings.Items.AddEmptyItem();
+                groupItemSettings.Items.Add(m => m.CompanyName, item =>
+                {
+                    item.Caption = "Công ty";
+                    item.NestedExtension().TextBox(s => { s.ReadOnly = true; });
+                });
+                groupItemSettings.Items.Add(m => m.Departement, item =>
+                {
+                    item.Caption = "Phòng Ban";
+                    item.NestedExtension().TextBox(s => { s.ReadOnly = true; });
+                });
+                groupItemSettings.Items.Add(m => m.Position, item =>
+                {
+                    item.Caption = "Chức vụ";
+                    item.NestedExtension().TextBox(s => { s.ReadOnly = true; });
+                });
+                groupItemSettings.Items.Add(item =>
+                {
+                    item.Caption = "Ngày vào làm";
+                    item.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().DateEditFor(m => m.JoinedDate, set =>
+                        {
+                            set.Name = "joinedDate";                                                        
+                            set.ReadOnly = true;
+                        }).GetHtml();
+                    });
+                });
+                groupItemSettings.Items.Add(m => m.Salary, item =>
+                {                    
+                    item.ColSpan = 2;
+                    item.Caption = "Mức lương";
+             
+                    item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+                    TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+                    txtSettings.ReadOnly = true;
+                    txtSettings.Properties.DisplayFormatString = "n0";
+                    //item.NestedExtension().TextBox(s => { s.ReadOnly = true; s.Properties.DisplayFormatString = "c0"; });
+                });
+                groupItemSettings.Items.Add(item =>
+                {
+                    item.ColSpan = 2;
+                    item.Caption = "Lý do thôi việc";
+                    item.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().MemoFor(m => m.Reason, set =>
+                        {
+                            set.ShowModelErrors = false;
+                            set.Width = Unit.Percentage(100);
+                            set.Properties.ValidationSettings.Display = Display.Dynamic;
+                            set.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+                            set.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            set.Properties.ValidationSettings.RequiredField.ErrorText = "Nhập lý do";
+                        }).GetHtml();
+                    });
+                });
+                groupItemSettings.Items.Add(item =>
+                {
+                    item.Caption = "Ngày thôi việc";
+                    item.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().DateEditFor(m => m.TerminationDate, set =>
+                        {
+                            set.Properties.ValidationSettings.Display = Display.Dynamic;
+                            set.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+                            set.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            set.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            set.Properties.ValidationSettings.RequiredField.ErrorText = "Nhập ngày thôi việc";                            
+                            set.Properties.ClientSideEvents.Validation = "OnTerminatedDateValidation";                           
+                        }).GetHtml();
+                    });
+
+                });
+                groupItemSettings.Items.Add(item =>
+                {
+                    item.ShowCaption = DefaultBoolean.False;
+                    item.HorizontalAlign = FormLayoutHorizontalAlign.Left;
+                    item.Width = 150;
+                    item.NestedExtension().Button(s =>
+                    {
+                        s.Text = "Thôi việc";
+                        s.Name = "btnTerminate";
+                        s.UseSubmitBehavior = true;
+                    });
+                });
+            });
+        }).GetHtml(); 
+               
+    });
+}).GetHtml()
+
+

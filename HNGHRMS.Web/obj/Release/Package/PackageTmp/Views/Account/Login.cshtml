@@ -1,0 +1,72 @@
+﻿@{ Layout = "~/Views/Shared/_lightLayout.cshtml"; }
+@model HNGHRMS.Web.Models.LoginViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <img src="/Images/replacement_people.jpg" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-5">
+            <div class="accountHeader">
+                <h2>
+                    Đăng nhập
+                </h2>
+                <p>
+                    Xin vui lòng nhập tên và mật khẩu để đăng nhập vào hệ thống.
+                </p>
+
+                @Html.ValidationSummary(true)
+            </div>
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new {role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.DevExpress().Label(settings =>
+                {
+                    settings.Name = "UserNameLabel";
+                    settings.Text = "Tên đăng nhập";
+                    settings.AssociatedControlName = "UserName";
+                }).GetHtml()
+
+                <div class="form-field">
+                    @Html.EditorFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </div>
+
+                @Html.DevExpress().Label(settings =>
+                {
+                    settings.Name = "PasswordLabel";
+                    settings.Text = "Mật khẩu";
+                    settings.AssociatedControlName = "Password";
+                }).GetHtml()
+                <div class="form-field">
+                    @Html.EditorFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+
+                <div class="form-field">
+                    @Html.DevExpress().CheckBox(settings =>
+                   {
+                       settings.Name = "RememberMe";
+                       settings.Text = "Ghi nhớ ?";
+                   }).GetHtml()
+                </div>
+
+                @Html.DevExpress().Button(settings =>
+                {
+                    settings.Name = "Button";
+                    settings.Text = "Đăng nhập";
+                    settings.UseSubmitBehavior = true;
+                }).GetHtml()
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="text-align:center;">
+            <hr />
+            <p><b>Phòng Công Nghệ Thông Tin HAGL</b> - Phiên bản thử nghiệm</p>
+        </div>
+    </div>
+</div>
+
+@*<script src="~/Scripts/bootstrap.min.js"></script>*@

@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Quản lý nhân viên";
+}
+
+<h3 style="margin-left:10px">Tuyển dụng</h3>
+@Html.DevExpress().FormLayout(settings=>{
+    settings.Name = "EmployeeFormLayout";
+    settings.Items.Add(item => {
+        item.Caption = "Danh sách nhân viên";
+        item.CaptionSettings.Location = LayoutItemCaptionLocation.Bottom;
+        item.SetNestedContent(()=>{
+            ViewContext.Writer.Write(@Html.Action("EmployeesGridViewPartial"));
+        });
+    });
+}).GetHtml()

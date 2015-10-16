@@ -1,0 +1,135 @@
+﻿@model HNGHRMS.Web.Models.EditUserViewModel
+@Html.DevExpress().FormLayout(settings => {
+    settings.Name = "UserAddForm";
+    settings.Items.AddGroupItem(groupSet => {
+        groupSet.ColCount = 2;
+        groupSet.Caption = "Thông tin người dùng";        
+        groupSet.Items.Add(m => m.UserName,item=>{
+            item.Name = "UserName";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSet = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSet.Properties.ClientInstanceName = "txtUserName";
+            txtSet.ShowModelErrors = true;
+        });
+        groupSet.Items.Add(m => m.FirstName, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSet = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSet.Properties.ClientInstanceName = "txtFirstName";
+            txtSet.ShowModelErrors = true;
+        });
+        groupSet.Items.Add(m => m.LastName, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSet = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSet.Properties.ClientInstanceName = "txtLastName";
+            txtSet.ShowModelErrors = true;
+        });
+        groupSet.Items.Add(m => m.Email, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSet = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSet.Properties.ClientInstanceName = "txtEmail";
+            txtSet.ShowModelErrors = true;
+        });
+        groupSet.Items.Add(m => m.Password, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSet = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSet.ShowModelErrors = true;
+            txtSet.Properties.Password = true;
+        });
+        groupSet.Items.Add(m => m.ConfirmPassword, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSet = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSet.Properties.Password = true;
+            txtSet.ShowModelErrors = true;
+        });   
+        
+        groupSet.Items.Add(m=>Model.RoleId,item =>{
+            item.FieldName = "RoleId";
+            item.Name = "RoleId";
+            item.ColSpan = 2;
+            item.Caption = "Quyền";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+            ComboBoxSettings cmbSet = (ComboBoxSettings)item.NestedExtensionSettings;
+            cmbSet.Properties.DataSource = Model.Roles;
+            cmbSet.Properties.TextField = "Name";
+            cmbSet.Properties.ValueField = "Name";
+            cmbSet.Properties.ValueType = typeof(string);
+            cmbSet.SelectedIndex = 0;
+            cmbSet.ShowModelErrors = true;
+            cmbSet.Properties.ClientSideEvents.ValueChanged = "OnRoleValueChanged";
+        });
+        groupSet.Items.Add(item =>
+        {
+            item.Name = "CompaniesCheckboxList";
+            item.ColSpan = 2;
+            item.Caption = "Công ty";
+            item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.CheckBoxList;
+            CheckBoxListSettings chBoxList = (CheckBoxListSettings)item.NestedExtensionSettings;
+            chBoxList.Properties.DataSource = Model.CompanyList;
+            chBoxList.Properties.TextField = "CompanyName";
+            chBoxList.Properties.ValueField = "CompanyId";
+            chBoxList.Properties.ValueType = typeof(int);
+            chBoxList.Properties.RepeatColumns = 4;
+            chBoxList.Properties.ValidationSettings.RequiredField.IsRequired = true;
+            chBoxList.Properties.ValidationSettings.RequiredField.ErrorText = "Chọn công ty";
+        });
+        groupSet.Items.Add(item =>
+        {            
+          
+            item.HorizontalAlign = FormLayoutHorizontalAlign.Left;
+            item.ShowCaption = DefaultBoolean.False;
+            //item.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+            //ButtonSettings btnSet = (ButtonSettings)item.NestedExtensionSettings;            
+            //btnSet.Text = "Đông ý";
+            //btnSet.UseSubmitBehavior = true;
+            item.ColSpan = 2;
+            item.SetNestedContent(() => {
+                Html.DevExpress().Button(btnSet =>
+                {
+                    btnSet.Name = "btnAccept";
+                    btnSet.Text = "Đồng ý";
+                    btnSet.UseSubmitBehavior = true;
+                }).Render();
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnClearn";
+                    btnSettings.Text = "Làm mới";
+                    btnSettings.Style.Value = "margin-left:10px";
+                    btnSettings.ClientSideEvents.Click = "OnClearnClick";
+                }).Render();
+                Html.DevExpress().Label(lblSettings =>
+                {
+                    lblSettings.Name = "lblStatusName";
+                    lblSettings.Properties.ClientInstanceName = "lblStatus";
+                    lblSettings.Style.Value = "Color:red;margin-left:10px";
+                }).Render();
+            });
+        });
+        //groupSet.Items.Add(item =>
+        //{
+        //    item.Name = "btnRefresh";
+        //    item.HorizontalAlign = FormLayoutHorizontalAlign.Left;
+        //    item.ShowCaption = DefaultBoolean.False;
+        //    item.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+        //    ButtonSettings btnSet = (ButtonSettings)item.NestedExtensionSettings;
+        //    btnSet.Text = "Làm mới";
+        //    btnSet.UseSubmitBehavior = false;
+        //});
+        //groupSet.Items.Add(item =>
+        //{          
+        //    item.HorizontalAlign = FormLayoutHorizontalAlign.Left;
+        //    item.ShowCaption = DefaultBoolean.False;
+        //    item.NestedExtensionType = FormLayoutNestedExtensionItemType.Label;
+        //    LabelSettings lblSet = (LabelSettings)item.NestedExtensionSettings;
+        //    lblSet.Properties.ClientInstanceName = "lblStatus";
+        //    lblSet.Style.Value = "Color:red;";
+
+        //});
+
+    });
+}).GetHtml()

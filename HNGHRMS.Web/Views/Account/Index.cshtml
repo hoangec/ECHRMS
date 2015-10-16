@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Quản lý hệ thống";
+}
+
+<h3 style="margin-left:10px">Người dùng</h3>
+<script>
+    function OnbtnUserAddClick(s, e) {
+        var checkVisible = UserAccountViewLayout.GetItemByName("UserAddLayout").GetVisible();
+        UserAccountViewLayout.GetItemByName("UserAddLayout").SetVisible(!checkVisible);
+    }
+    function OnClearnClick(s, e) {
+        txtUserName.SetText("");
+        txtFirstName.SetText("");
+        txtLastName.SetText("");
+        txtEmail.SetText("");
+        Password.SetText("");
+        ConfirmPassword.SetText("");
+        RoleId.SetText("");
+        lblStatus.SetText("");
+        CompaniesCheckboxList.UnselectAll();
+    }
+    function UserAddSucceeded(data) {
+        if (data.status == "Succeeded") {
+            lblStatus.SetText("Thêm người dùng thành công !");
+            UserAccountGridViewPartial.PerformCallback();
+        } else {
+            lblStatus.SetText("Thêm người dùng thất bại ! - " + data.messeage);
+        }
+    }
+
+    function OnRoleValueChanged(s, e) {
+        if (s.GetText() == "Admin" || s.GetText() == "Manager") {
+            CompaniesCheckboxList.SelectAll();
+            CompaniesCheckboxList.SetEnabled(false);
+        } else {
+            CompaniesCheckboxList.SetEnabled(true);
+            CompaniesCheckboxList.UnselectAll();
+        }
+    }
+
+</script>
+
+
+@Html.DevExpress().FormLayout(settings => {
+    settings.Name = "UserAccountViewLayout";
+    settings.Items.Add(item =>
+    {
+        item.Caption = "Chức năng";
+        item.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+        ButtonSettings btnSettings = (ButtonSettings)item.NestedExtensionSettings;
+        btnSettings.Name = "btnUserAdd";
+        btnSettings.Text = "Tạo mới";
+        btnSettings.ClientSideEvents.Click = "OnbtnUserAddClick";
+    });
+    settings.Items.Add(item =>
+    {
+        item.ShowCaption = DefaultBoolean.False;
+        item.Name = "UserAddLayout";
+        item.ClientVisible = false;
+        //item.NestedExtensionType = FormLayoutNestedExtensionItemType.Label;
+        //LabelSettings lblSettings = (LabelSettings)item.NestedExtensionSettings;
+        //lblSettings.Text = "test";
+        item.SetNestedContent(() =>
+        {
+            using (Ajax.BeginForm("UserAccountAdd", "Account",
+                       new AjaxOptions
+                       {
+                           HttpMethod = "POST",
+                           OnFailure = "AddFailed",
+                           OnSuccess = "UserAddSucceeded"
+                       }))
+            {
+                Html.RenderPartial("_AddUserForm", ViewData["EditUser"]);
+            }
+            
+        });
+    });
+    settings.Items.Add(item => {
+        item.Caption = "Danh sách người dùng";
+        item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+        item.SetNestedContent(() => {
+           ViewContext.Writer.Write( Html.Action("UserAccountGridViewPartial"));
+        });
+    });
+}).GetHtml()
+
+
+

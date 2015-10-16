@@ -1,0 +1,43 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "UserAccountGridViewPartial";
+        settings.CallbackRouteValues = new { Controller = "Company", Action = "CompanyGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Company", Action = "CompanyAdd" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Company", Action = "CompanyUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Company", Action = "CompanyDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "CompanyId";
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CompanyId";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CompanyName";
+        });
+        settings.SettingsCommandButton.NewButton.Text = "Thêm";
+        settings.SettingsCommandButton.EditButton.Text = "Sửa";
+        settings.SettingsCommandButton.DeleteButton.Text = "Xóa";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

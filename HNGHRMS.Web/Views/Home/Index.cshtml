@@ -1,0 +1,186 @@
+﻿@{
+    ViewBag.Title = "Báo cáo";
+}
+
+<h3 style="margin-left:10px">Báo cáo tổng hợp</h3>
+<script type="text/javascript">
+    function CompanyReportDateChanged(s, e) {        
+        var dateChanged = s.GetDate();
+        var day = dateChanged.getDate();
+        var month =dateChanged.getMonth() + 1;
+        var year = dateChanged.getFullYear();
+        console.log(dateChanged.toLocaleDateString('vi-VN'));
+        CompanyReportGridView.PerformCallback({ selectedDate: dateChanged.toLocaleDateString('vi-VN') });
+    }
+    function OnSalaryValueChanged(s, e) {
+        if (s.GetValue()) {
+            CompanySalaryChart.PerformCallback({ViewOptions : 'P'})
+        } else {
+            CompanySalaryChart.PerformCallback({ViewOptions: 'V' })
+        }
+    }
+    function OnQuantityValueChanged(s, e) {        
+        if (s.GetValue()) {
+            CompanyEmployeeQuantityChart.PerformCallback({ ViewOptions: 'P' })
+        } else {
+            CompanyEmployeeQuantityChart.PerformCallback({ ViewOptions: 'V' })
+        }
+    }
+    function OnDateReportChanged(s, e) {
+        EmployeesCompaniesByDateChart.PerformCallback({ Date: s.GetValue().toLocaleDateString('vi-VN') });
+    }
+    function OnCompanyReportChanged(s, e) {
+        EmployeesCompaniesByCompanyChart.PerformCallback({ CompanyId: s.GetValue() });
+    }
+</script>
+
+@*<div style="margin:20px 20px 20px 20px;">
+    @Html.DevExpress().DateEdit(
+        settings => {
+            settings.Name = "CompanyReportDateEdit";
+            settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+            settings.Properties.EditFormatString = "dd/MM/yyyy";
+            settings.Date = DateTime.Now;
+            settings.Width = Unit.Percentage(20);
+            settings.Properties.ClientSideEvents.DateChanged = "CompanyReportDateChanged";
+        }
+    ).GetHtml()
+</div>*@
+
+
+@*<div style="margin-left:20px">
+@Html.Action("CompanyReportByDate")
+</div>*@
+
+@Html.DevExpress().FormLayout(settings => {
+    settings.Name = "CompanySalaryPieChart";
+    settings.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    settings.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 800;
+    settings.Items.AddGroupItem(groupSettings => {
+        groupSettings.Caption = "Báo cáo tổng hợp";
+        groupSettings.Items.Add(item => {
+            item.Name = "CompanyReportDateEdit";
+            item.Caption = "Thời điểm";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.DateEdit;
+            DateEditSettings dateSet = (DateEditSettings)item.NestedExtensionSettings;
+            dateSet.Date = DateTime.Now;
+            dateSet.Properties.ClientSideEvents.DateChanged = "CompanyReportDateChanged";
+            dateSet.Properties.DisplayFormatString = "dd/MM/yyyy";
+            dateSet.Properties.EditFormatString = "dd/MM/yyyy";
+            dateSet.Width = Unit.Percentage(20);
+        });
+        groupSettings.Items.Add(item => {
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() => {
+                ViewContext.Writer.Write(Html.Action("CompanyReportByDate", new { selectedDate = DateTime.Now}));                
+            });
+        });
+    });
+    settings.Items.AddGroupItem(groupSettings => {
+        groupSettings.Caption = "Báo cáo tổng quỹ lương các công ty";
+  
+        groupSettings.Items.Add(item=>{    
+            item.Caption = "Tông quỹ lương: ";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.Label;
+            LabelSettings lblSettings = (LabelSettings)item.NestedExtensionSettings;            
+            lblSettings.Text = String.Format("{0:C0}", ViewData["TotalSalary"]);
+        });
+        groupSettings.Items.Add(item=>{
+            item.Name = "SalaryCheckBox";
+            item.Caption = "Xem theo phần trăm";   
+            item.HorizontalAlign = FormLayoutHorizontalAlign.Left;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.CheckBox;
+            CheckBoxSettings chBox = (CheckBoxSettings)item.NestedExtensionSettings;
+            chBox.Properties.ClientSideEvents.CheckedChanged = "OnSalaryValueChanged";
+        });
+        groupSettings.Items.Add(item => {
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() => {
+                Html.RenderPartial("_CompanyTotalSalaryChart", ViewData["EmployeeTotalSalaryChart"]);
+            });
+        });
+    });
+    // Employees report
+    settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Báo cáo tổng số nhân viên";
+        groupSettings.Items.Add(item =>
+        {
+            item.Caption = "Tông số nhân viên: ";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.Label;
+            LabelSettings lblSettings = (LabelSettings)item.NestedExtensionSettings;
+            lblSettings.Text = String.Format("{0:0,0}",ViewData["TotalEmployeeQuantity"]);
+            
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.Name = "QuantityCheckBox";
+            item.Caption = "Xem theo phần trăm";
+            item.HorizontalAlign = FormLayoutHorizontalAlign.Left;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.CheckBox;
+            CheckBoxSettings chBox = (CheckBoxSettings)item.NestedExtensionSettings;
+            chBox.Properties.ClientSideEvents.CheckedChanged = "OnQuantityValueChanged";
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() =>
+            {
+                Html.RenderPartial("_CompanyTotalEmployeeQuantityReport", ViewData["EmployeeTotalQuantityChart"]);
+            });
+        });
+    });
+    //
+    settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Báo cáo tình hình tuyển dụng các công ty";
+        //groupSettings.ColCount = 6;
+        groupSettings.Items.Add(item =>
+        {
+            item.Name = "selectedDate";
+            item.Width = 300;
+            item.Caption = "Thời điểm";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.DateEdit;
+            DateEditSettings dateSet = (DateEditSettings)item.NestedExtensionSettings;
+            dateSet.Date = DateTime.Now;
+            dateSet.Properties.DisplayFormatString = "dd/MM/yyyy";
+            dateSet.Properties.ClientSideEvents.DateChanged = "OnDateReportChanged";
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() =>
+            {
+                Html.RenderPartial("_EmployeesCompaniesByDateChart", ViewData["EmployeeByDateChart"]);
+            });
+        });
+    });
+    //
+    settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Báo cáo tình hình tuyển dụng theo từng công ty";
+        groupSettings.Items.Add(item =>
+        {
+            item.Name = "selectedComapny";
+            item.Width = 300;
+            item.Caption = "Công ty";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+            ComboBoxSettings cmbSet = (ComboBoxSettings)item.NestedExtensionSettings;
+            cmbSet.Properties.ClientSideEvents.ValueChanged = "OnCompanyReportChanged";
+            cmbSet.Properties.DataSource = ViewData["Companies"];
+            cmbSet.Properties.ValueField = "CompanyId";
+            cmbSet.Properties.TextField = "CompanyName";
+            cmbSet.Properties.ValueType = typeof(int);
+            cmbSet.SelectedIndex = 0;             
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() =>
+            {
+                Html.RenderPartial("_EmployeesCompaniesByCompanyChart", ViewData["EmployeeByCompanyChart"]);
+            });
+        });
+    });
+}).GetHtml()
+

@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Quản lý nhân viên";
+}
+
+<h3 style="margin-left:10px">Thôi việc</h3>
+
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+<script>
+    function OnCmbEmployeeIndexChanged(s,e)
+    {
+        var employeeId = s.GetValue();
+        if (!cbpEmployeeTerminatedInformation.InCallback()) {
+            cbpEmployeeTerminatedInformation.PerformCallback({ id: employeeId });
+        }
+        
+    }
+    function OnBeginCbpEmployeeCallback(s,e)
+    { }
+    function AddFailed(data)
+    {
+        console.log(data);
+    }
+
+    function EmployeeTerminateAddSucess(data) {
+        if (data.status == "OK") {
+            EmployeesTermintedGridView.PerformCallback();
+        } else {
+            console.log(data);
+        }
+    }
+
+    function OnEmployeeTerminatedGridViewEndCallBack(s, e) {
+        cmbEmployeeList.PerformCallback();
+    }
+
+    function OnCmbEmployeeListEndCallBack(s, e) {
+        s.SetSelectedIndex(0);
+        var employeeId = s.GetValue();
+        cbpEmployeeTerminatedInformation.PerformCallback({ id: employeeId });
+    }
+
+    function OnTerminatedDateValidation(s, e) {        
+        var terminatedDate = e.value;      
+        var today = new Date();
+        if (terminatedDate >= today) {
+            e.isValid = false;
+            e.errorText = "Ngày thôi việc lớn hơn ngày hiện tại";
+        }
+       
+        if (terminatedDate < joinedDate.GetDate()) {         
+            e.isValid = false;
+            e.errorText = "Ngày thôi việc nhỏ hơn ngày vào làm";
+        }
+    }
+
+</script>
+<div class="employee_form">
+    @Html.DevExpress().FormLayout(settings => {
+        settings.Name = "TerminateEmployeeForm";
+        settings.Items.AddGroupItem(groupSettings => {
+            groupSettings.ColCount = 2;
+            groupSettings.ShowCaption = DefaultBoolean.False;
+            groupSettings.Items.Add(itemSettings => {
+                itemSettings.VerticalAlign = FormLayoutVerticalAlign.Top;
+                itemSettings.Caption = "Danh sách nhân viên";
+                itemSettings.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                itemSettings.SetNestedContent(() => {                    
+                    Html.RenderPartial("_CmbEmployeeList", ViewData["Employees"]);
+                });
+            });
+            groupSettings.Items.Add(itemSettings => {
+                itemSettings.ShowCaption = DefaultBoolean.False;
+                itemSettings.SetNestedContent(()=>{                   
+                    using (Ajax.BeginForm("EmployeeTerminatedAdd", "Employee",
+                        new AjaxOptions { 
+                            HttpMethod = "POST",
+                            OnFailure = "AddFailed",
+                            
+                            //UpdateTargetId = "terminateInfor",
+                            //InsertionMode = InsertionMode.Replace,
+                             OnSuccess = "EmployeeTerminateAddSucess" 
+                        }))
+                    //ViewContext.Writer.Write("<div id=\"terminateInfor\" >");
+                    {
+                        Html.RenderPartial("_CbpEmployeeInfor", ViewData["TerminateFormModel"]);  
+                    }
+                   // ViewContext.Writer.Write("</div>");   
+                });
+            });
+            //
+            groupSettings.Items.Add(itemSettings =>
+            {
+                itemSettings.ColSpan = 2;
+                itemSettings.Caption = "Danh sách nhân viên thôi việc";
+                itemSettings.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                itemSettings.SetNestedContent(() =>
+                {
+                    Html.RenderPartial("_EmployeesTerminateGridViewPartial", ViewData["EmployeesTerminated"]);
+                });
+            });
+        });
+    }).GetHtml()
+</div>

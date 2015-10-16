@@ -1,0 +1,40 @@
+﻿<div class="leftPanel">
+        @* DXCOMMENT: Configure the left panel's menu *@
+    @Html.DevExpress().NavBar(settings => {
+        settings.Name = "LeftNavBar";
+        settings.AutoCollapse = true;
+        settings.EnableAnimation = true;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.ControlStyle.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+        settings.ControlStyle.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
+        settings.Groups.Add(group => {
+            group.Text = "Báo cáo";
+            group.Items.Add("Tổng quát").NavigateUrl = Url.Action("Index", "Home");
+            group.Items.Add("Nhân viên hiện tại").NavigateUrl = Url.Action("CurrentEmployeesReport", "Home");
+            group.Items.Add("Nhân viên tuyển mới").NavigateUrl = Url.Action("NewEmployeesReport", "Home");
+            group.Items.Add("Nhân viên thôi việc").NavigateUrl = Url.Action("TerminatedEmployeesReport", "Home");
+        });
+        settings.Groups.Add(group => {
+            group.Text = "Quản lý nhân viên";
+            group.Items.Add("Tuyển dụng").NavigateUrl = Url.Action("index","Employee");
+            group.Items.Add("Thôi việc").NavigateUrl = Url.Action("Terminate","Employee");
+        });
+        if (Request.IsAuthenticated && ( User.IsInRole("Admin") || User.IsInRole("Manager")) )
+        {
+            settings.Groups.Add(group =>
+            {
+                group.Text = "Thiết lập chung";
+                group.Items.Add("Công ty").NavigateUrl = Url.Action("index", "Company");
+            });
+        }
+        if(Request.IsAuthenticated && User.IsInRole("Admin"))
+        {
+            settings.Groups.Add(group =>
+            {
+                group.Text = "Quản lý hệ thống";
+                group.Items.Add("Người dùng").NavigateUrl = Url.Action("index", "Account");
+            });
+        }
+        
+    }).GetHtml()
+</div>

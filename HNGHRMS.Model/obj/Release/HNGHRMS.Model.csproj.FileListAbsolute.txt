@@ -1,0 +1,16 @@
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\HNGHRMS.Model.dll.config
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\HNGHRMS.Model.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\HNGHRMS.Model.pdb
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\EntityFramework.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\EntityFramework.SqlServer.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\HNGHRMS.Infrastructure.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\Microsoft.AspNet.Identity.Core.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\HNGHRMS.Infrastructure.pdb
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\EntityFramework.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\EntityFramework.SqlServer.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\Microsoft.AspNet.Identity.Core.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\obj\Release\HNGHRMS.Model.csprojResolveAssemblyReference.cache
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\obj\Release\HNGHRMS.Model.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\obj\Release\HNGHRMS.Model.pdb

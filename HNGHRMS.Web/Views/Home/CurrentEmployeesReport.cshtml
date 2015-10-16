@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Báo cáo";
+}
+
+<h3 style="margin-left:10px">Báo cáo nhân viên hiện tại</h3>
+
+<script type="text/javascript">
+
+    function CompanySelectChanged(s, e) {
+        var companyId = s.GetValue();
+        var dateChanged = dateReportSelect.GetValue().toLocaleDateString('vi-VN');
+        RequestNewEmployeesGridView(companyId, dateChanged);
+    }
+
+    function DateReportChanged(s, e) {
+        var dateChanged = s.GetValue().toLocaleDateString('vi-VN');
+   
+        var companyId = companySelect.GetValue();
+        RequestNewEmployeesGridView(companyId, dateChanged);
+    }
+
+    function RequestNewEmployeesGridView(companyId, dateChanged) {
+        CurrentEmployeeReportGridView.PerformCallback();
+    }
+
+    function OnCurrentEmployeeBeginCallBack(s, e) {
+        e.customArgs['CompanyId'] = companySelect.GetValue();
+        e.customArgs['SelectedDate'] = dateReportSelect.GetValue().toLocaleDateString('vi-VN');
+    }
+
+</script>
+
+@Html.DevExpress().FormLayout(settings => {
+    settings.Name = "EmpolyeeFormLayout";
+    settings.Items.AddGroupItem(groupSettings =>{
+        groupSettings.Name = "companyAndDateSelect";
+        groupSettings.Caption = "Tiêu chí báo cáo";
+        groupSettings.ColCount = 2;
+        groupSettings.Items.Add(itemSettins => {       
+            itemSettins.Caption = "Công ty";
+            itemSettins.SetNestedContent(() =>
+            {
+                Html.RenderPartial("_CompanyComboBox");
+            });
+            
+        });
+        groupSettings.Items.Add(itemSettins =>
+        {
+            itemSettins.Caption = "Ngày báo cáo";
+            itemSettins.SetNestedContent(() => {
+                Html.RenderPartial("_DateReportDateEdit");
+            });  
+        });
+    });
+    settings.Items.Add(itemSettins =>{
+        itemSettins.Name = "gridviewEmployees";
+        itemSettins.Caption = "Danh sách nhân viên";
+        itemSettins.HorizontalAlign = FormLayoutHorizontalAlign.Left;
+        itemSettins.VerticalAlign = FormLayoutVerticalAlign.Bottom;
+        itemSettins.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+        itemSettins.SetNestedContent(()=>{
+            //ViewContext.Writer.Write(Html.Action("CurrentEmployeeReportGridView", new { CompanyId = ViewBag.CompanyId, DateSelected = ViewBag.ChoiceDate }));            
+            Html.RenderPartial("_CurrentEmployeeReportGridView", ViewData["employess"]);
+        });
+    });
+}).GetHtml()
+
