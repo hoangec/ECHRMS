@@ -16,3 +16,16 @@ D:\Code_Project\HNGHRMS\HNGHRMS.Data\bin\Release\HNGHRMS.Infrastructure.pdb
 D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.csprojResolveAssemblyReference.cache
 D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.pdb
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\bin\Release\NodaTime.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\bin\Release\NodaTime.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.Migrations.init.resources
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.Migrations.change_pro_employeesalarycomponent.resources
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.Migrations.add_pro_salary_compoenet.resources
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.csproj.GenerateResource.Cache
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.Migrations.init2.resources
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.Migrations.add_empcode_pro.resources
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.Migrations.add_company_pros.resources
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.Migrations.insurance_add_Amount.resources
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.Migrations.insurance_add_history.resources
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.Migrations.insurance_add_rate.resources
+D:\Code_Project\HNGHRMS\HNGHRMS.Data\obj\Release\HNGHRMS.Data.Migrations.insurance_add_rate1.resources

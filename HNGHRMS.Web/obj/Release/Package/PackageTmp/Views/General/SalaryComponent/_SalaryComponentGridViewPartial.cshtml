@@ -1,0 +1,79 @@
+﻿@model List<HNGHRMS.Web.ViewModels.SalaryComponentConfigModel>
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "SalaryComponentGridViewPartial";
+        settings.CallbackRouteValues = new { Controller = "General", Action = "SalaryComponentGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "General", Action = "SalaryComponentAdd" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "General", Action = "SalaryComponentUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "General", Action = "SalaryComponentDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Settings.ShowFooter = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.InitNewRow += (s, e) =>
+        {
+            e.NewValues["IsExtra"] = true;
+        };
+        settings.KeyFieldName = "Id";
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Id";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ComponentName";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "IsExtra";
+            col.ColumnType = MVCxGridViewColumnType.CheckBox;
+            CheckBoxProperties chbPros = col.PropertiesEdit as CheckBoxProperties;
+            chbPros.ValueType = typeof(bool);
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "IsMainSalary";
+            col.ColumnType = MVCxGridViewColumnType.CheckBox;
+            CheckBoxProperties chbPros = col.PropertiesEdit as CheckBoxProperties;
+            chbPros.ValueType = typeof(bool);
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "SalaryPayFrequency";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties cmbPros = col.PropertiesEdit as ComboBoxProperties;
+            cmbPros.DataSource = new SelectList(new[]{
+                new SelectListItem{Text = "Hàng tháng",Value=HNGHRMS.Model.Enums.SalaryPayFerequency.Monthly.ToString()},
+                new SelectListItem{Text = "Một lần", Value=HNGHRMS.Model.Enums.SalaryPayFerequency.OneTime.ToString()},                
+            }, "Value", "Text");
+        });
+        settings.SettingsCommandButton.NewButton.Text = "Thêm";
+        settings.SettingsCommandButton.EditButton.Text = "Sửa";
+        settings.SettingsCommandButton.DeleteButton.Text = "Xóa";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        if (ViewData["EditErrorOnDelete"] != null)
+        {          
+            settings.SetFooterRowTemplateContent(c =>
+            {
+                Html.ViewContext.Writer.Write(ViewData["EditErrorOnDelete"]);
+            });
+        }
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);      
+    }
+}
+@grid.Bind(Model).GetHtml()

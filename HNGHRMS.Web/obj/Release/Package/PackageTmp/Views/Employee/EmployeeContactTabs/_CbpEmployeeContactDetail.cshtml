@@ -1,0 +1,55 @@
+﻿@model HNGHRMS.Web.ViewModels.EmployeeContactTabViewModel
+@Html.DevExpress().CallbackPanel(settings =>
+{
+    settings.Name = "cbpEmployeeContactDetail";
+    settings.CallbackRouteValues = new { Controller = "Employee", Action = "EmployeeContactDetailCallbackPanel" };
+    settings.ClientSideEvents.EndCallback = "OncbpEmployeeContacEndCallback";
+    settings.SetContent(() =>
+    {
+        Html.DevExpress().FormLayout(formSetting =>
+        {
+            formSetting.Name = "EmployeeContactLayout";
+            formSetting.Items.Add(m => m.EmployeeContactId, item =>
+            {
+                //item.Name = "EmployeeContactId";
+                //item.FieldName = "Id";
+                item.ClientVisible = false;
+            });
+            formSetting.Items.Add(m => m.Address, item =>
+            {
+                item.Caption = "Địa chỉ";
+                item.NestedExtensionType = FormLayoutNestedExtensionItemType.Memo;
+                MemoSettings memoSettings = (MemoSettings)item.NestedExtensionSettings;
+                memoSettings.Properties.ClientInstanceName = "txtEmployeeContactAddress";
+                memoSettings.Properties.Columns = 70;
+                memoSettings.Properties.Rows = 3;
+                memoSettings.ShowModelErrors = true;
+                memoSettings.ClientEnabled = false;
+            });
+            formSetting.Items.Add(m => m.Phone, item =>
+            {
+                item.Caption = "Điện thoại";
+                item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+                TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+                txtSettings.Properties.ClientInstanceName = "txtEmployeeContactPhone";
+                txtSettings.ShowModelErrors = true;
+                txtSettings.ClientEnabled = false;
+            });
+
+            formSetting.Items.Add(m => m.Email, item =>
+            {
+                item.Caption = "Email";
+                item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+                TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+                txtSettings.ShowModelErrors = true;
+                txtSettings.Properties.ClientInstanceName = "txtEmployeeContactEmail";
+                txtSettings.ClientEnabled = false;
+            });
+        }).GetHtml();
+ 
+    });
+}).GetHtml()
+
+
+
+

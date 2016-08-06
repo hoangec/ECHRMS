@@ -1,0 +1,96 @@
+@{
+	var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "CompanyReportINsuranceGridView";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "CompanyReportByDate" };
+		
+        settings.SettingsPager.PageSize = 20;
+		settings.SettingsPager.Visible = true;
+		settings.Settings.ShowGroupPanel = false;
+		settings.Settings.ShowFilterRow = false;
+		settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.KeyFieldName = "Id";
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsBehavior.ColumnResizeMode = ColumnResizeMode.Control;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Id";
+            col.Visible = false;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CompanyName";
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            col.MinWidth = 250;
+        });
+        settings.Columns.Add(col => {
+            col.FieldName = "CurrentInsurance";          
+            col.PropertiesEdit.DisplayFormatString = "n0";
+            col.MinWidth = 110;
+            col.CellStyle.ForeColor = System.Drawing.Color.Red;
+            col.CellStyle.Font.Bold = true;
+        });
+        settings.Columns.Add(col => {
+            col.FieldName = "OneMSalary";            
+            col.PropertiesEdit.DisplayFormatString = "n0";          
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "TwoMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ThreeMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "FourMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "FiveMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "SixMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "SavenMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "EightMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "NineMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "TenMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ElevenMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "TwelveMSalary";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });       
+    });
+}
+@grid.Bind(Model).GetHtml()

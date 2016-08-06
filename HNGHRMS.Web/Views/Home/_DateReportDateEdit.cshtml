@@ -1,6 +1,6 @@
 ﻿@Html.DevExpress().DateEdit(settings => {
     settings.Name = "dateReportSelect";
-    settings.Date = ViewBag.ChoiceDate;
+    settings.Date = ViewBag.StartChoiceDate;
     settings.Properties.DisplayFormatString = "dd/MM/yyyy";
     settings.Properties.ClientSideEvents.DateChanged = "DateReportChanged";
 }).GetHtml()

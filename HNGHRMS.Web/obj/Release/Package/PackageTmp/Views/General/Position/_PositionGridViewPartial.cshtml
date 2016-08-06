@@ -1,0 +1,54 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "PostionGridViewPartial";
+        settings.CallbackRouteValues = new { Controller = "General", Action = "PositionGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "General", Action = "PositionAdd" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "General", Action = "PositionUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "General", Action = "PositionDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Id";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "PositionName";
+            
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "InsuranceRate";            
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            TextBoxProperties txtPros = (TextBoxProperties)col.PropertiesEdit;
+            txtPros.DisplayFormatString = "c0";
+            txtPros.MaskSettings.Mask = "<0..9999999999999g>";
+            txtPros.MaskSettings.IncludeLiterals = MaskIncludeLiteralsMode.DecimalSymbol;                   
+        });
+     
+        settings.SettingsCommandButton.NewButton.Text = "Thêm";
+        settings.SettingsCommandButton.EditButton.Text = "Sửa";
+        settings.SettingsCommandButton.DeleteButton.Text = "Xóa";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

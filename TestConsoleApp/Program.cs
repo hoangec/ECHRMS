@@ -26,57 +26,11 @@ namespace TestConsoleApp
         
         static void Main(string[] args)
         {
-            EmployeeStatus b = EmployeeStatus.Terminated;
-            Enum c;
-            Gender e = Gender.Female;
-            var test = e.GenderTranslate();
-            
-            var builder = new ContainerBuilder();
-
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
-            builder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>();
-            builder.RegisterType<CompanyService>().As<ICompanyService>();
-            builder.RegisterType<EmployeeService>().As<ITerminateService>();
-            builder.RegisterType<CompanyRepository>().As<ICompanyRepository>();
-            builder.RegisterType<EmployeeRepository>().As<IEmployeeRepository>();
-            var container = builder.Build();
-
-            //using (var scope = container.BeginLifetimeScope())
-            //{
-            //    var companyService = scope.Resolve<ICompanyService>();
-            //    var employeeService = scope.Resolve<IEmployeeService>();
-
-            //    var companies = companyService.GetCompanies();
-            //    Employee emp = new Employee();
-            //    var com = (from c in companies where c.CompanyId == 1 select c).FirstOrDefault();
-            //    emp.Name = "NVA";
-            //    emp.Address = "11 NDC ";
-            //    emp.Company = com;
-            //    emp.Departement = "A";
-            //    emp.Gender = Gender.Female;
-            //    emp.JoinedDate = DateTime.Now;
-            //    emp.Salary = 10000000;
-            //    employeeService.CreateEmployee(emp);
-
-            //    Console.ReadLine();
-            //}
-
-            //using (var db = new HngHrmsEntities())
-            //{
-            //    //var company = new Company() { CompanyName = "XYZ" };                
-            //    //var company = (from c in db.Companies where c.CompanyName.Equals("ABCfsdf") select c).FirstOrDefault();
-
-            //   // var em = new Employee() { Name = "hoang", Company = company };
-            //    // db.Companies.Add(company);
-            //    //db.Employees.Add(em);
-            //    IDbSet<Company> dbSet = db.Set<Company>();
-            //    var test = dbSet.ToList();
-            //   // int rowsAffected = db.SaveChanges();
-            //    //Console.WriteLine("so dong duoc dua vao la: {0}", rowsAffected);
-            //    Console.ReadLine();
-
-
-            //}
+            DateTime startDate = new DateTime(2015, 11, 10);
+            DateTime endDate = DateTime.Now;
+            var diff = (startDate - endDate).Days;
+            Console.WriteLine(diff);
+            Console.ReadLine();
         }
     }
 }

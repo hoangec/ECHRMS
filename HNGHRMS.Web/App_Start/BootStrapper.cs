@@ -14,6 +14,8 @@ using System.Reflection;
 using HNGHRMS.Web.Mappings;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using HNGHRMS.Service.Implementations;
+using HNGHRMS.Service.Interface;
 namespace HNGHRMS
 {
     public static class BootStrapper
@@ -22,6 +24,7 @@ namespace HNGHRMS
         {
             SetAutofacContainer();
             AutoMapperConfiguration.Configure();
+            HNGHRMS.Service.AutoMapperBootStrapper.ConfigureAutoMapper();
         }
         public static void SetAutofacContainer()
         {
@@ -53,6 +56,25 @@ namespace HNGHRMS
            
             builder.Register(c => new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(new HngHrmsEntities())))
               .As<RoleManager<ApplicationRole>>().InstancePerRequest();
+
+            builder.RegisterType<PositionService>().As<IPositionService>().InstancePerRequest();
+            builder.RegisterType<PositionRepository>().As<IPositionRepository>().InstancePerRequest();
+
+            builder.RegisterType<ContractService>().As<IContractService>().InstancePerRequest();
+            builder.RegisterType<ContractRepository>().As<IContractRepository>().InstancePerRequest();
+
+      
+            builder.RegisterType<ContractTypeRepository>().As<IContractTypeRepository>().InstancePerRequest();
+
+            builder.RegisterType<InsuranceService>().As<IInsuranceService>().InstancePerRequest();
+            builder.RegisterType<InsuranceRepository>().As<IInsuranceRepository>().InstancePerRequest();
+
+            builder.RegisterType<ExperienceRepository>().As<IExperienceRepository>().InstancePerRequest();
+            builder.RegisterType<ExperienceService>().As<IExperienceService>().InstancePerRequest();
+
+            builder.RegisterType<SalaryService>().As<ISalaryService>().InstancePerRequest();
+            builder.RegisterType<EmployeeSalaryComponentRepository>().As<IEmployeeSalaryComponentRepository>().InstancePerRequest();
+ 
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

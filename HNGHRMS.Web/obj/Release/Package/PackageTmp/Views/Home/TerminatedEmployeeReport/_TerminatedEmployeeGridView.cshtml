@@ -1,0 +1,73 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "TerminatedEmployeeReportGridView";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "TerminatedEmployeeGridView" };
+        settings.ClientSideEvents.BeginCallback = "OnTerminatedEmployeeBeginCallBack";
+
+        settings.KeyFieldName = "EmployeeId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsBehavior.ColumnResizeMode = ColumnResizeMode.Control;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Visible;            
+        settings.Width = 960;
+        
+        settings.Columns.Add("EmployeeId");
+        settings.Columns.Add(col => {
+            col.FieldName = "FullName";
+            col.SetDataItemTemplateContent(item =>
+            {
+                Html.DevExpress().HyperLink(link =>
+                {
+                    string args = DataBinder.Eval(item.DataItem, "EmployeeId").ToString();
+                    link.NavigateUrl = Url.Action("Index", "Employee", new { id = args });
+                    string name = DataBinder.Eval(item.DataItem, "FullName").ToString();
+                    link.Properties.Text = name;
+                }).Render();
+            });
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Gender";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro = col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = new SelectList(new[]{
+                        new SelectListItem{Text = "Nam",Value=HNGHRMS.Model.Enums.Gender.Male.ToString()},
+                        new SelectListItem{Text = "Nữ", Value=HNGHRMS.Model.Enums.Gender.Female.ToString()}
+                    }, "Value", "Text");
+        });
+        settings.Columns.Add("Nationality");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "JoinedDate";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+        });
+        settings.Columns.Add(col=>{
+            col.FieldName = "TerminationDate";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col => {
+            col.FieldName = "PositionId";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro = col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = ViewData["positions"];
+        });
+        settings.Columns.Add("Departement");   
+        settings.Columns.Add("Reason");         
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Salary";
+            col.PropertiesEdit.DisplayFormatString = "c0";
+        });
+        
+        
+    });
+}
+@grid.Bind(Model).GetHtml()
+

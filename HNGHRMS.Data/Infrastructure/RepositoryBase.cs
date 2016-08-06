@@ -74,9 +74,14 @@ namespace HNGHRMS.Data.Infrastructure
         }
         public virtual IEnumerable<T> GetMany(Expression<Func<T, bool>> where)
         {
+           
+            
             return dbset.Where(where).ToList();
         }
 
-
+        public virtual IEnumerable<T> ExecWithStoreProcedure(string query, params object[] parameters)
+        {
+            return dataContext.Database.SqlQuery<T>(query, parameters);
+        }
     }
 }

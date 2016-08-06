@@ -11,8 +11,8 @@ namespace HNGHRMS.Data.Configuration
     {
        public TerminationConfiguration()
        {
-           //HasRequired<Employee>(te => te.Employee).WithOptional(em => em.Termination);
-           HasKey(t => t.EmployeeId);
+           //HasRequired<Employee>(te => te.Employee).WithOptional(em => em.Termination).WillCascadeOnDelete(true);
+           //HasKey(t => t.EmployeeId);
            //Property(t => t.Reason).IsRequired();
        }
     }

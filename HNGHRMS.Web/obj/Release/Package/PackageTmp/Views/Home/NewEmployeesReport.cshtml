@@ -1,32 +1,61 @@
 ﻿@{
-    ViewBag.Title = "Báo cáo";
+    ViewBag.Title = "Báo cáo tuyên dụng mới";
 }
 
 <h3 style="margin-left:10px">Báo cáo nhân viên mới tuyển dụng</h3>
 <script type="text/javascript">
 
     function CompanySelectChanged(s, e) {
-        var companyId = s.GetValue();
-        var dateChanged = dateReportSelect.GetValue().toLocaleDateString('vi-VN');
-        RequestNewEmployeesGridView(companyId, dateChanged);
+        var startDate = NewEmployeeReportStartDate.GetDate();
+        var endDate = NewEmployeeReportEndDate.GetDate();
+        if (CheckDifference(startDate, endDate)) {
+            NewEmpployeeReportCompareDateStatus.SetText("")
+            NewEmployeeReportGridView.PerformCallback();
+        } else {
+            NewEmpployeeReportCompareDateStatus.SetText("Ngày bắt đầu không được lớn hơn ngày kết thúc !")
+        }
     }
 
-    function DateReportChanged(s, e) {
-        var dateChanged = s.GetValue().toLocaleDateString('vi-VN');
-        var companyId = companySelect.GetValue();
-        RequestNewEmployeesGridView(companyId, dateChanged);
+
+    function CheckDifference(startDate, endDate) {
+        if (startDate > endDate) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    function RequestNewEmployeesGridView(companyId, dateChanged) {
-        NewEmployeeReportGridView.PerformCallback();
-    }
 
     function OnNewEmployeeBeginCallBack(s, e) {
-        console.log(dateReportSelect.GetValue().toLocaleDateString());
+
         e.customArgs['CompanyId'] = companySelect.GetValue();
-        e.customArgs['SelectedDate'] = dateReportSelect.GetValue().toLocaleDateString('vi-VN');
+        e.customArgs['StartSelectedDate'] = NewEmployeeReportStartDate.GetValue().toLocaleDateString('vi-VN');
+        e.customArgs['EndSelectedDate'] = NewEmployeeReportEndDate.GetValue().toLocaleDateString('vi-VN');
+
     }
 
+    function OnNewEmployeeReportDateChange(s, e) {
+        var startDate = NewEmployeeReportStartDate.GetDate();
+        var endDate = NewEmployeeReportEndDate.GetDate();
+        if (CheckDifference(startDate, endDate)) {
+            NewEmpployeeReportCompareDateStatus.SetText("")
+            NewEmployeeReportGridView.PerformCallback();
+        } else {
+            NewEmpployeeReportCompareDateStatus.SetText("Ngày bắt đầu không được lớn hơn ngày kết thúc !")
+        }
+      
+    }
+
+    function OnBtnNewEmployeeExportClick(s, e)
+    {
+        var startDate = NewEmployeeReportStartDate.GetValue().toLocaleDateString('vi-VN').replace("/", "-").replace("/", "-");      
+        var endDate = NewEmployeeReportEndDate.GetValue().toLocaleDateString('vi-VN').replace("/", "-").replace("/", "-");
+        var companyId = companySelect.GetValue();
+        var query = companyId + "-" + startDate + "-" + endDate;
+        var actionParams = $("form").attr("action").split("?QueryString=");
+        actionParams[1] = query;        
+        $("form").attr("action", actionParams.join("?QueryString="));
+    }
 </script>
 
 @Html.DevExpress().FormLayout(settings =>
@@ -34,9 +63,9 @@
     settings.Name = "EmpolyeeFormLayout";
     settings.Items.AddGroupItem(groupSettings =>
     {
-        groupSettings.Name = "companyAndDateSelect";
+       // groupSettings.Name = "companyAndDateSelect";
         groupSettings.Caption = "Tiêu chí báo cáo";
-        groupSettings.ColCount = 2;
+        groupSettings.ColCount = 3;
         groupSettings.Items.Add(itemSettins =>
         {
             itemSettins.Caption = "Công ty";
@@ -46,26 +75,62 @@
             });
 
         });
-        groupSettings.Items.Add(itemSettins =>
+        groupSettings.Items.Add(itemSettings =>
         {
-            itemSettins.Caption = "Ngày báo cáo";
-            itemSettins.SetNestedContent(() =>
-            {
-                Html.RenderPartial("_DateReportDateEdit");
-            });
+            itemSettings.Caption = "Ngày bắt đầu";
+            itemSettings.Name = "NewEmployeeReportStartDate";
+            itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.DateEdit;
+            DateEditSettings dateSettings = (DateEditSettings)itemSettings.NestedExtensionSettings;
+            dateSettings.Date = ViewBag.StartChoiceDate;
+            dateSettings.Properties.ClientSideEvents.ValueChanged = "OnNewEmployeeReportDateChange";
+        });
+        groupSettings.Items.Add(itemSettings =>
+        {
+            itemSettings.Caption = "Ngày kết thúc";
+            itemSettings.Name = "NewEmployeeReportEndDate";            
+            itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.DateEdit;
+            DateEditSettings dateSettings = (DateEditSettings)itemSettings.NestedExtensionSettings;
+            dateSettings.Date = ViewBag.EndChoiceDate;
+            dateSettings.Properties.ClientSideEvents.ValueChanged = "OnNewEmployeeReportDateChange";
+            
+        });
+        groupSettings.Items.AddEmptyItem();
+        groupSettings.Items.Add(itemSettings =>
+        {
+            
+            itemSettings.Name = "NewEmpployeeReportCompareDateStatus";
+            itemSettings.ShowCaption = DefaultBoolean.False;
+            itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.Label;
+            LabelSettings lblSet = (LabelSettings)itemSettings.NestedExtensionSettings;
+            lblSet.Properties.ClientInstanceName = "NewEmpployeeReportCompareDateStatus";
+            lblSet.Style.Value = "color:red;";
+            lblSet.Width = Unit.Percentage(50);
+
         });
     });
     settings.Items.Add(itemSettins =>
     {
-        itemSettins.Name = "gridviewEmployees";
+       // itemSettins.Name = "gridviewEmployees";
         itemSettins.Caption = "Danh sách nhân viên";
         itemSettins.HorizontalAlign = FormLayoutHorizontalAlign.Left;
         itemSettins.VerticalAlign = FormLayoutVerticalAlign.Bottom;
         itemSettins.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
         itemSettins.SetNestedContent(() =>
         {
-            //ViewContext.Writer.Write(Html.Action("CurrentEmployeeReportGridView", new { CompanyId = ViewBag.CompanyId, DateSelected = ViewBag.ChoiceDate }));
-            Html.RenderPartial("_NewEmployeeReportGridView", ViewData["employess"]);
+            using (Html.BeginForm("NewEmployeeReportExportTo","Home"))
+            {
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "BtnNewEmployeeExport";
+                    btnSettings.Text = "Xuất Excel";
+                    btnSettings.Images.Image.IconID = IconID.ExportExporttoxlsx32x32office2013;
+                    btnSettings.RenderMode = ButtonRenderMode.Link;
+                    btnSettings.UseSubmitBehavior = true;
+                    btnSettings.ClientSideEvents.Click = "OnBtnNewEmployeeExportClick";
+                    btnSettings.Style.Value = "margin-bottom:5px";
+                }).GetHtml();
+                Html.RenderPartial("NewEmployeeReport/_NewEmployeeReportGridView", ViewData["employess"]);
+           }
         });
     });
 }).GetHtml()

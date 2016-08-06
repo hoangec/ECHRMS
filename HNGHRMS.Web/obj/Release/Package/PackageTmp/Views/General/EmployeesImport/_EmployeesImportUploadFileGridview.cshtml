@@ -1,0 +1,157 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "EmployeesImportUploadFileGridView";
+        settings.CallbackRouteValues = new { Controller = "General", Action = "EmployeesImportUploadFileGridViewPartial" };
+        settings.Width = Unit.Percentage(120);
+        settings.Style.Add("margin-top", "10px");
+        //settings.KeyFieldName = "ShareholderId";
+
+        settings.SettingsPager.Visible = true;
+        settings.SettingsPager.PageSize = 100;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        //settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsBehavior.ColumnResizeMode = ColumnResizeMode.Control;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;        
+        settings.ClientSideEvents.EndCallback = "OnEmployeesImportUploadFileGridViewEndCallback";
+        settings.ClientSideEvents.BeginCallback = "OnEmployeesImportUploadFileGridViewBeginCallback";
+        settings.Styles.Cell.Wrap = DefaultBoolean.False;
+        settings.Styles.Header.Wrap = DefaultBoolean.False;
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.HtmlRowPrepared = (s, e) =>
+        {
+            if (e.RowType != GridViewRowType.Data) return;
+
+            bool isValid = bool.Parse(e.GetValue("INVALID").ToString());     
+            if (isValid)
+                e.Row.BackColor = System.Drawing.Color.Red;
+        };
+        settings.CustomJSProperties = (s, e) =>
+        {
+
+            if (ViewData["CallBackTotalRecord"] != null)
+                e.Properties["cpTotalRecord"] = ViewData["CallBackTotalRecord"];
+            if (ViewData["CallBackTotalInValidCount"] != null)
+                e.Properties["cpTotalInValidCount"] = ViewData["CallBackTotalInValidCount"];
+            if (ViewData["CallBackTotalSalary"] != null)
+                e.Properties["cpTotalSalary"] = ViewData["CallBackTotalSalary"];
+        };
+        //
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "EMPLOYEECODE";
+            col.Caption = "Mã nhân viên";
+            col.Width = 120;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "LASTNAME";
+            col.Caption = "Họ";
+            col.Width = 120;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "FIRSTNAME";
+            col.Caption = "Tên";
+            col.Width = 120;
+        });
+       
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "GENDER";
+            col.Caption = "Giới tính";
+            col.Width = 120;
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro = col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = new SelectList(new[]{
+                new SelectListItem{Text = "Nam",Value="TRUE"},
+                new SelectListItem{Text = "Nữ", Value="FALSE"}
+            }, "Value", "Text");
+        });
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "IDENTITYNO";
+            col.Caption = "Số CMND/Hộ chiếu";
+            col.Width = 120;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ISSUEDATE";
+            col.Caption = "Ngày cấp";
+            col.Width = 70;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            DateEditProperties datePros = (DateEditProperties)col.PropertiesEdit;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "NATIONAL";
+            col.Caption = "Quốc tịch";
+            col.Width = 120;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ADDRESS";
+            col.Caption = "Địa chỉ";
+            col.Width = 100;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "BIRTHDAY";
+            col.Caption = "Ngày sinh";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            DateEditProperties datePros = (DateEditProperties)col.PropertiesEdit;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+            col.Width = 100;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DEPARTMENT";
+            col.Caption = "Phòng ban";
+            col.Width = 120;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "JOINDATE";
+            col.Caption = "Ngày vào làm";
+            col.Width = 120;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            DateEditProperties datePros = (DateEditProperties)col.PropertiesEdit;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "SALARY";
+            col.Caption = "Mức lương";
+            //col.ColumnType = MVCxGridViewColumnType.TextBox;
+            //TextBoxProperties txtPro = (TextBoxProperties)col.PropertiesEdit;
+            //txtPro.DisplayFormatString = "{0:N}";
+            col.PropertiesEdit.DisplayFormatString = "{0:C0}";                          
+            col.Width = 150;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "INSURANCE";
+            col.Caption = "Ngày bảo hiểm ";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            //TextBoxProperties txtPro = (TextBoxProperties)col.PropertiesEdit;
+            //txtPro.DisplayFormatString = "{0:N}";
+            //col.PropertiesEdit.DisplayFormatString = "{0:C0}";
+            col.Width = 150;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "INVALID";
+            col.Visible = false;
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

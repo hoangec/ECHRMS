@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Loại chi phí lương";
+}
+
+<h3 style="margin-left:10px">Loại chi phí lương</h3>
+
+
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "SalaryCOmponentFormLayout";
+    settings.Items.Add(item =>
+    {
+        item.Caption = "Danh sách loại chi phí lương";
+        item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+        item.SetNestedContent(() =>
+        {
+            ViewContext.Writer.Write(Html.Action("SalaryComponentGridViewPartial", "General"));
+        });
+    });
+}).GetHtml()

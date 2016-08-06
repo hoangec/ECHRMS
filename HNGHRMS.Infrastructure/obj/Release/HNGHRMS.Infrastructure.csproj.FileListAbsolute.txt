@@ -15,3 +15,9 @@ D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Release\System.Web.WebPages.D
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Release\System.Web.WebPages.Razor.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\obj\Release\HNGHRMS.Infrastructure.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\obj\Release\HNGHRMS.Infrastructure.pdb
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Release\HNGHRMS.Infrastructure.dll.config
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Release\EntityFramework.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Release\EntityFramework.SqlServer.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Release\EntityFramework.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Release\EntityFramework.SqlServer.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\obj\Release\HNGHRMS.Infrastructure.csprojResolveAssemblyReference.cache

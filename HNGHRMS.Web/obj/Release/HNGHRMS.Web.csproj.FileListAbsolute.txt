@@ -16,7 +16,6 @@ D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\HNGHRMS.Data.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\HNGHRMS.Infrastructure.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\HNGHRMS.Model.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\HNGHRMS.Service.dll
-D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\HNGHRMS.Web.Core.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\Microsoft.AspNet.Identity.Core.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\Microsoft.AspNet.Identity.Owin.dll
@@ -44,7 +43,6 @@ D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\HNGHRMS.Data.pdb
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\HNGHRMS.Infrastructure.pdb
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\HNGHRMS.Model.pdb
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\HNGHRMS.Service.pdb
-D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\HNGHRMS.Web.Core.pdb
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\Autofac.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\Autofac.Integration.Mvc.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\AutoMapper.xml
@@ -80,3 +78,12 @@ D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\WebMatrix.WebData.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\obj\Release\HNGHRMS.Web.csprojResolveAssemblyReference.cache
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\obj\Release\HNGHRMS.Web.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Web\obj\Release\HNGHRMS.Web.pdb
+D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\MvcExtensions.AutoMapper.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\MvcExtensions.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\NodaTime.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\MvcExtensions.pdb
+D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\MvcExtensions.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Web\bin\NodaTime.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Web\obj\Release\EmployeeDetailReport.resources
+D:\Code_Project\HNGHRMS\HNGHRMS.Web\obj\Release\HNGHRMS.Web.csproj.GenerateResource.Cache
+D:\Code_Project\HNGHRMS\HNGHRMS.Web\obj\Release\HNGHRMS.Web.dll.licenses

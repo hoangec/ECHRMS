@@ -1,0 +1,171 @@
+﻿@model HNGHRMS.Web.ViewModels.EmployeeSimpleFormModel
+
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "employeeSimpleAddForm";
+    //settings.RequiredMarkDisplayMode = RequiredMarkMode.RequiredOnly;
+    settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Thông tin nhân viên";
+        groupSettings.ColCount = 2;
+        groupSettings.Items.Add(m => m.EmployeeCode, item =>
+        {
+          
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.ButtonEdit;
+            ButtonEditSettings btnSettings = item.NestedExtensionSettings as ButtonEditSettings;
+            btnSettings.ShowModelErrors = true;
+            btnSettings.Properties.ClientInstanceName = "txtEmployeeSimpleAddFormEmployeeCode";
+            EditButton btn = new EditButton();
+            btn.ToolTip = "Nhấn để hệ thống tự sinh mã";
+            btn.Image.IconID = IconID.ActionsRefresh16x16;
+            btnSettings.Properties.Buttons.Add(btn);
+            btnSettings.Height = 25;
+            btnSettings.Properties.ClientSideEvents.ButtonClick = "OntxtEmployeeSimpleAddFormEmployeeCodeClick";
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.ShowCaption = DefaultBoolean.False;
+            item.NestedExtension().Label(lbl =>
+            {             
+                lbl.Properties.ClientInstanceName = "lblEmployeeSimpleAddFormEmployeeCodeGenerateStatus";
+                lbl.Text = "";
+                lbl.Style.Value = "color:red;";
+            });
+        });
+        groupSettings.Items.Add(m => m.FirstName, item =>
+        {            
+            item.NestedExtension().TextBox(txt =>
+            {
+                txt.ShowModelErrors = true;
+                txt.Properties.ClientInstanceName = "txtEmployeeSimpleAddFormFirstName";
+            });
+        });
+        groupSettings.Items.Add(m => m.LastName, item =>
+        {           
+            item.NestedExtension().TextBox(txt =>
+            {
+                txt.ShowModelErrors = true;
+                txt.Properties.ClientInstanceName = "txtEmployeeSimpleAddFormLastName";
+            });
+        });
+        groupSettings.Items.Add(m => m.Gender, item =>
+        {
+            item.NestedExtension().ComboBox(c =>
+            {                
+                c.Properties.DataSource = new SelectList(new[]{
+                        new SelectListItem{Text = "Nam",Value=HNGHRMS.Model.Enums.Gender.Male.ToString()},
+                        new SelectListItem{Text = "Nữ", Value=HNGHRMS.Model.Enums.Gender.Female.ToString()}
+                    }, "Value", "Text");
+            });
+        });
+        groupSettings.Items.Add(m => m.BirthDay, item =>
+        {
+            item.NestedExtension().DateEdit(dateEdit =>
+            {
+                dateEdit.ShowModelErrors = true;
+            });
+        });
+        groupSettings.Items.Add(m => m.IdentityNo, item =>
+        {            
+            item.NestedExtension().TextBox(txtEdit =>
+            {
+                txtEdit.ShowModelErrors = true;
+                txtEdit.Properties.ClientInstanceName = "txtEmployeeSimpleAddFormIdentityNo";
+            });
+        });
+        groupSettings.Items.Add(m => m.IdentityDateOfIssue, item =>
+        {
+            item.NestedExtension().DateEdit(dateEdit =>
+            {
+                dateEdit.ShowModelErrors = true;             
+            });
+        });
+        groupSettings.Items.Add(m => m.MaritalStatus, item =>
+        {
+            //item.ColSpan = 3;
+            //item.ClientVisible = false;
+            item.NestedExtension().ComboBox(c =>
+            {
+                c.Properties.DataSource = new SelectList(new[]{
+                        new SelectListItem{Text = "Độc thân",Value=HNGHRMS.Model.Enums.MaritalStatus.Single.ToString()},
+                        new SelectListItem{Text = "Có gia đình", Value=HNGHRMS.Model.Enums.MaritalStatus.Married.ToString()},
+                        new SelectListItem{Text = "Khác", Value=HNGHRMS.Model.Enums.MaritalStatus.Other.ToString()}
+                    }, "Value", "Text");
+            });
+        });
+        groupSettings.Items.Add(m => m.Departement, item =>
+        {            
+            item.NestedExtension().TextBox(txt =>
+            {
+                txt.ShowModelErrors = true;
+                txt.Properties.ClientInstanceName = "txtEmployeeSimpleAddFormDepartement";
+            });
+        });
+        groupSettings.Items.Add(m => m.CompanyId, item =>
+        {
+            //item.ColSpan = 2;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+            ComboBoxSettings cmbSetting = (ComboBoxSettings)item.NestedExtensionSettings;
+            cmbSetting.Properties.DataSource = ViewBag.Companies;
+            cmbSetting.Properties.TextField = "CompanyName";
+            cmbSetting.Properties.ValueField = "Id";
+            cmbSetting.Properties.ClientInstanceName = "cmbEmployeeSimpleAddFormCompany";
+            //cmbSetting.Width = 300;
+        });
+        groupSettings.Items.Add(m => m.PositionId, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+            ComboBoxSettings cmbSetting = (ComboBoxSettings)item.NestedExtensionSettings;
+            cmbSetting.Properties.DataSource = ViewBag.Positions;
+            cmbSetting.Properties.TextField = "PositionName";
+            cmbSetting.Properties.ValueField = "Id";       
+        });
+        groupSettings.Items.Add(m => m.JoinedDate, item =>
+        {
+            item.NestedExtension().DateEdit(dateEdit =>
+            {
+                dateEdit.ShowModelErrors = true;
+                dateEdit.Date = DateTime.Now;
+            });
+        });
+        groupSettings.Items.Add(m => m.Nationality, item =>
+        {
+            item.NestedExtension().TextBox(txt =>
+            {
+                txt.ShowModelErrors = true;
+                txt.Properties.ClientInstanceName = "txtEmployeeSimpleAddFormNationaity";
+            });
+        });
+        groupSettings.Items.Add(m => m.Salary, item =>
+        {
+            item.NestedExtension().TextBox(txt =>
+            {
+                txt.ShowModelErrors = true;
+                txt.Properties.ClientInstanceName = "txtEmployeeSimpleAddFormSalary";
+            });            
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.ColSpan = 2;
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() =>
+            {
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnAddEmployeeSimpleSave";
+                    btnSettings.Text = "Lưu";
+                    btnSettings.UseSubmitBehavior = true;
+                }).Render();
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnEmployeeSimpleCancel";
+                    btnSettings.Text = "Hủy";
+                    btnSettings.Style.Add("margin-left", "5px");
+                    btnSettings.ClientSideEvents.Click = "OnbtnEmployeeSimpleCancelClick";
+                }).Render();
+            });
+        });
+    });
+}).Bind(Model).GetHtml()
+
+

@@ -1,0 +1,7 @@
+﻿@Html.DevExpress().DocumentViewer(settings =>
+{
+    settings.Name = "documentViewer";    
+    settings.Report = (EmployeeDetailReport)ViewData["report"];
+    settings.CallbackRouteValues = new { Controller = "Employee", Action = "DocumentViewerPartial" };
+    settings.ExportRouteValues = new { Controller = "Employee", Action = "ExportDocumentViewer" };
+}).GetHtml()

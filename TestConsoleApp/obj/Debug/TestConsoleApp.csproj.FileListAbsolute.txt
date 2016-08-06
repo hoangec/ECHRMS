@@ -17,10 +17,12 @@ D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\Microsoft.AspNet.Identity.Core.
 D:\Code_Project\HNGHRMS\TestConsoleApp\obj\Debug\TestConsoleApp.csprojResolveAssemblyReference.cache
 D:\Code_Project\HNGHRMS\TestConsoleApp\obj\Debug\TestConsoleApp.exe
 D:\Code_Project\HNGHRMS\TestConsoleApp\obj\Debug\TestConsoleApp.pdb
-D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\HNGHRMS.Web.Coew.dll
 D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\HNGHRMS.Data.pdb
 D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\HNGHRMS.Model.pdb
 D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\HNGHRMS.Service.pdb
-D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\HNGHRMS.Web.Coew.pdb
 D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\HNGHRMS.Infrastructure.dll
 D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\HNGHRMS.Infrastructure.pdb
+D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\NodaTime.dll
+D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\NodaTime.xml
+D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\AutoMapper.dll
+D:\Code_Project\HNGHRMS\TestConsoleApp\bin\Debug\AutoMapper.xml

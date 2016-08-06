@@ -1,0 +1,89 @@
+﻿@model HNGHRMS.Web.ViewModels.MandatoryInsuranceAddFormView
+
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "employeeMandatoryInsuranceAddForm";
+    settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Thông tin bảo hiểm bắt buộc";
+        groupSettings.ColCount = 2;
+        groupSettings.Items.Add(m => m.EployeeId, item =>
+        {
+            item.ColSpan = 2;
+            item.ClientVisible = false;
+        });
+        groupSettings.Items.Add(m => m.InsuranceNo, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSettings.ShowModelErrors = true;
+        });
+        groupSettings.Items.Add(m => m.DateOfIssue, item =>
+        {
+            //item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            //TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+            //txtSettings.ShowModelErrors = true;
+        });
+        groupSettings.Items.Add(m => m.IsDefined,item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.CheckBox;
+            CheckBoxSettings chbSettings = (CheckBoxSettings)item.NestedExtensionSettings;
+            chbSettings.Properties.ClientSideEvents.CheckedChanged = "function(s,e){ InsuranceAmount.SetEnabled(s.GetValue())}";
+        });
+        groupSettings.Items.Add(m => m.InsuranceAmount, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSettings.ClientEnabled = false;
+            txtSettings.Properties.ClientInstanceName = "InsuranceAmount";
+                
+        });
+        //groupSettings.Items.Add(item =>
+        //{
+        //    item.ColSpan = 2;
+        //    item.ShowCaption = DefaultBoolean.False;
+        //    item.Caption = "File tải";
+        //    item.NestedExtensionType = FormLayoutNestedExtensionItemType.HyperLink;
+        //    HyperLinkSettings hyperlinkSettings = (HyperLinkSettings)item.NestedExtensionSettings;
+        //    hyperlinkSettings.Name = "mandatoryInsuranceAddAttachFile";
+        //    hyperlinkSettings.ClientVisible = false;
+        //    hyperlinkSettings.Properties.ClientInstanceName = "mandatoryInsuranceAddAttachFileClient";
+        //});
+        //groupSettings.Items.Add(item =>
+        //{
+        //    item.Name = "mandatoryInsuranceUploadFile";
+        //    item.Caption = "Tải file đính kèm";
+        //    item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+        //    item.ColSpan = 2;
+        //    item.NestedExtensionType = FormLayoutNestedExtensionItemType.UploadControl;
+        //    UploadControlSettings uploadSettings = (UploadControlSettings)item.NestedExtensionSettings;
+        //    uploadSettings.ShowUploadButton = true;
+        //    uploadSettings.ShowClearFileSelectionButton = true;
+        //    uploadSettings.ValidationSettings.MaxFileSize = 1048576;
+        //    uploadSettings.ValidationSettings.AllowedFileExtensions = new string[] { ".pdf" };
+        //    uploadSettings.CallbackRouteValues = new { Controller = "Employee", Action = "MadatoryInsuranceAddAttachFileUploadControlCallbackAction" };
+        //    uploadSettings.ClientSideEvents.FileUploadComplete = "OnMadatoryInsuranceAddUploadFileComplete";
+        //});
+        groupSettings.Items.Add(item =>
+        {
+            item.ColSpan = 2;
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() =>
+            {
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnMandatoryInsuranceSave";
+                    btnSettings.Text = "Lưu";
+                    btnSettings.UseSubmitBehavior = true;
+                }).Render();
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnMandatoryInsuranceCancel";
+                    btnSettings.Text = "Hủy";
+                    btnSettings.Style.Add("margin-left", "5px");
+                    btnSettings.ClientSideEvents.Click = "function(s,e){resetMandatoryInsuranceAddFormValue();setMandatoryInsuranceAddFormVisible(false)}";
+                }).Render();
+            });
+        });
+    });
+}).Bind(Model).GetHtml()

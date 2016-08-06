@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "TransferEmployee";
+}
+<script src="~/Scripts/notify.min.js"></script>
+
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+<script>
+
+    function OnCmbEmployeeIndexChanged(s, e) {
+        var employeeId = s.GetValue();
+        if (!cbpEmployeeTransferInformation.InCallback()) {
+            cbpEmployeeTransferInformation.PerformCallback({ id: employeeId });
+        }
+
+    }
+    function OnIsInsuranceTransferChanged(s, e)
+    {
+        console.log(s.GetValue());
+        if (s.GetValue()) {
+            InsuranceTransferAmmountTxt.SetEnabled(true);
+            InsuranceTransferDate.SetEnabled(true);
+        } else {
+            InsuranceTransferAmmountTxt.SetEnabled(false);
+            InsuranceTransferDate.SetEnabled(false);
+        }
+    }
+    function OnBeginCbpEmployeeTransferCallback(s, e)
+    { }
+
+    function OnCmbEmployeeListEndCallBack(s, e) {
+        s.SetSelectedIndex(0);
+        if (s.GetValue() != null) {
+            var employeeId = s.GetValue();
+            cbpEmployeeTransferInformation.PerformCallback({ id: employeeId });
+        } else {
+            cbpEmployeeTransferInformation.PerformCallback({ id: 0 });
+        }
+
+    }
+    function OnEmployeeTransferGridViewEndCallBack(s, e)
+    {
+    }
+    function EmployeeTransferAddSucess(data) {
+        if (data.status == "OK") {
+            $.notify("Điều chuyển thành công nhân viên với mã điều chuyển: " + data.message, "success");
+            EmployeesTransferGridView.PerformCallback();
+        } else {
+            $.notify("Điều chuyển nhân viên thất bại: " + data.message,"error");
+        }
+        
+    }
+
+    function OnTransferDateValidation(s, e) {
+        var transferDate = e.value;
+        var employeeJoineDate = joinedDate.GetDate();
+        var today = new Date();
+        transferDate.setHours(0, 0, 0, 0, 0);
+        employeeJoineDate.setHours(0, 0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0, 0);
+        if (transferDate < employeeJoineDate) {
+            e.isValid = false;
+            e.errorText = "Ngày điều chuyển không nhỏ hơn ngày vào làm";
+        }
+        if (transferDate > today) {
+            e.isValid = false;
+            e.errorText = "Ngày điều không lớn hơn ngày hiện tại ";
+        }
+    }
+    function OnEmployeeTransferAddUploadFileComplete(s, e) {
+        var fileName = e.callbackData;        
+        FileAttach.SetText(fileName);
+        ExperienceAddAttachFileClient.SetText(fileName);
+        ExperienceAddAttachFileClient.SetNavigateUrl("/Upload/experiences/" + fileName);
+    }
+</script>
+<h3 style="margin-left:10px">Lưu chuyển nhân viên</h3>
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "TransferEmployeeForm";
+    settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.ColCount = 2;
+        groupSettings.ShowCaption = DefaultBoolean.False;
+        groupSettings.Items.Add(itemSettings =>
+        {
+            itemSettings.VerticalAlign = FormLayoutVerticalAlign.Top;
+            itemSettings.Caption = "Danh sách nhân viên";
+            itemSettings.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            itemSettings.SetNestedContent(() =>
+            {
+                Html.RenderPartial("EmployeesTransfer/_CmbEmployeeTransferList", ViewData["Employees"]);
+            });
+        });
+        groupSettings.Items.Add(itemSettings =>
+        {
+            itemSettings.ShowCaption = DefaultBoolean.False;
+            itemSettings.SetNestedContent(() =>
+            {
+                using (Ajax.BeginForm("EmployeeTransferAdd", "Employee",
+                    new AjaxOptions
+                    {
+                        HttpMethod = "POST",
+                        OnFailure = "AddFailed",
+                        OnSuccess = "EmployeeTransferAddSucess"
+                    }))
+                //ViewContext.Writer.Write("<div id=\"terminateInfor\" >");
+                {
+                    Html.RenderPartial("EmployeesTransfer/_CbpEmployeeTransfer", ViewData["TransferEmployee"]);
+                }
+                // ViewContext.Writer.Write("</div>");
+            });
+        });
+
+        groupSettings.Items.Add(itemSettings =>
+        {
+            itemSettings.ColSpan = 2;
+            itemSettings.Caption = "Danh sách nhân viên điều chuyển";
+            itemSettings.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            itemSettings.SetNestedContent(() =>
+            {
+                //Html.RenderPartial("_EmployeesTransferGridViewPartial", ViewData["EmployeesTransfer"]);
+                Html.RenderAction("EmployeesTransferGridViewPartial", "Employee");
+            });
+        });
+    });
+}).GetHtml()

@@ -1,0 +1,571 @@
+﻿@model HNGHRMS.Web.ViewModels.EmployeeFunctionTabViewModel
+@{
+    ViewBag.Title = "Chi tiết nhân viên";
+}
+<script src="~/Scripts/notify.min.js"></script>
+<script>
+
+    /* Helpper Function Js */
+    function showNotification(message, type) {
+        if (type == "success") {
+            $.notify(message, "success", notifyOptions);
+        } else if (type == "warning") {
+            $.notify(message, "warning", notifyOptions);
+        } else {
+            $.notify(message, "error", notifyOptions);
+        }
+
+    }
+    /* .Helper Function Js */
+
+    /*Employee Contact Js*/
+    function OnBtnEmployeeContactDetailSaveClick(s, e) {
+        if (s.GetText() == "Thay đổi") {
+            e.processOnServer = false;
+            SetEmployeeContactLayoutByStatus(true);
+        } else {
+            e.processOnServer = true;
+        }
+    }
+    function EmployeeContactDetailUpdateSucess(data) {
+        if (data.status == "Success") {
+            $.notify("Cập nhập dữ liệu thành công", "success", notifyOptions);
+            SetEmployeeContactLayoutByStatus(false);
+
+        } else {
+            $.notify("Cập nhập dữ liệu thất bại", "error", notifyOptions);
+        }
+
+    }
+    function EmployeeContactDetailUpdateFailed(data) {
+        $.notify("Cập nhập dữ liệu thất bại", "error", notifyOptions);
+    }
+    function SetEmployeeContactLayoutByStatus(status) {
+        txtEmployeeContactAddress.SetEnabled(status);
+        txtEmployeeContactEmail.SetEnabled(status);
+        txtEmployeeContactPhone.SetEnabled(status);
+        if (status == true) {
+            btnEmployeeContactDetailSave.SetText("Lưu thay đổi");
+        } else {
+            btnEmployeeContactDetailSave.SetText("Thay đổi");
+        }
+    }
+    function OncbpEmployeeContacEndCallback(s, e) {
+        SetEmployeeContactLayoutByStatus(false);
+    }
+    /* .Employee contact Js */
+
+    /* Employee Job Js*/
+    function OnBtnEmployeeJobSaveClick(s, e) {
+        if (s.GetText() == "Thay đổi") {
+            e.processOnServer = false;
+            SetEmployeeJobLayoutByStatus(true);
+        } else {
+            e.processOnServer = true;
+        }
+    }
+    function EmployeeJobUpdateSucess(data) {
+        if (data.status == "Success") {
+            showNotification("Cập nhập dữ liệu thành công", "success");
+            cbpEmployeeJob.PerformCallback({ id: "@Model.EmployeeId" });
+            SetEmployeeJobLayoutByStatus(false);
+        } else {
+            showNotification("Cập nhập dữ liệu thất bại", "error");
+        }
+
+    }
+    function SetEmployeeJobLayoutByStatus(status) {
+        cmbEmployeeJobCompany.SetEnabled(status);
+        txtEmployeeJobDepartement.SetEnabled(status);
+        cmbEmployeeJobPosition.SetEnabled(status);
+        employeeJoinedDate.SetEnabled(status);
+        if (status == true) {
+            btnEmployeeJobSave.SetText("Lưu thay đổi");
+        } else {
+            btnEmployeeJobSave.SetText("Thay đổi");
+        }
+    }
+    function OncbpEmployeeJobEndCallback(s, e) {
+        SetEmployeeJobLayoutByStatus(false);
+    }
+    /* .Employee Job Js*/
+
+    var notifyOptions = { elementPosition: 'bottom left', globalPosition: 'right top' };
+    function OnBtnEmployeeInforClick(s, e) {
+        if (s.GetText() == "Thay đổi") {
+            s.SetText("Lưu thay đổi");
+            SetEmployeeInforAllControllEnable();
+            e.processOnServer = false;
+        } else {
+            e.processOnServer = true;
+        }
+    }
+    function SetEmployeeInforAllControllEnable() {
+        employeeInforLastName.SetEnabled(true);
+        employeeInforFirstName.SetEnabled(true);
+        employeeInforCode.SetEnabled(true);
+        employeeInforPhoto.SetEnabled(true);
+        employeeInforIdentity.SetEnabled(true);
+        employeeInforIdentityDateIssue.SetEnabled(true);
+        employeeInforGender.SetEnabled(true);
+        employeeInforMaritalSatus.SetEnabled(true);
+        employeeInforNationality.SetEnabled(true);
+        employeeInforBirthDate.SetEnabled(true);
+    }
+    function SetEmployeeInforAllControllDisable() {
+        employeeInforLastName.SetEnabled(false);
+        employeeInforFirstName.SetEnabled(false);
+        employeeInforPhoto.SetEnabled(false);
+        employeeInforCode.SetEnabled(false);
+        employeeInforIdentity.SetEnabled(false);
+        employeeInforIdentityDateIssue.SetEnabled(false);
+        employeeInforGender.SetEnabled(false);
+        employeeInforMaritalSatus.SetEnabled(false);
+        employeeInforNationality.SetEnabled(false);
+        employeeInforBirthDate.SetEnabled(false);
+    }
+
+
+    function EmployeeInforUpdateSuccess(data) {
+        if (data.status == "Success") {
+            $.notify("Cập nhập dữ liệu thành công", "success", notifyOptions);
+            btnEmployeeInfoSave.SetText("Thay đổi");
+            SetEmployeeInforAllControllDisable();
+        } else {
+            $.notify("Cập nhập dữ liệu thất bại", "error", notifyOptions);
+        }
+
+    }
+    /*Employee Contract Js */
+    function OnGridEmployeeContractHistoryCallback(s, e) {
+        e.customArgs["id"] = "@Model.EmployeeId";
+    }
+
+
+    function refreshContractLayout() {
+        gridEmployeeContractsHistory.PerformCallback();
+        setContractAddFormLayoutVisible();
+    }
+    function setContractAddFormLayoutVisible(visible) {
+        if (visible != null) {
+            EmployeeContractLayout.GetItemByName("employeeContractAddForm").SetVisible(visible);
+        } else {
+            var checkVisible = EmployeeContractLayout.GetItemByName("employeeContractAddForm").GetVisible();
+            EmployeeContractLayout.GetItemByName("employeeContractAddForm").SetVisible(!checkVisible);
+        }
+        ContractNo.Focus();
+    }
+    function setContractUpdateFormLayoutVisible(visible) {
+        setContractAddFormLayoutVisible(false);
+        EmployeeContractLayout.GetItemByName("employeeContractUpdateForm").SetVisible(visible);
+        ContractUpdateNo.Focus();
+    }
+    function setContractFunctionButtonEnable(status) {
+        btnNewEmployeeContract.SetEnabled(status);
+        btnDeleteEmployeeContract.SetEnabled(status);
+    }
+    function resetContractAddFormLayout() {
+        ContractNo.SetText("");
+        ContractTypeId.SetSelectedIndex(0);
+        StartDate.SetValue(new Date())
+        Remark.SetText("");
+        ContractAttachFile.SetText("");
+        ContractAddAttachFileClient.SetText("");
+    }
+
+
+    // Add contract
+    function OnBtnEmployeeContractAddClick(s, e) {
+        resetContractAddFormLayout();
+        setContractAddFormLayoutVisible();
+    }
+    function OnContractAddUploadFileComplete(s, e) {
+        var fileName = e.callbackData;
+        ContractAttachFile.SetText(fileName);
+        ContractAddAttachFileClient.SetText(fileName);
+        ContractAddAttachFileClient.SetVisible(true);
+    }
+    function contractAddSuccess(data) {
+        if (data.status == "Success") {
+            showNotification("Tạo hợp đồng số " + data.message + " thành công", "success");
+            refreshContractLayout();
+        } else {
+            showNotification("Tạo hợp đồng thất bại: ", "error");
+        }
+    }
+
+    // Chuc nang thay doi contract
+    function OncontractHistoryUpdateClick(s, e) {
+        setContractFunctionButtonEnable(false);
+        setContractUpdateFormLayoutVisible(true);
+        var rowVisibleIndex = s.name.split('-')[1];
+        SetContractUpdateFormValues(rowVisibleIndex);
+    }
+    function SetContractUpdateFormValues(visibleIndex) {
+        gridEmployeeContractsHistory.GetRowValues(visibleIndex, "EmployeeContractId;ContractNo;ContractType.Id;StartDate;Remark;ContractAttachFile", OnCallbackHander);
+    }
+
+    function OnCallbackHander(rowValues) {
+        var contractId = rowValues[0];
+        var contractNo = rowValues[1];
+        var contractTypeId = rowValues[2];
+        var contractStartDate = rowValues[3];
+        var contractRemark = rowValues[4];
+        var contractAttachFile = rowValues[5];
+        ContractUpdateId.SetText(contractId);
+        ContractUpdateNo.SetText(contractNo);
+        ContractUpdateTypeId.SetValue(contractTypeId);
+        ContractUpdateStartDate.SetValue(contractStartDate);
+        ContractUpdateRemark.SetText(contractRemark);
+        if (!contractAttachFile == "") {
+            ContractUpdateAttachFile.SetText(contractAttachFile);
+            ContractUpdateAttachFileClient.SetText(contractAttachFile);
+            ContractUpdateAttachFileClient.SetNavigateUrl("/Upload/Contracts/" + contractAttachFile);
+            btnContractDeleteAttachFile.SetEnabled(true);
+
+        } else {
+            ContractUpdateAttachFile.SetText("");
+            ContractUpdateAttachFileClient.SetText("N/A");
+            ContractUpdateAttachFileClient.SetNavigateUrl("javascript:void(0)");
+            btnContractDeleteAttachFile.SetEnabled(false);
+        }
+    }
+    function contractUpdateSuccess(data) {
+        console.log(data);
+    }
+    function OnContractUpdateUploadFileComplete(s, e) {
+        var fileName = e.callbackData;
+        ContractUpdateAttachFile.SetText(fileName);
+        ContractUpdateAttachFileClient.SetText(fileName);
+        ContractUpdateAttachFileClient.SetNavigateUrl("/Upload/Contracts/" + fileName);
+    }
+    function OnbtnContractDeleteAttachFileClick(s, e) {
+        ContractUpdateAttachFileClient.SetText("N/A");
+        ContractUpdateAttachFileClient.SetNavigateUrl("javascript.void(0)");
+        ContractUpdateAttachFile.SetText("");
+        s.SetEnabled(false);
+
+    }
+    function contractUpdateSuccess(data) {
+        if (data.status == "Success") {
+            showNotification("Cập nhập hợp đồng số: " + data.message + " thành cồng", "success");
+            setContractUpdateFormLayoutVisible(false);
+            setContractFunctionButtonEnable(true);
+            gridEmployeeContractsHistory.PerformCallback();
+        } else {
+            showNotification("Cập nhập hợp đồng số: " + data.message + " thất bại", "error");
+        }
+    }
+    //Contract delete
+    function OnBtnEmployeeContractDeleteClick(s, e) {
+        var rowSelectedCount = gridEmployeeContractsHistory.GetSelectedRowCount();
+        if (rowSelectedCount == 0) {
+            alert("Xin chọn ít nhất một hợp đồng để xóa");
+        } else {
+            gridEmployeeContractsHistory.GetSelectedFieldValues("EmployeeContractId", getSelectedFiledValuesHander)
+        }
+
+    }
+    function getSelectedFiledValuesHander(selectedValues) {
+        ajaxContractDelete(selectedValues);
+    }
+    function ajaxContractDelete(values) {
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("AjaxEmployeeContractDelete", "Employee")",
+            data: { contractDeleteList: JSON.stringify(values) },
+            dataType: "json"
+        }).done(contractDeleteSuccess);
+    }
+    function contractDeleteSuccess(data) {
+        if (data.status == "Success") {
+            showNotification("Đã xóa thành công " + data.message + " hợp đồnng được chọn !", "success");
+            gridEmployeeContractsHistory.PerformCallback();
+        } else {
+            showNotification("Xóa hợp động thất bại", "error");
+        }
+    }
+    /*.Employee Contract Js*/
+    /* Employee Insurance   */
+    function OnGridEmployeeInsuranceCallback(s, e) {
+        e.customArgs["id"] = "@Model.EmployeeId";
+    }
+    function btnVoluntaryInsuranceClick(s, e) {
+        s.SetEnabled(false);
+        setVoluntaryInsuranceAddFormVisible();
+        setMandatoryInsuranceAddFormVisible(false);
+        resetVoluntaryInsuranceAddFormValue();
+    }
+
+    function btnMandatoryInsuranceClick(s, e) {
+        s.SetEnabled(false);
+        setMandatoryInsuranceAddFormVisible();
+        setVoluntaryInsuranceAddFormVisible(false);
+        resetMandatoryInsuranceAddFormValue();
+    }
+    function setVoluntaryInsuranceAddFormVisible(visible) {
+        if (visible != null) {
+            EmployeeInsuranceLayout.GetItemByName("employeeVoluntaryAddForm").SetVisible(visible);
+        } else {
+            var checkVisible = EmployeeInsuranceLayout.GetItemByName("employeeVoluntaryAddForm").GetVisible();
+            EmployeeInsuranceLayout.GetItemByName("employeeVoluntaryAddForm").SetVisible(!checkVisible);
+        }
+    }
+    function resetVoluntaryInsuranceAddFormValue() {
+        VoluntaryInsuranceNo.SetText("");
+        VoluntaryDateOfIssue.SetValue(new Date());
+        VoluntaryAmount.SetText("");
+        VoluntaryAttachFile.SetText("");
+        voluntaryInsuranceAddAttachFileClient.SetVisible(false);
+        voluntaryInsuranceAddAttachFileClient.SetText("");
+    }
+    function setMandatoryInsuranceAddFormVisible(visible) {
+        if (visible != null) {
+            EmployeeInsuranceLayout.GetItemByName("employeeMandatoryAddForm").SetVisible(visible);
+        } else {
+            var checkVisible = EmployeeInsuranceLayout.GetItemByName("employeeMandatoryAddForm").GetVisible();
+            EmployeeInsuranceLayout.GetItemByName("employeeMandatoryAddForm").SetVisible(!checkVisible);
+        }
+    }
+    function mandatoryInsuranceAddSuccess(data) {
+        if (data.status == "Success") {
+            showNotification("Đã tạo thành công bảo hiểm bắt buộc mã: " + data.message, "success");
+            setMandatoryInsuranceAddFormVisible(false);
+            btnMandatoryInsurance.SetEnabled(false);
+            gridEmployeeInsurance.PerformCallback();
+        } else {
+            showNotification("Tạo bao hiểm bắt buộc thất bài ! " + data.message, "error");
+        }
+    }
+    function voluntaryVoluntaryAddSuccess(data) {
+        if (data.status == "Success") {
+            showNotification("Đã tạo thành công bảo hiểm tự nguyện mã: " + data.message, "success");
+            setVoluntaryInsuranceAddFormVisible(false);
+            //btnVoluntaryInsurance.SetEnabled(false);
+            gridEmployeeInsurance.PerformCallback();
+        } else {
+            showNotification("Tạo bao hiểm tự nguyện thất bài ! " + data.message, "error");
+        }
+    }
+    function resetMandatoryInsuranceAddFormValue() {
+        InsuranceNo.SetText("");
+        DateOfIssue.SetValue(new Date());
+    }
+    function OnGridEmployeeInsuranceEndCallback(s, e) {
+        if (s.cpRealSalary) {
+            employeeInforRealSalary.SetValue(s.cpRealSalary);
+        }
+        if (s.cpHasMandatory) {
+            if (s.cpHasMandatory == "False")
+                btnMandatoryInsurance.SetEnabled(true);
+            else
+                btnMandatoryInsurance.SetEnabled(false);
+        }
+        if (s.cpHasVoluntary) {
+            if (s.cpHasVoluntary == "False")
+                btnVoluntaryInsurance.SetEnabled(true);
+            else
+                btnVoluntaryInsurance.SetEnabled(false);
+        }
+        if (s.cpStatus) {
+            if (s.cpStatus == "True")
+                showNotification("Xóa thành công bảo hiểm", "success");
+            else
+                showNotification("Xóa thất bại bảo hiểm", "error");
+        }
+    }
+    function OnVoluntaryInsuranceAddUploadFileComplete(s, e) {
+        var fileName = e.callbackData;
+        VoluntaryAttachFile.SetText(fileName);
+        voluntaryInsuranceAddAttachFileClient.SetVisible(true);
+        voluntaryInsuranceAddAttachFileClient.SetText(fileName);
+        voluntaryInsuranceAddAttachFileClient.SetNavigateUrl("/Upload/Insurances/" + fileName);
+    }
+    //function OnMadatoryInsuranceAddUploadFileComplete(s, e) {
+    //    var fileName = e.callbackData;
+    //    mandatoryInsuranceAddAttachFileClient.SetText(fileName);
+    //    mandatoryInsuranceAddAttachFileClient.SetVisible(true);
+    //    mandatoryInsuranceAddAttachFileClient.SetText(fileName);
+    //    mandatoryInsuranceAddAttachFileClient.SetNavigateUrl("/Upload/Insurances/" + fileName);
+    //}
+
+    /*Salary Js*/
+    function salaryComponentAddSuccess(data) {
+        if (data.Status == "Success") {
+            showNotification("Đã thêm thành công chi phí lương mã hệ thống: " + data.Message, "success");
+            gridEmployeeSalary.PerformCallback();
+            SetAddSalaryFormVisible();
+        } else {
+            showNotification("Thêm chi phí lương thất bại" + data.Message, "error");
+        }
+    }
+    function ResetAddSalaryFormValue()
+    {
+        txtsalaryAddFormAmout.SetValue(0);
+    }
+
+
+    function btnSalaryAddClick(s, e)
+    {
+        SetAddSalaryFormVisible();
+    }
+    function SetAddSalaryFormVisible(visible)
+    {
+        ResetAddSalaryFormValue();
+        if (visible != null) {
+            EmployeeSalaryLayout.GetItemByName("employeeSalaryAddForm").SetVisible(visible);
+        }
+        else {
+            var checkVisible = EmployeeSalaryLayout.GetItemByName("employeeSalaryAddForm").GetVisible();
+            EmployeeSalaryLayout.GetItemByName("employeeSalaryAddForm").SetVisible(!checkVisible);
+        }
+
+    }
+    function OnEmployeeSalaryApplyDateValidation(s, e)
+    {
+        var applyDate = e.value;
+        var joinedDate = employeeJoinedDate.GetDate();
+        var endApplyDate = dateEmpSalaryAddFormEndApplyDate.GetValue()
+        var today = new Date();
+        applyDate.setHours(0, 0, 0, 0, 0);
+        joinedDate.setHours(0, 0, 0, 0, 0);
+
+        today.setHours(0, 0, 0, 0, 0);
+        if (applyDate > today) {
+            e.isValid = false;
+            e.errorText = "Ngày bắt đầu áp dụng không lớn hơn ngày hiện tại";
+        }
+        else if (cmbEmpSalaryAddFormSalaryPayFerequancy.GetValue() == "Custom" && endApplyDate != null) {
+            endApplyDate.setHours(0, 0, 0, 0, 0);
+            if (applyDate > endApplyDate) {
+                e.isValid = false;
+                e.errorText = "Ngày bắt đầu áp dụng không lớn hơn ngày kết thúc";
+            }
+        }
+        else if (applyDate < joinedDate) {
+
+            e.isValid = false;
+            e.errorText = "Ngày bắt đầu áp dụng không nhỏ hơn ngày vào làm: " + joinedDate.toLocaleDateString("vi-Vi");
+        }
+    }
+
+    function OnCmbSalaryPayFrequencyChange(s,e)
+    {
+        if (s.GetValue() == "Custom") {
+            console.log(s.GetValue());
+            dateEmpSalaryAddFormEndApplyDate.SetEnabled(true);
+            dateEmpSalaryAddFormEndApplyDate.SetValue(new Date());
+        } else {
+            console.log(s.GetValue());
+            dateEmpSalaryAddFormEndApplyDate.SetEnabled(false);
+        }
+    }
+    function OnEmployeeSalaryEndApplyDateValidation(s, e)
+    {
+        var endApplyDate = e.value;
+        var joinedDate = employeeJoinedDate.GetDate();
+        var today = new Date();
+
+        endApplyDate.setHours(0, 0, 0, 0, 0);
+        joinedDate.setHours(0, 0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0, 0);
+        if (cmbEmpSalaryAddFormSalaryPayFerequancy.GetValue() == "Custom") {
+            var startApplyDate = dateEmpSalaryAddFormStartApplyDate.GetValue();
+            startApplyDate.setHours(0, 0, 0, 0, 0);
+            if (endApplyDate < startApplyDate) {
+                e.isValid = false;
+                e.errorText = "Ngày kết thúc không nhỏ hơn ngày bắt đầu";
+            }
+        }
+        else if (endApplyDate < joinedDate) {
+
+            e.isValid = false;
+            e.errorText = "Ngày kết thúc không nhỏ hơn ngày vào làm: " + joinedDate.toLocaleDateString("vi-Vi");
+        }
+    }
+
+    function OnGridEmployeeSalaryBeginCallback(s, e) {
+        console.log("@Model.EmployeeId");
+        e.customArgs["id"] = "@Model.EmployeeId";
+    }
+    function OnGridEmployeeSalaryEndCallback(s, e)
+    {
+        if (s.cpRealSalary) {
+            employeeInforRealSalary.SetValue(s.cpRealSalary);
+        }
+    }
+    /*Experience Js*/
+    function OnEmployeeTransferTabGridViewBeginCallBack(s, e)
+    {
+        e.customArgs["id"] = "@Model.EmployeeId";
+    }
+    function OnExperienceFileUploadComplate(s, e) {
+        var fileName = e.callbackData;
+        console.log(fileName);
+        EmployeesTransferTabGridView.SetEditValue("AttachFile", fileName);
+    }
+    function OnbtnDeleteExperienceFileUploadClick(s, e) {
+        EmployeesTransferTabGridView.SetEditValue("AttachFile", "");
+    }
+    // Generat scrip for tabs
+    function OnEmployeFunctionTabsClick(s, e) {
+        if (e.tab.name == "tabEmployeeContact") {
+            cbpEmployeeContactDetail.PerformCallback({ id: "@Model.EmployeeId" });
+
+        }
+        else if (e.tab.name == "tabEmployeeJob") {
+            cbpEmployeeJob.PerformCallback({ id: "@Model.EmployeeId" });
+
+        }
+        else if (e.tab.name == "tabEmployeeContract") {
+            gridEmployeeContractsHistory.PerformCallback({ id: "@Model.EmployeeId" });
+            setContractUpdateFormLayoutVisible(false);
+            setContractAddFormLayoutVisible(false);
+        }
+        else if (e.tab.name == "tabEmployeeInsurance") {
+            gridEmployeeInsurance.PerformCallback();
+            setMandatoryInsuranceAddFormVisible(false);
+        }
+        else if (e.tab.name == "tabSalary") {
+            console.log("e.tab.name");
+            gridEmployeeSalary.PerformCallback();
+            SetAddSalaryFormVisible(false);
+        }
+    }
+</script>
+
+<h3 style="margin-left:10px">Chi tiết nhân viên</h3>
+@Html.DevExpress().Button(settings =>
+{
+    settings.Name = "btnBack2EmployeeList";
+    settings.Style.Value = "margin-left:15px;";
+    settings.RouteValues = new { Controller = "Employee", Action = "Index",id=0};
+    settings.Images.Image.IconID = IconID.PeopleCustomer16x16office2013;
+    settings.Text = "Quay về danh sách nhân viên";
+}).GetHtml()
+
+@Html.DevExpress().Button(settings =>
+{
+    settings.Name = "btnPrintEmployee";
+    settings.Style.Value = "margin-left:10px;";
+    settings.Images.Image.IconID = IconID.PrintDafualtfax16x16;
+    settings.Text = "In hồ sơ nhân viên";
+    settings.ClientSideEvents.Click = "function(s,e){documentViewer.Print();}";
+}).GetHtml()
+@using (Ajax.BeginForm(null,
+    new RouteValueDictionary { { "controller", "Employee" }, { "action", "EmployeeInforUpdate" } },
+    new AjaxOptions() { OnSuccess = "EmployeeInforUpdateSuccess" }))
+{
+    <div id="myEmployeeInforDiv">
+        @Html.Partial("EmployeeDetail/_EmployeeDetailInfor", ViewData["employeeInfor"], new ViewDataDictionary { { "IsEnable", Model.IsEnabled } })
+    </div>
+}
+
+
+<div style="margin-left:15px">
+  @Html.Partial("EmployeeDetail/_EmployeeFunctionTabs")
+</div>
+<div style="display:none;">
+@Html.Partial("EmployeeDetail/_EmployeeDetailReport")
+</div>
+

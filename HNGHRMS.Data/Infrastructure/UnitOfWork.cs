@@ -21,8 +21,8 @@ namespace HNGHRMS.Data.Infrastructure
        }
 
        public void Commit()
-       {
-           DataContext.Commit();
+       {           
+            DataContext.Commit();
        }
     }
 }

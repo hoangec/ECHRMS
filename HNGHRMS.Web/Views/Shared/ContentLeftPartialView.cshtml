@@ -10,21 +10,26 @@
         settings.Groups.Add(group => {
             group.Text = "Báo cáo";
             group.Items.Add("Tổng quát").NavigateUrl = Url.Action("Index", "Home");
-            group.Items.Add("Nhân viên hiện tại").NavigateUrl = Url.Action("CurrentEmployeesReport", "Home");
             group.Items.Add("Nhân viên tuyển mới").NavigateUrl = Url.Action("NewEmployeesReport", "Home");
-            group.Items.Add("Nhân viên thôi việc").NavigateUrl = Url.Action("TerminatedEmployeesReport", "Home");
+            group.Items.Add("Nhân viên thôi việc").NavigateUrl = Url.Action("TerminatedEmployeesReport", "Home");    
+            group.Items.Add("Điều chuyển nhân viên").NavigateUrl = Url.Action("TransferEmployeesReport", "Home");                       
         });
+
         settings.Groups.Add(group => {
             group.Text = "Quản lý nhân viên";
-            group.Items.Add("Tuyển dụng").NavigateUrl = Url.Action("index","Employee");
-            group.Items.Add("Thôi việc").NavigateUrl = Url.Action("Terminate","Employee");
+            group.Items.Add("Danh sách nhân viên").NavigateUrl = Url.RouteUrl("Employee");
+            group.Items.Add("Thôi việc").NavigateUrl = DevExpressHelper.GetUrl(new { Controller = "Employee", Action = "Terminate" }); 
+            group.Items.Add("Lưu chuyên nhân viên").NavigateUrl = Url.Action("TransferEmployee", "Employee");
         });
         if (Request.IsAuthenticated && ( User.IsInRole("Admin") || User.IsInRole("Manager")) )
         {
             settings.Groups.Add(group =>
             {
                 group.Text = "Thiết lập chung";
-                group.Items.Add("Công ty").NavigateUrl = Url.Action("index", "Company");
+                group.Items.Add("Công ty").NavigateUrl = Url.Action("Index", "General");
+                group.Items.Add("Chức vụ").NavigateUrl = Url.Action("Position", "General");
+                group.Items.Add("Loại hợp đồng").NavigateUrl = Url.Action("Contract", "General");
+                group.Items.Add("Tải danh sách nhân viên").NavigateUrl = Url.Action("EmployeesImport", "General");
             });
         }
         if(Request.IsAuthenticated && User.IsInRole("Admin"))

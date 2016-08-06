@@ -1,0 +1,406 @@
+﻿@{
+	var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "CompanyReportRealSalaryGridView";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "CompanyEmployeeCostReportByDate" };
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsPager.PageSize = 20;
+		settings.SettingsPager.Visible = true;
+		settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;        
+        settings.SettingsBehavior.ColumnResizeMode = ColumnResizeMode.Control;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        //settings.Styles.Cell.Wrap = DefaultBoolean.True;
+        //settings.Styles.Header.Wrap = DefaultBoolean.True;
+        //settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.KeyFieldName = "Id";
+
+        settings.Columns.Add(col => {
+            col.FieldName = "Id";
+            col.Visible = false;
+        });
+        settings.Columns.Add(col => {
+            col.FieldName = "CompanyName";
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            col.MinWidth = 250;
+        });
+        settings.Columns.Add(col => {
+            col.FieldName = "CurrentSalary";              
+            col.PropertiesEdit.DisplayFormatString = "n0";
+            col.MinWidth = 110;
+            col.CellStyle.ForeColor = System.Drawing.Color.Red;
+            col.CellStyle.Font.Bold = true;
+        });
+        settings.Columns.AddBand(oneMonthband => {
+            oneMonthband.Caption = "Tháng một";
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            if(DateTime.Now.Month == 1)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.Columns.Add(col => {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary1";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary1";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "bảo hiểm";
+                col.FieldName = "Insurance1";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost1";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng hai";
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            if (DateTime.Now.Month == 2)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary2";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary2";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Bảo hiểm";
+                col.FieldName = "Insurance2";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost2";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng ba";
+            if (DateTime.Now.Month == 3)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary3";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary3";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "Insurance3";
+                col.Caption = "Bảo hiểm";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost3";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng bốn";
+            if (DateTime.Now.Month == 4)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary4";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary4";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "Insurance4";
+                col.Caption = "Bảo hiểm";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost4";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng năm";
+            if (DateTime.Now.Month == 5)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary5";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary5";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "Insurance5";
+                col.Caption = "Bảo hiểm";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost5";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng sáu";
+            if (DateTime.Now.Month == 6)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary6";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary6";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "Insurance6";
+                col.Caption = "Bảo hiểm";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost6";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng bảy";
+            if (DateTime.Now.Month == 7)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary7";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary7";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "Insurance7";
+                col.Caption = "Bảo hiểm";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost7";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng tám";
+            if (DateTime.Now.Month == 8)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary8";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary8";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "Insurance8";
+                col.Caption = "Bảo hiểm";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost8";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng chín";
+            if (DateTime.Now.Month == 9)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary9";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary9";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "Insurance9";
+                col.Caption = "Bảo hiểm";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost9";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng mười";
+            if (DateTime.Now.Month == 10)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary10";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary10";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "Insurance10";
+                col.Caption = "Bảo hiểm";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost10";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng mười một";
+            if (DateTime.Now.Month == 11)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary11";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary11";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "Insurance11";
+                col.Caption = "Bảo hiểm";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost11";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+        settings.Columns.AddBand(oneMonthband =>
+        {
+            oneMonthband.Caption = "Tháng mười hai";
+            if (DateTime.Now.Month == 12)
+                oneMonthband.HeaderStyle.BackColor = System.Drawing.Color.Yellow;
+            oneMonthband.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương thực tế";
+                col.FieldName = "RealSalary12";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.Caption = "Lương cơ bản";
+                col.FieldName = "Salary12";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "Insurance12";
+                col.Caption = "Bảo hiểm";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+            oneMonthband.Columns.Add(col =>
+            {
+                col.FieldName = "OtherCost12";
+                col.Caption = "Chi phí khác";
+                col.PropertiesEdit.DisplayFormatString = "n0";
+            });
+        });
+    });
+}
+@grid.Bind(Model).GetHtml()

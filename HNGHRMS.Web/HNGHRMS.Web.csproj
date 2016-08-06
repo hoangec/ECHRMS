@@ -49,9 +49,11 @@
     <Reference Include="Autofac.Integration.Mvc">
       <HintPath>..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper">
-      <HintPath>..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Sparkline.v15.1.Core, Version=15.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DotNetOpenAuth.AspNet">
       <HintPath>..\packages\DotNetOpenAuth.AspNet.4.1.4.12333\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
     </Reference>
@@ -112,6 +114,12 @@
     <Reference Include="Microsoft.Web.WebPages.OAuth, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.3.0.0\lib\net45\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcExtensions">
+      <HintPath>..\packages\MvcExtensions.2.5.1\lib\net40\MvcExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcExtensions.AutoMapper">
+      <HintPath>..\packages\MvcExtensions.AutoMapper.1.0.0\lib\net45\MvcExtensions.AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -236,7 +244,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\globalize.cultures.js" />
     <Content Include="Scripts\globalize.js" />
-    <None Include="Properties\PublishProfiles\haghrms.pubxml" />
+    <None Include="Properties\PublishProfiles\hrms.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -255,6 +263,7 @@
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\notify.min.js" />
     <Content Include="Views\Shared\DisplayTemplates\Boolean.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Boolean.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
@@ -281,31 +290,68 @@
     <Content Include="Views\Shared\ContentLeftPartialView.cshtml" />
     <Content Include="Views\Shared\HeaderPartialView.cshtml" />
     <Content Include="Views\Shared\LogOnPartialView.cshtml" />
-    <Content Include="Views\Home\_CompanyReportGridView.cshtml" />
+    <Content Include="Views\Home\GeneralReport\_CompanyEmployeeQuantityReportGridView.cshtml" />
     <Content Include="Views\Home\NewEmployeesReport.cshtml" />
-    <Content Include="Views\Home\_NewEmployeeReportGridView.cshtml" />
-    <Content Include="Views\Home\CurrentEmployeesReport.cshtml" />
-    <Content Include="Views\Home\_CurrentEmployeeReportGridView.cshtml" />
+    <Content Include="Views\Home\NewEmployeeReport\_NewEmployeeReportGridView.cshtml" />
     <Content Include="Views\Home\TerminatedEmployeesReport.cshtml" />
-    <Content Include="Views\Home\_TerminatedEmployeeGridView.cshtml" />
+    <Content Include="Views\Home\TerminatedEmployeeReport\_TerminatedEmployeeGridView.cshtml" />
     <Content Include="Views\Home\_CompanyComboBox.cshtml" />
     <Content Include="Views\Home\_DateReportDateEdit.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
-    <Content Include="Views\Employee\_EmployeesGridViewPartial.cshtml" />
+    <Content Include="Views\Employee\EmployeeList\_EmployeesListGridViewPartial.cshtml" />
     <Content Include="Views\Employee\Terminate.cshtml" />
-    <Content Include="Views\Employee\_CmbEmployeeList.cshtml" />
-    <Content Include="Views\Employee\_CbpEmployeeInfor.cshtml" />
-    <Content Include="Views\Employee\_EmployeesTerminateGridViewPartial.cshtml" />
-    <Content Include="Views\Home\_CompanyTotalSalaryChart.cshtml" />
-    <Content Include="Views\Home\_CompanyTotalEmployeeQuantityReport.cshtml" />
-    <Content Include="Views\Home\_EmployeesCompaniesByDateChart.cshtml" />
-    <Content Include="Views\Home\_EmployeesCompaniesByCompanyChart.cshtml" />
+    <Content Include="Views\Employee\EmployeesTerminate\_CmbEmployeeTerminate.cshtml" />
+    <Content Include="Views\Employee\EmployeesTerminate\_CbpEmployeeTerminateInfor.cshtml" />
+    <Content Include="Views\Employee\EmployeesTerminate\_EmployeesTerminateGridViewPartial.cshtml" />
+    <Content Include="Views\Home\Charts\_CompanyTotalSalaryChart.cshtml" />
+    <Content Include="Views\Home\Charts\_EmployeesQuantityTypeByDateChart.cshtml" />
+    <Content Include="Views\Home\Charts\_EmployeesQuantityTypeByCompanyChart.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\_UserAccountGridViewPartial.cshtml" />
-    <Content Include="Views\Account\Role.cshtml" />
+    <Content Include="Views\General\Role.cshtml" />
     <Content Include="Views\Account\_AddUserForm.cshtml" />
-    <Content Include="Views\Company\Index.cshtml" />
-    <Content Include="Views\Company\_CompanyGridViewPartial.cshtml" />
+    <Content Include="Views\General\Index.cshtml" />
+    <Content Include="Views\General\SalaryComponent\_SalaryComponentGridViewPartial.cshtml" />
+    <Content Include="Views\Employee\EmployeeDetail.cshtml" />
+    <Content Include="Views\Employee\EmployeeDetail\_EmployeeFunctionTabs.cshtml" />
+    <Content Include="Views\Employee\EmployeeContactTabs\_CbpEmployeeContactDetail.cshtml" />
+    <Content Include="Views\Employee\EmployeeContractTabs\_EmployeeContractsHistoryGridViewPartial.cshtml" />
+    <Content Include="Views\Employee\EmployeeDetail\_EmployeeDetailInfor.cshtml" />
+    <Content Include="Views\Employee\EmployeeDetail\_EmployeeInforPhoto.cshtml" />
+    <Content Include="Views\Employee\EmployeeJobTabs\_CbpEmployeeJob.cshtml" />
+    <Content Include="Views\Employee\EmployeeContractTabs\_EmployeeContractAddForm.cshtml" />
+    <Content Include="Views\Employee\EmployeeContractTabs\_EmployeeContractUpdateForm.cshtml" />
+    <Content Include="Views\Employee\EmployeeInsuranceTabs\_EmployeeInsuranceTabGridViewPartial.cshtml" />
+    <Content Include="Views\Employee\EmployeeInsuranceTabs\_EmployeeMandatoryInsuranceAddForm.cshtml" />
+    <Content Include="Views\Employee\EmployeeInsuranceTabs\_EmployeeVoluntaryInsuranceAddForm.cshtml" />
+    <Content Include="Views\Employee\EmployeeSalaryTabs\_EmployeeSalaryTabGridViewPartial.cshtml" />
+    <Content Include="Views\Employee\EmployeeSalaryTabs\_EmployeeSalaryComponentAddForm.cshtml" />
+    <Content Include="Views\Employee\EmployeeSalaryTabs\_CbpSalaryComponentInfor.cshtml" />
+    <Content Include="Views\Employee\EmployeeList\_EmployeeSimpleAddForm.cshtml" />
+    <Content Include="Views\General\Position\_PositionGridViewPartial.cshtml" />
+    <Content Include="Views\Home\Charts\_CompanyTotalInsuranceChart.cshtml" />
+    <Content Include="Views\Employee\TransferEmployee.cshtml" />
+    <Content Include="Views\Employee\EmployeesTransfer\_CbpEmployeeTransfer.cshtml" />
+    <Content Include="Views\Employee\EmployeesTransfer\_EmployeesTransferGridViewPartial.cshtml" />
+    <Content Include="Views\Employee\EmployeesExperienceTabs\_EmployeesTransferTabGridViewPartial.cshtml" />
+    <Content Include="Views\General\Position.cshtml" />
+    <Content Include="Views\General\EmployeesImport.cshtml" />
+    <Content Include="Views\General\EmployeesImport\_FileUpLoadControl.cshtml" />
+    <Content Include="Views\General\EmployeesImport\_EmployeesImportUploadFileForm.cshtml" />
+    <Content Include="Views\General\EmployeesImport\_EmployeesImportUploadFileGridview.cshtml" />
+    <Content Include="Views\Employee\EmployeesTransfer\_CmbEmployeeTransferList.cshtml" />
+    <Content Include="Views\Home\GeneralReport\_CompanyEmployeeSalaryReportGridView.cshtml" />
+    <Content Include="Views\Home\GeneralReport\_CompanyEmployeeInsuranceReportGridView.cshtml" />
+    <Content Include="Views\Home\TransferEmployeeReport\_TransferEmployeeReportGridView.cshtml" />
+    <Content Include="Views\Home\TransferEmployeesReport.cshtml" />
+    <Content Include="Views\Home\Charts\_CompanyTotalEmployeeQuantityReport.cshtml" />
+    <Content Include="Views\General\Contract.cshtml" />
+    <Content Include="Views\General\SalaryComponent.cshtml" />
+    <Content Include="Views\General\Contract\_ContractTypeGridViewPartial.cshtml" />
+    <Content Include="Views\General\Company\_CompanyGridViewPartial.cshtml" />
+    <Content Include="Views\Employee\EmployeeDetail\_EmployeeDetailReport.cshtml" />
+    <Content Include="Upload\Insurances\00001-INSURANCE-VL.pdf" />
+    <Content Include="Views\Home\GeneralReport\_CompanyEmployeeRealSalaryReportGridView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -321,11 +367,51 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\GeneralController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="ViewModels\EmployeeQuantityReport.cs" />
-    <Compile Include="ViewModels\QuantityChartModel.cs" />
+    <Compile Include="Extensions\SelectListExtensions.cs" />
+    <Compile Include="Helpper\GridviewExportHelper.cs" />
+    <Compile Include="Helpper\UploadFileHelper.cs" />
+    <Compile Include="Mappings\DateTimeTypeConverter.cs" />
+    <Compile Include="Mappings\EmployeeIdentityResolver.cs" />
+    <Compile Include="Mappings\InsuranceTypeReslover.cs" />
+    <Compile Include="Validations\CompanyIdDateConstraint.cs" />
+    <Compile Include="Validations\DateLargerCurrentDateAttribute.cs" />
+    <Compile Include="ViewModels\ContractConfig\ContractTypeConfigModel.cs" />
+    <Compile Include="ViewModels\EmployeeContactTabs\EmployeeContactTabViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeContractTabs\EmployeeContractAddFormModel.cs" />
+    <Compile Include="ViewModels\EmployeeContractTabs\EmployeeContractTabViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeContractTabs\EmployeeContractsViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeContractTabs\EmployeeContractUpdateFormModel.cs" />
+    <Compile Include="ViewModels\EmployeeDetail\EmployeeFunctionTabViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeDetail\EmployeeInfoModel.cs" />
+    <Compile Include="ViewModels\EmployeeInsuranceTabs\EmployeeInsuranceListView.cs" />
+    <Compile Include="ViewModels\EmployeeExperienceTabs\EmployeeExperienceTabViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeInsuranceTabs\EmployeeInsuranceTabViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeInsuranceTabs\InsuranceGridView.cs" />
+    <Compile Include="ViewModels\EmployeeJobTabs\EmployeeJobTabViewModel.cs" />
+    <Compile Include="ViewModels\Charts\EmployeeQuantityReportChartModel.cs" />
+    <Compile Include="ViewModels\EmployeeSalaryTabs\EmployeeSalaryComponentViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeSalaryTabs\EmployeeSalaryTabViewModel.cs" />
+    <Compile Include="ViewModels\EmployeesTransfer\TransferEmployeeGridViewModel.cs" />
+    <Compile Include="ViewModels\EmployeesTransfer\EmployeesUploadViewModel.cs" />
+    <Compile Include="ViewModels\EmployeesTransfer\EmployeeTransferFormModel.cs" />
+    <Compile Include="ViewModels\PositionConfig\PositionConfigModel.cs" />
+    <Compile Include="ViewModels\Reports\CompanyCostReport.cs" />
+    <Compile Include="ViewModels\Reports\CompanyInsuranceReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\CompanySalaryReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\NewEmployeeReportGridViewModel.cs" />
+    <Compile Include="ViewModels\Reports\TerminateReportGridViewModel.cs" />
+    <Compile Include="ViewModels\Reports\TransferReportGridViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeSalaryTabs\SalaryComponentAddFormView.cs" />
+    <Compile Include="ViewModels\EmployeeInsuranceTabs\VoluntaryInsuranceAddFormView .cs" />
+    <Compile Include="ViewModels\EmployeeInsuranceTabs\MandatoryInsuranceAddFormView.cs" />
+    <Compile Include="ViewModels\Charts\QuantityChartModel.cs" />
+    <Compile Include="ViewModels\SalaryComponentConfig\SalaryComponentConfigModel.cs" />
+    <Compile Include="XtraReport\EmployeeDetailReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <None Include="Filters\InitializeSimpleMembershipAttribute.cs.bak" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -337,19 +423,21 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\CompanyManageModel.cs" />
-    <Compile Include="ViewModels\CompanyReportViewModel.cs" />
-    <Compile Include="ViewModels\CompanySalaryReport.cs" />
-    <Compile Include="ViewModels\CompanyViewModel.cs" />
-    <Compile Include="ViewModels\EmployeeFormModel.cs" />
-    <Compile Include="ViewModels\EmployeeListViewModel.cs" />
-    <Compile Include="ViewModels\EmployeeTerminatedFormModel.cs" />
-    <Compile Include="ViewModels\EmployeeTerminateViewModel.cs" />
-    <Compile Include="ViewModels\EmployeeTypeQuantity.cs" />
-    <Compile Include="ViewModels\EmployeeViewModel.cs" />
+    <Compile Include="ViewModels\CompanyConfig\CompanyConfigModel.cs" />
+    <Compile Include="ViewModels\Reports\CompanyEmployeeQuantityReportViewModel.cs" />
+    <Compile Include="ViewModels\Charts\CompanySalaryReportChartModel.cs" />
+    <Compile Include="ViewModels\EmployeeList\EmployeeSimpleFormModel.cs" />
+    <Compile Include="ViewModels\EmployeesTerminate\EmployeeTerminatedFormModel.cs" />
+    <Compile Include="ViewModels\EmployeesTerminate\EmployeeTerminateViewModel.cs" />
+    <Compile Include="ViewModels\Charts\EmployeeTypeQuantityChartModel.cs" />
+    <Compile Include="ViewModels\EmployeeList\EmployeeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\" />
+    <Folder Include="Upload\Contracts\" />
+    <Folder Include="Upload\EmployeesImport\" />
+    <Folder Include="Upload\Experiences\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HNGHRMS.Data\HNGHRMS.Data.csproj">
@@ -368,10 +456,12 @@
       <Project>{91f3c85d-64e6-47da-8697-3ea06f444117}</Project>
       <Name>HNGHRMS.Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HNGHRMS.Web.Core\HNGHRMS.Web.Core.csproj">
-      <Project>{350d230f-3ea3-46b5-b6fc-f83af79a4c84}</Project>
-      <Name>HNGHRMS.Web.Core</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="XtraReport\EmployeeDetailReport.resx">
+      <DependentUpon>EmployeeDetailReport.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

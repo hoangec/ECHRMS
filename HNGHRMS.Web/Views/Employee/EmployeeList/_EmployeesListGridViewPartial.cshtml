@@ -1,0 +1,132 @@
+﻿@{
+	var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "EmployeesGridView";
+        settings.CallbackRouteValues = new { Controller = "Employee", Action = "EmployeesListGridViewPartial" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Employee", Action = "EmployeesGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+
+        settings.SettingsPager.PageSize = 50;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.SettingsBehavior.AllowDragDrop = false;
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsBehavior.ColumnResizeMode = ColumnResizeMode.Control;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        settings.Styles.Header.Wrap = DefaultBoolean.True;
+        
+	    settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        //settings.CommandColumn.CustomButtons.Add(new GridViewCommandColumnCustomButton() { ID = "btnViewDetail", Text = "Xem chi tiết" });
+        //settings.ClientSideEvents.CustomButtonClick = string.Format("function(s, e) {{ EmployeeDetailViewClick(s, e, '{0}'); }}", Url.Action("Index", "Employee"));
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = false;
+        settings.CommandColumn.Width = 100;
+	    settings.KeyFieldName = "Id";
+
+	    settings.SettingsPager.Visible = true;
+	    settings.Settings.ShowGroupPanel = false;
+	    settings.Settings.ShowFilterRow = true;
+        
+	    settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        //settings.Columns.Add(col => {
+        //    col.FieldName = "Id";            
+        //    col.EditFormSettings.Visible = DefaultBoolean.False;
+        //});
+        settings.Columns.Add(col => {
+            col.FieldName = "EmployeeCode";                       
+        });
+        settings.Columns.Add(col =>{
+            col.FieldName = "FullName";
+            col.MinWidth = 150;
+            col.SetDataItemTemplateContent(item =>
+            {
+                Html.DevExpress().HyperLink(link =>
+                {
+                    string args = DataBinder.Eval(item.DataItem, "Id").ToString();
+                    string name = DataBinder.Eval(item.DataItem, "FullName").ToString();
+                    link.NavigateUrl = Url.Action("Index", "Employee", new { id = args });
+                    link.Properties.Text = name;                    
+                }).Render();
+            });
+            
+        });
+        
+	    settings.Columns.Add(col =>{
+            col.FieldName = "Gender";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro = col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = new SelectList(new[]{
+                new SelectListItem{Text = "Nam",Value=HNGHRMS.Model.Enums.Gender.Male.ToString()},
+                new SelectListItem{Text = "Nữ", Value=HNGHRMS.Model.Enums.Gender.Female.ToString()}
+            },"Value","Text");
+        });
+        settings.Columns.Add("Nationality");
+        settings.Columns.Add(col => {
+            col.FieldName = "JoinedDate";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+            DateEditProperties dateEditPro = col.PropertiesEdit as DateEditProperties;
+            //dateEditPro.EditFormatString = "dd/MM/yyyy";                                        
+        });
+        settings.Columns.Add(col => {                                     
+            col.FieldName = "CompanyId";
+            col.MinWidth = 250;
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro= col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = ViewBag.Companies;
+            comboBoxPro.ValueType = typeof(int);
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "PositionId";
+            col.MinWidth = 80;
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro = col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = ViewBag.Positions;
+            comboBoxPro.ValueType = typeof(int);
+        });
+        settings.CellEditorInitialize = (sender, e) => { 
+            if((sender as MVCxGridView).IsNewRowEditing)
+            {
+                if(e.Column.FieldName == "CompanyId" || e.Column.FieldName == "Gender" )
+                {
+                    (e.Editor as ASPxComboBox).SelectedIndex = 0;
+                }
+                if(e.Column.FieldName == "JoinedDate")
+                {
+                    (e.Editor as ASPxDateEdit).Date = DateTime.Now;
+                }
+            }
+        };
+        settings.Columns.Add(col => {
+            col.FieldName = "Departement";
+            col.MinWidth = 250;
+        });			                 
+        settings.Columns.Add(col => {
+            col.FieldName = "Salary";
+            col.PropertiesEdit.DisplayFormatString = "c0";                    
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            TextBoxProperties textBoxPro = col.PropertiesEdit as TextBoxProperties;
+            textBoxPro.DisplayFormatString = "c0";
+            textBoxPro.MaskSettings.Mask = "<0..999999999g>.<00..99>";
+            textBoxPro.MaskSettings.IncludeLiterals = MaskIncludeLiteralsMode.DecimalSymbol;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Status";            
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties cmbPro = col.PropertiesEdit as ComboBoxProperties;
+            cmbPro.DataSource = new SelectList(new[]{
+                new SelectListItem{Text = "Đang công tác",Value=HNGHRMS.Model.Enums.EmployeeStatus.Present.ToString()},
+                new SelectListItem{Text = "Đã thôi việc", Value=HNGHRMS.Model.Enums.EmployeeStatus.Terminated.ToString()},
+                new SelectListItem{Text = "Điều chuyển", Value=HNGHRMS.Model.Enums.EmployeeStatus.Transfer.ToString()}
+            }, "Value", "Text");
+        });
+	});
+	if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+       
+    }
+}
+
+@grid.Bind(Model).GetHtml()

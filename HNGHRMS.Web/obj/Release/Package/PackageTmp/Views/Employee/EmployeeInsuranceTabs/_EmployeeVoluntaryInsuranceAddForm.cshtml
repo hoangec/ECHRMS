@@ -1,0 +1,87 @@
+﻿@model HNGHRMS.Web.ViewModels.VoluntaryInsuranceAddFormView
+
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "employeeVoluntaryInsuranceAddForm";
+    settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Thông tin bảo hiểm tự nguyện";
+        groupSettings.ColCount = 2;
+        groupSettings.Items.Add(m => m.VoluntaryEployeeId, item =>
+        {
+            item.ColSpan = 2;
+            item.ClientVisible = false;
+        });
+        groupSettings.Items.Add(m => m.VoluntaryInsuranceNo, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSettings.ShowModelErrors = true;
+        });
+        groupSettings.Items.Add(m => m.VoluntaryDateOfIssue, item =>
+        {
+            //item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            //TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+            //txtSettings.ShowModelErrors = true;
+        });
+        groupSettings.Items.Add(m => m.VoluntaryAmount, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSettings.ShowModelErrors = true;
+            txtSettings.Properties.MaskSettings.Mask = "<0..9999999999999g>";
+            txtSettings.Properties.MaskSettings.IncludeLiterals = MaskIncludeLiteralsMode.DecimalSymbol;
+        });
+        groupSettings.Items.Add(m => m.VoluntaryAttachFile, item => {
+            item.ClientVisible = false;
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.ColSpan = 2;
+            item.ShowCaption = DefaultBoolean.False;
+            item.Caption = "File tải";            
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.HyperLink;
+            HyperLinkSettings hyperlinkSettings = (HyperLinkSettings)item.NestedExtensionSettings;
+            hyperlinkSettings.Name = "voluntaryInsuranceAddAttachFileClient";
+            hyperlinkSettings.ClientVisible = false;
+            hyperlinkSettings.Properties.EnableClientSideAPI = true;
+            hyperlinkSettings.Properties.ClientInstanceName = "voluntaryInsuranceAddAttachFileClient";
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.Name = "voluntaryInsuranceUploadFile";
+            item.Caption = "Tải file đính kèm";
+            item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            item.ColSpan = 2;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.UploadControl;
+            UploadControlSettings uploadSettings = (UploadControlSettings)item.NestedExtensionSettings;
+            uploadSettings.ShowUploadButton = true;
+            uploadSettings.ShowClearFileSelectionButton = true;
+            uploadSettings.ValidationSettings.MaxFileSize = 1048576;
+            uploadSettings.ValidationSettings.AllowedFileExtensions = new string[]{".pdf"};
+            uploadSettings.CallbackRouteValues = new { Controller = "Employee", Action = "VoluntaryInsuranceAddAttachFileUploadControlCallbackAction" };            
+            uploadSettings.ClientSideEvents.FileUploadComplete = "OnVoluntaryInsuranceAddUploadFileComplete";
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.ColSpan = 2;
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() =>
+            {
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnVoluntaryInsuranceSave";
+                    btnSettings.Text = "Lưu";
+                    btnSettings.UseSubmitBehavior = true;
+                }).Render();
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnVoluntaryInsuranceCancel";
+                    btnSettings.Text = "Hủy";
+                    btnSettings.Style.Add("margin-left", "5px");
+                    btnSettings.ClientSideEvents.Click = "function(s,e){resetVoluntaryInsuranceAddFormValue();setVoluntaryInsuranceAddFormVisible(false)}";
+                }).Render();
+            });
+        });
+    });
+}).Bind(Model).GetHtml()

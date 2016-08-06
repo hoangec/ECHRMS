@@ -1,0 +1,55 @@
+﻿@model HNGHRMS.Web.ViewModels.SalaryComponentAddFormView
+@Html.DevExpress().CallbackPanel(cbpSettings => {
+    cbpSettings.Name = "cbpSalaryComponentInfor";
+    cbpSettings.CallbackRouteValues = new { Controller = "Employee", Action = "SalaryComponentInforCbpCallback" };
+    cbpSettings.ClientSideEvents.EndCallback = "OncbpSalaryComponentEndCallBack";
+    cbpSettings.SetContent(() =>
+    {
+        Html.DevExpress().FormLayout(frmSetting =>
+        {
+            frmSetting.Name = "salaryComponentInforForm";
+            frmSetting.ColCount = 3;
+            frmSetting.Items.Add(m => m.IsExtra, salaryItem =>
+            {
+                
+                salaryItem.NestedExtensionType = FormLayoutNestedExtensionItemType.CheckBox;
+                CheckBoxSettings chbSetting = (CheckBoxSettings)salaryItem.NestedExtensionSettings;
+                chbSetting.ClientEnabled = false;
+            });
+            frmSetting.Items.Add(m => m.IsMainSalary, salaryItem =>
+            {
+
+                salaryItem.NestedExtensionType = FormLayoutNestedExtensionItemType.CheckBox;
+                CheckBoxSettings chbSetting = (CheckBoxSettings)salaryItem.NestedExtensionSettings;
+                chbSetting.ClientEnabled = false;
+            });
+            frmSetting.Items.Add(m => m.SalaryPayFrequency, salaryItem =>
+            {
+                salaryItem.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+                ComboBoxSettings cmbSetting = (ComboBoxSettings)salaryItem.NestedExtensionSettings;
+                cmbSetting.Properties.DataSource = new SelectList(new[]{
+                    new SelectListItem{Text = "Hàng tháng",Value=HNGHRMS.Model.Enums.SalaryPayFerequency.Monthly.ToString()},
+                    new SelectListItem{Text = "Một lần", Value=HNGHRMS.Model.Enums.SalaryPayFerequency.OneTime.ToString()}
+                }, "Value", "Text");
+                cmbSetting.ClientEnabled = false;
+            });
+            //frmSetting.Items.AddGroupItem(grpSetting => {
+            //    grpSetting.Caption = "Thông tin loại chi phí lương";
+            //    grpSetting.ColCount = 2;                                     
+            //    grpSetting.Items.Add(m => m.IsExtra, salaryItem =>
+            //    {
+            //        salaryItem.NestedExtensionType = FormLayoutNestedExtensionItemType.CheckBox;
+            //        CheckBoxSettings chbSetting = (CheckBoxSettings)salaryItem.NestedExtensionSettings;
+            //        chbSetting.ClientEnabled = false;
+            //    });
+            //    grpSetting.Items.Add(m => m.SalaryPayFrequency, salaryItem =>
+            //    {
+            //        salaryItem.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            //        TextBoxSettings txtSetting = (TextBoxSettings)salaryItem.NestedExtensionSettings;
+            //        txtSetting.ClientEnabled = false;
+            //    });
+            //});
+
+        }).GetHtml();
+    });
+}).GetHtml()

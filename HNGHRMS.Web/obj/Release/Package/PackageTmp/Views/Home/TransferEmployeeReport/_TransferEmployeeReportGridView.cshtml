@@ -1,0 +1,109 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "TransferEmployeeReportGridView";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "TransferEmployeeGridview" };
+        settings.ClientSideEvents.BeginCallback = "OnTransferEmployeeBeginCallBack";
+        
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        
+        settings.SettingsSearchPanel.Visible = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsBehavior.ColumnResizeMode = ColumnResizeMode.Control;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Visible;
+        settings.Width = 960;
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Id";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "EmployeeName";
+            col.Width = 150;
+            col.SetDataItemTemplateContent(item =>
+            {
+                Html.DevExpress().HyperLink(link =>
+                {
+                    string args = DataBinder.Eval(item.DataItem, "EmployeeId").ToString();
+                    string name = DataBinder.Eval(item.DataItem, "EmployeeName").ToString();
+                    link.Properties.Text = name;
+                    link.NavigateUrl = Url.Action("Index", "Employee", new { id = args });
+
+                }).Render();
+            });
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Gender";
+            col.Width = 100;
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro = col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = new SelectList(new[]{
+                        new SelectListItem{Text = "Nam",Value=HNGHRMS.Model.Enums.Gender.Male.ToString()},
+                        new SelectListItem{Text = "Nữ", Value=HNGHRMS.Model.Enums.Gender.Female.ToString()}
+                    }, "Value", "Text");
+        });
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Nationality";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "PositionId";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro = col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = ViewData["positionsList"];
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DepartementName";
+
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "TransferDate";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+       
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OldCompanyName";
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OldPositionName";
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;            
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OldDepartement";
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;            
+        });         
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Salary";
+            col.PropertiesEdit.DisplayFormatString = "c0";
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OldSalary";
+            col.PropertiesEdit.DisplayFormatString = "c0";
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Reason";
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });              
+    });
+}
+@grid.Bind(Model).GetHtml()

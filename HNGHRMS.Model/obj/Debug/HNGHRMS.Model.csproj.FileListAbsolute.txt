@@ -6,11 +6,13 @@ D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\EntityFramework.SqlServer.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\HNGHRMS.Infrastructure.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\Microsoft.AspNet.Identity.Core.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\NodaTime.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\HNGHRMS.Infrastructure.pdb
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\EntityFramework.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\EntityFramework.SqlServer.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\Microsoft.AspNet.Identity.Core.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Debug\NodaTime.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\obj\Debug\HNGHRMS.Model.csprojResolveAssemblyReference.cache
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\obj\Debug\HNGHRMS.Model.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\obj\Debug\HNGHRMS.Model.pdb

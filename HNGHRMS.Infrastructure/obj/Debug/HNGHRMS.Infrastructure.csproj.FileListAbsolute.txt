@@ -1,5 +1,8 @@
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\EntityFramework.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\HNGHRMS.Infrastructure.dll.config
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\HNGHRMS.Infrastructure.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\HNGHRMS.Infrastructure.pdb
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\EntityFramework.SqlServer.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\Microsoft.Web.Infrastructure.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.Helpers.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.Mvc.dll
@@ -7,6 +10,8 @@ D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.Razor.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.WebPages.Deployment.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.WebPages.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\EntityFramework.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\EntityFramework.SqlServer.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.Helpers.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.Mvc.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.Razor.xml
@@ -15,4 +20,3 @@ D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.WebPages.Dep
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\bin\Debug\System.Web.WebPages.Razor.xml
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\obj\Debug\HNGHRMS.Infrastructure.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\obj\Debug\HNGHRMS.Infrastructure.pdb
-D:\Code_Project\HNGHRMS\HNGHRMS.Infrastructure\obj\Debug\HNGHRMS.Infrastructure.csprojResolveAssemblyReference.cache

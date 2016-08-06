@@ -11,9 +11,12 @@ namespace HNGHRMS.Data.Configuration
     {
         public CompanyConfiguration()
         {
-            Property(c => c.CompanyId).IsRequired();
-            Property(c => c.CompanyName).IsRequired();
+            HasMany(c => c.Employees).WithRequired(emp => emp.Company).HasForeignKey(emp => emp.CompanyId);
+            //HasMany(c => c.Experiences).WithRequired(exp =>exp.Company).HasForeignKey(exp => exp.CompanyId).WillCascadeOnDelete(false);
 
+            Property(e => e.CompanyCode).IsRequired();
+            Property(e => e.NumberCodeStarRange).IsRequired();
+            Property(e => e.NumberCodeEndRange).IsRequired();
         }
     }
 }

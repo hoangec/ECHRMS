@@ -1,0 +1,97 @@
+﻿
+@model HNGHRMS.Web.ViewModels.EmployeeJobTabViewModel
+@Html.DevExpress().CallbackPanel(settings =>
+{
+    settings.Name = "cbpEmployeeJob";
+    settings.CallbackRouteValues = new { Controller = "Employee", Action = "EmployeeJobCallbackPanel" };
+    settings.ClientSideEvents.EndCallback = "OncbpEmployeeJobEndCallback";
+    settings.SetContent(() =>
+    {
+        Html.DevExpress().FormLayout(formSetting =>
+        {
+            formSetting.Name = "EmployeeJobLayout";
+            formSetting.Items.AddGroupItem(groupSettings => {
+                groupSettings.ColCount = 3;
+                groupSettings.Caption = "Công việc";
+                groupSettings.Items.Add(m => m.EmployeeJobId, item =>
+                {
+                    item.ColSpan = 3;
+                    item.ClientVisible = false;
+                });
+                groupSettings.Items.Add(m => m.CompanyId, item =>
+                {
+                    item.Caption = "Công ty";
+                    item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+                    ComboBoxSettings cmbSettings = (ComboBoxSettings)item.NestedExtensionSettings;
+                    cmbSettings.Properties.TextField = "CompanyName";
+                    cmbSettings.Properties.ValueField = "Id";
+                    cmbSettings.Properties.DataSource = Model.CompanyList;
+                    cmbSettings.Properties.ClientInstanceName = "cmbEmployeeJobCompany";
+                    cmbSettings.ShowModelErrors = true;
+                    cmbSettings.ClientEnabled = false;
+                });
+                groupSettings.Items.Add(m => m.Departement, item =>
+                {
+                    item.Caption = "Phòng ban";
+                    item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+                    TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+                    txtSettings.Properties.ClientInstanceName = "txtEmployeeJobDepartement";
+                    txtSettings.ShowModelErrors = true;
+                    txtSettings.ClientEnabled = false;
+                });
+
+                groupSettings.Items.Add(m => m.PositionId, item =>
+                {
+                    item.Caption = "Chức vụ";
+                    item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+                    ComboBoxSettings cmbSettings = (ComboBoxSettings)item.NestedExtensionSettings;
+                    cmbSettings.Properties.TextField = "PositionName";
+                    cmbSettings.Properties.ValueField = "Id";
+                    cmbSettings.Properties.DataSource = Model.PositionsList;
+                    cmbSettings.Properties.ClientInstanceName = "cmbEmployeeJobPosition";
+                    cmbSettings.ShowModelErrors = true;
+                    cmbSettings.ClientEnabled = false;
+                });
+                groupSettings.Items.Add(m => m.JoinedDate, item =>
+                {
+                    item.Caption = "Ngày vào làm";
+                    item.NestedExtensionType = FormLayoutNestedExtensionItemType.DateEdit;
+                    DateEditSettings dateSettings = (DateEditSettings)item.NestedExtensionSettings;
+                    dateSettings.Properties.ClientInstanceName = "dateEmployeeJobJoinedDate";
+                    dateSettings.ShowModelErrors = true;
+                    dateSettings.ClientEnabled = false;
+                    dateSettings.Properties.ClientInstanceName = "employeeJoinedDate";
+                });
+
+                groupSettings.Items.Add(m => m.WorkingTimeSpan, item =>
+                {
+                    item.Caption = "Thâm niên";
+                    item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+                    TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+                    txtSettings.Properties.ClientInstanceName = "txtEmployeeJobWorkingTimeSpan";                    
+                    txtSettings.ClientEnabled = false;
+                });
+                groupSettings.Items.Add(m => m.Status, item =>
+                {
+                    item.Caption = "Tình trạng làm việc";                    
+                    item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+                    ComboBoxSettings cmbSettings = (ComboBoxSettings)item.NestedExtensionSettings;
+                    cmbSettings.Properties.ClientInstanceName = "txtEmployeeJobStatus";
+                    cmbSettings.ShowModelErrors = true;
+                    cmbSettings.Properties.DataSource = new SelectList(new[]{
+                        new SelectListItem{Text = "Đang công tác",Value=HNGHRMS.Model.Enums.EmployeeStatus.Present.ToString()},
+                        new SelectListItem{Text = "Đã thôi việc", Value=HNGHRMS.Model.Enums.EmployeeStatus.Terminated.ToString()},
+                        new SelectListItem{Text = "Điều chuyển", Value=HNGHRMS.Model.Enums.EmployeeStatus.Transfer.ToString()}
+                    }, "Value", "Text");
+                    cmbSettings.ClientEnabled = false;
+                });                
+            });
+           
+        }).GetHtml();
+
+    });
+}).GetHtml()
+
+
+
+

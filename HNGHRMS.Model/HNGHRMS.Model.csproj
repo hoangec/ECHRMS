@@ -42,6 +42,9 @@
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="NodaTime">
+      <HintPath>..\packages\NodaTime.1.3.1\lib\net35-Client\NodaTime.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -54,10 +57,21 @@
   <ItemGroup>
     <Compile Include="Enums\EmployeeStatus.cs" />
     <Compile Include="Enums\Gender.cs" />
+    <Compile Include="Enums\MaritalStatus.cs" />
+    <Compile Include="Enums\SalaryPayFerequency.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ApplicationRole.cs" />
     <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\Contract.cs" />
+    <Compile Include="Models\ContractType.cs" />
+    <Compile Include="Models\Education.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeeEducation.cs" />
+    <Compile Include="Models\EmployeeSalaryComponents.cs" />
+    <Compile Include="Models\Experience.cs" />
+    <Compile Include="Models\Insurance.cs" />
+    <Compile Include="Models\Identity.cs" />
+    <Compile Include="Models\Position.cs" />
     <Compile Include="Models\Termination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

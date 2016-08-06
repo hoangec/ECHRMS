@@ -1,0 +1,91 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "CompanyGridViewPartial";
+        settings.CallbackRouteValues = new { Controller = "General", Action = "CompanyGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "General", Action = "CompanyAdd" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "General", Action = "CompanyUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "General", Action = "CompanyDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        //settings.Width = Unit.Percentage(100);
+        //settings.SettingsBehavior.ColumnResizeMode = ColumnResizeMode.Control;
+       // settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.Styles.Header.Wrap = DefaultBoolean.True;
+        
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        
+      
+
+        settings.KeyFieldName = "Id";
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Id";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CompanyName";
+            
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CompanyInsuranceRatePercent";
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            TextBoxProperties txtPros = (TextBoxProperties)col.PropertiesEdit;
+            txtPros.DisplayFormatString = "p2";
+            txtPros.MaskSettings.Mask = "<0..0>.<0..9><0..9><0..9>";
+            txtPros.MaskSettings.ShowHints = true;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "LabaratorInsuranceRatePercent";
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            TextBoxProperties txtPros = (TextBoxProperties)col.PropertiesEdit;
+            txtPros.DisplayFormatString = "p2";
+            txtPros.MaskSettings.Mask = "<0..0>.<0..9><0..9><0..9>";
+            txtPros.MaskSettings.ShowHints = true;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "NumberCodeStarRange";
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            TextBoxProperties txtPros = (TextBoxProperties)col.PropertiesEdit;
+            txtPros.DisplayFormatString = "n0";
+            //txtPros.MaskSettings.Mask = "<0..0>.<0..9><0..9><0..9>";
+            //txtPros.MaskSettings.ShowHints = true;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "NumberCodeEndRange";
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            TextBoxProperties txtPros = (TextBoxProperties)col.PropertiesEdit;
+            txtPros.DisplayFormatString = "n0";
+            //txtPros.MaskSettings.Mask = "<0..0>.<0..9><0..9><0..9>";
+            //txtPros.MaskSettings.ShowHints = true;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CompanyCode";
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+        });
+       
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

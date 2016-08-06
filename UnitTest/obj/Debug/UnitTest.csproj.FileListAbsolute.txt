@@ -1,0 +1,17 @@
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\UnitTest.dll
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\UnitTest.pdb
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\HNGHRMS.Infrastructure.dll
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\HNGHRMS.Model.dll
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\EntityFramework.dll
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\NodaTime.dll
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\HNGHRMS.Infrastructure.pdb
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\HNGHRMS.Model.pdb
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\EntityFramework.xml
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\NodaTime.xml
+D:\Code_Project\HNGHRMS\UnitTest\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+D:\Code_Project\HNGHRMS\UnitTest\obj\Debug\UnitTest.csprojResolveAssemblyReference.cache
+D:\Code_Project\HNGHRMS\UnitTest\obj\Debug\UnitTest.dll
+D:\Code_Project\HNGHRMS\UnitTest\obj\Debug\UnitTest.pdb

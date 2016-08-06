@@ -1,0 +1,262 @@
+﻿<script>
+    var employeesImportFileName;
+ 
+    function OnEmployeesImportFileUploadComplete(s,e) {
+        var fileNameString = e.callbackData;
+        if (fileNameString != null) {
+            employeesImportFileName = fileNameString;
+            EmployeesImportUploadFileGridView.PerformCallback({ loadExcel: true, fileNameString: fileNameString });
+        } else {
+            employeesImportFileName = "";
+        }
+        ResetLayoutAfterUpload();
+    }
+    function OnEmployeesImportUploadFileGridViewEndCallback(s, e) {
+
+        if (s.cpTotalRecord != null) {
+            txtTotalCount.SetText(s.cpTotalRecord);
+        }
+        if (s.cpTotalInValidCount != null) {
+            txtInValidCount.SetText(s.cpTotalInValidCount);
+        }
+     
+        if (txtInValidCount.GetText() == "0") {
+            btnPost.SetEnabled(true);
+        } else {
+            btnPost.SetEnabled(false);
+        }
+        if (s.cpTotalInValidCount != null && s.cpTotalInValidCount == 0 && s.cpTotalRecord != 0) {
+            btnPost.SetEnabled(true);
+            lblUploadStatus.SetText("File tải lên hợp lệ, nhập vào nút - Tải vào hệ thống - để thực hiện ghi dữ liệu");
+        } else {
+            btnPost.SetEnabled(false);
+            lblUploadStatus.SetText("File tải lên không hợp lệ, xin vui lòng kiểm tra lại nội dung file tải !");
+
+        }
+    }
+
+    function OnEmployeesImportUploadFileGridViewBeginCallback(s,e)
+    {
+        if (employeesImportFileName != null){
+            e.customArgs["loadExcel"] = true;
+            e.customArgs["fileNameString"] = employeesImportFileName;
+        }
+    }
+    function OnbtnInValidFillterClick(s, e) {
+        var filterCondition = "[INVALID] == True ";
+        EmployeesImportUploadFileGridView.ApplyFilter(filterCondition);
+    }
+
+    function OnbtnbtnShowAllClick(s, e) {
+        EmployeesImportUploadFileGridView.ClearFilter();
+    }
+    // xu ly ghi du lieu
+    var myTimer;
+    function StartTimer(progressUrl) {
+        importProgressBar.SetVisible(true);
+        importProgressBar.SetPosition(0);
+        myTimer = setInterval(function () {
+            $.ajax({
+                type: 'POST',
+                url: progressUrl,
+            }).done(TimerCallbackComplete).fail(getImportDataStatusCallbackError);
+        },500);
+    }
+    function StopTimer() {
+        importProgressBar.SetVisible(false);
+        importProgressBar.SetPosition(0);
+        if (myTimer) {
+            clearInterval(myTimer);
+            myTimer = null;
+        }
+    }
+    function TimerCallbackComplete(data) {
+
+        console.log(data.ProgressResult);
+        importProgressBar.SetPosition(parseInt(data.ProgressResult));
+    }
+    function getImportDataStatusCallbackError(data)
+    {
+        console.log(data);
+    }
+    function StartDataProcessAfterUpload(startUrl) {
+        check = true;
+        if (employeesImportFileName != "") {
+            $.ajax({
+                type: 'POST',
+                url: startUrl,
+                dataType: 'json',
+                data: { FileNameString: employeesImportFileName },
+                async: true
+            }).done(ProgressCallbackComplete).fail(startDataImportProcessCallbackError);
+        } else {
+            lblWrireToDBStatus.SetText("Xin vui lòng tải file lên sao đó tiến hành ghi dữ liệu !");
+        }
+   
+    }
+    function startDataImportProcessCallbackError(data) {
+        console.log(data);
+    }
+    function ProgressCallbackComplete(data) {
+        StopTimer();        
+        if (data.TotalRecord == 0 && data.TotalInserted == 0) {
+            lblWrireToDBStatus.SetText("Lỗi File được tải lên! ");            
+        } else {
+            lblWrireToDBStatus.SetText("Hoàn tất xử lý file: Tổng số nhân viên được ghi/tổng nhân viên tải lên: " + data.TotalRecord + "/" + data.TotalInserted + " - Tổng số tiền lương: " + data.TotalSalary);            
+        }
+        ResetLayoutAfterPost();
+    }
+    function ResetLayoutAfterPost()
+    {
+        btnPost.SetEnabled(false);
+    }
+    function ResetLayoutAfterUpload()
+    {
+        lblWrireToDBStatus.SetText("");
+    }
+    function OnBtnPostClick(s, e)
+    {
+        StartTimer("@Url.Action("EmployeesImportProcessingStatus", "General", null)");
+        StartDataProcessAfterUpload("@Url.Action("EmployeesImportToDatabase", "General", null)");  
+        lblWrireToDBStatus.SetText("Đang tải dữ liệu vào hệ thống");       
+    }
+</script>
+
+
+@model HNGHRMS.Web.ViewModels.EmployeesUploadViewModel
+@{
+    ViewBag.Title = "Thiết lập chung";
+}
+
+<h3 style="margin-left:10px">Tải danh sách nhân viên</h3>
+
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "EmployeeImportLayout";
+    settings.ColCount = 2;;
+    settings.Width = Unit.Percentage(100);
+    settings.Items.AddGroupItem(grpSetting =>
+    {
+        grpSetting.Caption = "Thông tin tải file";
+        grpSetting.Items.Add(item =>
+        {
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() =>
+            {
+                using (Html.BeginForm("EmployeeUploadControlCallbackAction", "General", FormMethod.Post))
+                {
+                    Html.RenderPartial("EmployeesImport/_EmployeesImportUploadFileForm", Model);
+                }
+            });
+
+        });
+    });
+    settings.Items.AddGroupItem(grpSetting => {
+        grpSetting.Caption = "Kết quả tải file";
+        grpSetting.Items.Add(item => {
+            item.Caption = "Tổng số dòng tải lên";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSetting = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSetting.Name = "txtTotalCount";
+            txtSetting.ClientEnabled = false;
+            txtSetting.Properties.EnableClientSideAPI = true;
+            txtSetting.Properties.DisplayFormatString = "n0";
+        });
+        grpSetting.Items.Add(item =>
+        {
+            item.Caption = "Sô dòng không hợp lệ";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSetting = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSetting.Name = "txtInValidCount";
+            txtSetting.ClientEnabled = false;
+            txtSetting.Properties.EnableClientSideAPI = true;
+            txtSetting.Properties.DisplayFormatString = "n0";
+        });
+        grpSetting.Items.Add(item =>
+        {
+            item.Caption = "Trạng thái tải lên";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.Label;
+            LabelSettings lblSetting = (LabelSettings)item.NestedExtensionSettings;
+            lblSetting.Properties.ClientInstanceName = "lblUploadStatus";
+            lblSetting.Style.Value = "Color:Red";
+            lblSetting.ClientEnabled = true;
+            lblSetting.Width = 400;
+            if (Model.CompanyId == 0 && Model.PositionId == 0)
+            {
+                lblSetting.Text = "Mã công ty và chức vụ không tồn tại. Không thể tải file, vui lòng tạo công ty và chức vụ";              
+            }
+            else if (Model.CompanyId == 0)
+            {
+                lblSetting.Text = "Mã công ty không tồn tại. Không thể tải file, vui lòng tạo công ty";               
+            }
+            else if (Model.PositionId == 0)
+            {
+                lblSetting.Text = "Mã chức vụ không tồn tại. Không thể tải file, vui lòng tạo chức vụ";              
+            }
+            else
+            {
+                lblSetting.Text = "";  
+            }
+        });
+    });
+    settings.Items.Add(item =>
+    {
+        item.ShowCaption = DefaultBoolean.False;
+        item.ColSpan = 2;
+        item.SetNestedContent(() =>
+        {
+            Html.DevExpress().Button(button =>
+            {
+                button.Name = "btnPost";
+                button.Text = "Ghi vào hệ thống";
+                button.ClientEnabled = false;
+                button.UseSubmitBehavior = false;
+                button.ToolTip = "Chỉ tải được lên hệ thống khi file hợp lệ";
+                button.ClientSideEvents.Click = "OnBtnPostClick";
+            }).GetHtml();
+            Html.DevExpress().Label(lblSetting =>
+            {
+                lblSetting.Name = "lblStatus";
+                lblSetting.Properties.ClientInstanceName = "lblWrireToDBStatus";
+                lblSetting.Properties.EnableClientSideAPI = true;
+                lblSetting.Text = "";
+                lblSetting.Style.Add("color", "red");
+                lblSetting.Style.Add("margin-left", "10px");
+            }).GetHtml();
+            Html.DevExpress().ProgressBar(prsSettings =>
+            {
+                prsSettings.Name = "importProgressBar";
+                prsSettings.Width = System.Web.UI.WebControls.Unit.Pixel(200);
+                prsSettings.Style.Add("margin-top", "10px");
+                prsSettings.ClientVisible = false;
+            }).GetHtml();
+        });
+    });
+    settings.Items.Add(item =>
+    {
+        item.Caption = "Danh sách nhân viên tải lên";
+        item.ColSpan = 2;
+        item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+        item.SetNestedContent(() =>
+        {
+            Html.DevExpress().Button(button =>
+            {
+                button.Name = "btnShowAll";
+                button.Text = "Hiển thị tất cả";
+                button.ControlStyle.CssClass = "wine";
+                button.ClientEnabled = true;
+                button.ClientSideEvents.Click = "OnbtnbtnShowAllClick";
+            }).GetHtml();
+            Html.DevExpress().Button(button =>
+            {
+                button.Name = "btnInValidFillter";
+                button.Text = "Hiển thị dòng không hợp lệ";
+                button.Style.Add("Margin-left", "5px");
+                button.ControlStyle.CssClass = "wine";
+                button.ClientEnabled = true;
+               button.ClientSideEvents.Click = "OnbtnInValidFillterClick";
+            }).GetHtml();
+            Html.RenderAction("EmployeesImportUploadFileGridViewPartial","General", new { loadExcel = false });
+        });
+    });
+}).GetHtml()

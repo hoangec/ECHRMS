@@ -1,0 +1,359 @@
+﻿@model HNGHRMS.Web.ViewModels.EmployeeFunctionTabViewModel
+@Html.DevExpress().PageControl(
+    settings =>
+    {
+        settings.Name = "pcEmployeeFunctionTabs";    
+        
+        settings.Width = 426;
+        settings.Height = 353;
+        settings.TabAlign = TabAlign.Justify;
+        settings.TabPosition = TabPosition.Top;
+      //  settings.EnableTabScrolling = true;
+        settings.Width = Unit.Percentage(100);        
+        settings.TabPages.Add(tabSetting =>
+        {
+            tabSetting.Text = "Thông tin Liên hệ";
+            tabSetting.Name = "tabEmployeeContact";
+            
+            tabSetting.SetContent(() =>
+            {
+                using (Ajax.BeginForm(null,
+                    new RouteValueDictionary { { "controller", "Employee" }, { "action", "EmployeeContactDetailUpdate" } },
+                    new AjaxOptions() { OnSuccess = "EmployeeContactDetailUpdateSucess" }))
+                {
+                    Html.RenderPartial("EmployeeContactTabs/_CbpEmployeeContactDetail", Model.EmployeeContactTabViewModel);
+                        ViewContext.Writer.Write("<hr/>");
+                        Html.DevExpress().Button(btnSettings => {
+                            btnSettings.Name = "btnEmployeeContactDetailSave";
+                            btnSettings.UseSubmitBehavior = true;
+                            btnSettings.Text = "Thay đổi";
+                            btnSettings.ClientSideEvents.Click = "OnBtnEmployeeContactDetailSaveClick";
+                            btnSettings.Enabled = Model.IsEnabled;
+                        }).GetHtml();
+                    }                           
+            });
+        });
+        settings.TabPages.Add(tabSettings =>
+        {
+            tabSettings.Text = "Công việc";
+            tabSettings.Name = "tabEmployeeJob";
+        
+            tabSettings.SetContent(() =>
+            {
+                using (Ajax.BeginForm(null,
+                   new RouteValueDictionary { { "controller", "Employee" }, { "action", "AjaxEmployeeJobUpdate" } },
+                   new AjaxOptions() { OnSuccess = "EmployeeJobUpdateSucess" }))
+                {
+                    Html.RenderPartial("EmployeeJobTabs/_CbpEmployeeJob", Model.EmployeeJobTabViewModel);
+                    ViewContext.Writer.Write("<hr/>");
+                    Html.DevExpress().Button(btnSettings =>
+                    {
+                        btnSettings.Name = "btnEmployeeJobSave";
+                        btnSettings.UseSubmitBehavior = true;
+                        btnSettings.Text = "Thay đổi";
+                        btnSettings.ClientSideEvents.Click = "OnBtnEmployeeJobSaveClick";
+                        btnSettings.Enabled = Model.IsEnabled;
+                    }).GetHtml();
+                }            
+            });
+        });
+        settings.TabPages.Add(tabSettings =>
+        {
+            tabSettings.Text = "Hợp đồng";
+            tabSettings.Name = "tabEmployeeContract";
+         
+            tabSettings.SetContent(() =>
+            {
+                 Html.DevExpress().FormLayout(formSetting =>
+                 {
+                   formSetting.Name = "EmployeeContractLayout";
+                   formSetting.Items.Add(item =>
+                   {
+                       item.ShowCaption = DefaultBoolean.False;
+                       item.SetNestedContent(() =>
+                       {
+                           Html.DevExpress().Button(btnSetting =>
+                                   {
+                                       btnSetting.Text = "Thêm mới hợp đồng";
+                                       btnSetting.Name = "btnNewEmployeeContract";
+                                       btnSetting.ClientSideEvents.Click = "OnBtnEmployeeContractAddClick";
+                                       btnSetting.Enabled = Model.IsEnabled;
+                                   }).Render();
+                           Html.DevExpress().Button(btnSetting =>
+                           {
+                               btnSetting.Style.Add("margin-left", "5px");
+                               btnSetting.Text = "Xóa hợp đồng";
+                               btnSetting.Name = "btnDeleteEmployeeContract";
+                               btnSetting.EnableClientSideAPI = true;
+                               btnSetting.ClientSideEvents.Click = "OnBtnEmployeeContractDeleteClick";
+                               btnSetting.Enabled = Model.IsEnabled;
+                           }).Render();
+                       });
+                   });    
+                   formSetting.Items.Add(item =>
+                   {
+                       item.Name = "employeeContractAddForm";
+                       item.ClientVisible = false;
+                       item.ShowCaption = DefaultBoolean.False;
+                       item.SetNestedContent(() =>
+                       {
+                           using (Ajax.BeginForm(null,
+                                   new RouteValueDictionary { { "controller", "Employee" }, { "action", "AjaxEmployeeContractAdd" } },
+                                   new AjaxOptions() { OnSuccess = "contractAddSuccess" }))
+                           {
+                               Html.RenderPartial("EmployeeContractTabs/_EmployeeContractAddForm",
+                                   new HNGHRMS.Web.ViewModels.EmployeeContractAddFormModel()
+                                   {
+                                       EmployeeContractId = Model.EmployeeId,
+                                       ContractTypeId = Model.EmployeeContractTabViewModel.ContractTypeList.Count() != 0 ?  Model.EmployeeContractTabViewModel.ContractTypeList.FirstOrDefault().Id : 0,
+                                       StartDate = DateTime.Now
+                                   },                                  
+                                   new ViewDataDictionary { { "ContractTypeList", Model.EmployeeContractTabViewModel.ContractTypeList } }
+                                );
+                           }
+                       });
+                   });
+                   formSetting.Items.Add(item =>
+                   {
+                       item.Name = "employeeContractUpdateForm";
+                       item.ClientVisible = false;
+                       item.ShowCaption = DefaultBoolean.False;
+                       item.SetNestedContent(() =>
+                       {
+                           using (Ajax.BeginForm(null,
+                   new RouteValueDictionary { { "controller", "Employee" }, { "action", "AjaxEmployeeContractUpdate" } },
+                   new AjaxOptions() { OnSuccess = "contractUpdateSuccess" }))
+                           {
+                               Html.RenderPartial("EmployeeContractTabs/_EmployeeContractUpdateForm", new HNGHRMS.Web.ViewModels.EmployeeContractUpdateFormModel(), new ViewDataDictionary { { "ContractTypeList", Model.EmployeeContractTabViewModel.ContractTypeList } });
+                           }
+                       });
+                   });
+                   formSetting.Items.Add(item => {
+                       item.Caption = "Danh sách các hợp đồng";
+                       item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                       item.SetNestedContent(() =>
+                       {
+                           Html.DevExpress().Label(lblSetting =>
+                           {
+                               lblSetting.Name = "lableStatus1";
+                               lblSetting.Text = "Hợp đồng sắp hết hạn";
+                               lblSetting.Style.Add("background-color", "yellow");                               
+                               lblSetting.Style.Add("padding", "5px");
+                               lblSetting.Style.Add("color", "green");
+                               lblSetting.Height = Unit.Pixel(30);
+                               lblSetting.ClientEnabled = false;
+                           }).Render();
+                           Html.DevExpress().Label(lblSetting =>
+                           {
+                               lblSetting.Name = "lableStatus2";
+                               lblSetting.Text = "Hợp đồng hết hạn";
+                               lblSetting.Style.Add("background-color", "red");                               
+                               lblSetting.Style.Add("margin-left", "5px");
+                               lblSetting.Style.Add("color", "white");
+                               lblSetting.Style.Add("padding", "5px");
+                               lblSetting.Height = Unit.Pixel(30);
+                               lblSetting.ClientEnabled = false;
+                           }).Render();
+                           Html.RenderPartial("EmployeeContractTabs/_EmployeeContractsHistoryGridViewPartial",
+                               Model.EmployeeContractTabViewModel.ContractsViewModel,
+                               new ViewDataDictionary { { "IsEnable", Model.IsEnabled } }
+                           );
+                       });
+                       
+                   });
+                 }).GetHtml();                                           
+            });
+        });
+        
+        settings.TabPages.Add(tabSettings =>{
+            tabSettings.Text = "Bảo hiểm";
+            tabSettings.Name = "tabEmployeeInsurance";
+         
+            tabSettings.SetContent(()=>
+            {
+               Html.DevExpress().FormLayout(insuranceFormSetting =>
+               {
+                   insuranceFormSetting.Name = "EmployeeInsuranceLayout";
+                   insuranceFormSetting.Items.Add(item =>
+                   {
+                       item.ShowCaption = DefaultBoolean.False;
+                       item.SetNestedContent(() =>
+                       {
+                           Html.DevExpress().Button(btnSetting =>
+                                   {
+                                       btnSetting.Text = "Bảo hiểm bắt buộc";
+                                       btnSetting.Name = "btnMandatoryInsurance";
+                                       btnSetting.EnableClientSideAPI = true;
+                                       btnSetting.Enabled = !Model.EmployeeInsuranceTabViewModel.HasMandatoryInsurance && Model.IsEnabled;
+                                       //if (Model.EmployeeInsuranceTabViewModel.HasMandatoryInsurance)
+                                       //{
+                                       //    btnSetting.ClientEnabled = false;
+                                       //}
+                                       //else
+                                       //{
+                                       //    btnSetting.ClientEnabled = true;
+                                       //}
+                                       btnSetting.ClientSideEvents.Click = "btnMandatoryInsuranceClick";
+                                  
+                                   }).Render();
+                           Html.DevExpress().Button(btnSetting =>
+                           {
+                               btnSetting.Style.Add("margin-left", "5px");
+                               btnSetting.Text = "Bảo hiểm tự nguyện";
+                               btnSetting.Name = "btnVoluntaryInsurance";
+                               btnSetting.EnableClientSideAPI = true;
+                               btnSetting.ClientSideEvents.Click = "btnVoluntaryInsuranceClick";
+                               btnSetting.Enabled = (!Model.EmployeeInsuranceTabViewModel.HasVoluntaryInsurance && Model.IsEnabled);
+                                                              
+                               //if (Model.EmployeeInsuranceTabViewModel.HasVoluntaryInsurance)
+                               //{
+                               //    btnSetting.ClientEnabled = false;
+                               //}
+                               //else
+                               //{
+                               //    btnSetting.ClientEnabled = true;
+                               //}
+                           }).Render();
+                       });
+                   });
+                   insuranceFormSetting.Items.Add(item =>
+                   {
+                       item.Name = "employeeMandatoryAddForm";
+                       item.ClientVisible = false;
+                       item.ShowCaption = DefaultBoolean.False;
+                       item.SetNestedContent(() =>
+                       {
+                           using (Ajax.BeginForm(null,
+                             new RouteValueDictionary { { "controller", "Employee" }, { "action", "AjaxAddEmployeeMandatoryInsurance" } },
+                             new AjaxOptions() { OnSuccess = "mandatoryInsuranceAddSuccess" }))
+                           {
+                               Html.RenderPartial("EmployeeInsuranceTabs/_EmployeeMandatoryInsuranceAddForm", new HNGHRMS.Web.ViewModels.MandatoryInsuranceAddFormView() { EployeeId = @Model.EmployeeId });
+                           }
+                       });
+                   });
+                   insuranceFormSetting.Items.Add(item =>
+                   {
+                       item.Name = "employeeVoluntaryAddForm";
+                       item.ClientVisible = false;
+                       item.ShowCaption = DefaultBoolean.False;
+                       item.SetNestedContent(() =>
+                       {
+                           using (Ajax.BeginForm(null,
+                             new RouteValueDictionary { { "controller", "Employee" }, { "action", "AjaxAddEmployeeVoluntaryInsurance" } },
+                             new AjaxOptions() { OnSuccess = "voluntaryVoluntaryAddSuccess" }))
+                           {
+                               Html.RenderPartial("EmployeeInsuranceTabs/_EmployeeVoluntaryInsuranceAddForm", new HNGHRMS.Web.ViewModels.VoluntaryInsuranceAddFormView() { VoluntaryEployeeId = @Model.EmployeeId });
+                           }
+                       });
+                   });
+                   insuranceFormSetting.Items.Add(item =>
+                   {
+                       item.Caption = "Danh sách bảo hiểm";
+                       item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                       item.SetNestedContent(() =>
+                       {
+                           Html.RenderPartial("EmployeeInsuranceTabs/_EmployeeInsuranceTabGridViewPartial",
+                               Model.EmployeeInsuranceTabViewModel.InsuranceList,
+                               new ViewDataDictionary { {"IsEnable",Model.IsEnabled}});
+                       });
+                   });
+                 }).GetHtml();
+            });
+        });
+        
+        settings.TabPages.Add(tabSettings =>
+        {
+            tabSettings.Text = "Lương";
+            tabSettings.Name = "tabSalary";
+           
+            tabSettings.SetContent(() =>
+            {
+                Html.DevExpress().FormLayout(salaryFormSetting =>
+                {
+                    salaryFormSetting.Name = "EmployeeSalaryLayout";
+                    salaryFormSetting.Items.Add(item =>
+                    {
+                        item.ShowCaption = DefaultBoolean.False;
+                        item.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().Button(btnSetting =>
+                            {
+                                btnSetting.Text = "Thêm chi phí";
+                                btnSetting.Name = "btnSalaryAdd";
+                                btnSetting.EnableClientSideAPI = true;
+                                btnSetting.ClientSideEvents.Click = "btnSalaryAddClick";
+                                btnSetting.Enabled = Model.IsEnabled;
+                            }).Render();
+
+                        });
+                    });
+                    salaryFormSetting.Items.Add(item =>
+                    {
+                        item.Name = "employeeSalaryAddForm";
+                        item.ClientVisible = false;
+                        item.ShowCaption = DefaultBoolean.False;
+                        item.SetNestedContent(() =>
+                        {
+                            using (Ajax.BeginForm(null,
+                              new RouteValueDictionary { { "controller", "Employee" }, { "action", "AjaxAddEmployeeSalaryComponent" } },
+                              new AjaxOptions() { OnSuccess = "salaryComponentAddSuccess" }))
+                            {
+                                Html.RenderPartial("EmployeeSalaryTabs/_EmployeeSalaryComponentAddForm",
+                                new HNGHRMS.Web.ViewModels.SalaryComponentAddFormView()
+                                {
+                                    SalaryComponentEmployeeId = @Model.EmployeeId,
+                                    ApplyDate = DateTime.Now,
+                                    
+                                    IsExtra = true,
+                                    IsMainSalary = true,
+                                });                                    
+                            }
+                        });
+                    });
+
+                    salaryFormSetting.Items.Add(item =>
+                    {
+                        item.Caption = "Danh sách lương";
+                        item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                        item.SetNestedContent(() =>
+                        {
+                            Html.RenderPartial("EmployeeSalaryTabs/_EmployeeSalaryTabGridViewPartial",
+                                Model.EmployeeSalaryTabViewModel.EmployeeSalaryComponents,
+                                new ViewDataDictionary {
+                                    { "HaveSalaryComponent", Model.EmployeeSalaryTabViewModel.HaveSalaryComponent},
+                                    {"IsEnable",Model.IsEnabled}
+                                });
+                        });
+                    });
+                }).GetHtml();
+            });
+        });
+        settings.TabPages.Add(tabSettings =>
+        {
+            tabSettings.Text = "Quá trình công tác";
+            tabSettings.Name = "tabExperiences";
+         
+            tabSettings.SetContent(() =>
+            {
+               Html.DevExpress().FormLayout(experienceFormSetting=>{
+                   experienceFormSetting.Name = "ExperienceLayout";
+                   experienceFormSetting.Items.Add(item => {
+                       item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                       item.Caption = "Quá trình công tác";
+                       item.SetNestedContent(() =>
+                       {
+                          // Html.Action("_gridEmployeeSalary", Model.EmployeeSalaryTabViewModel.EmployeeSalaryComponents);
+                           Html.RenderPartial("EmployeesExperienceTabs/_EmployeesTransferTabGridViewPartial",
+                           Model.EmployeeExperienceTabViewModel.ExperiencesList, 
+                           new ViewDataDictionary { 
+                                { "companies", Model.EmployeeJobTabViewModel.CompanyList },
+                                {"IsEnable",Model.IsEnabled}
+                           });
+                       });
+                   });
+               }).GetHtml();            
+            });
+        });
+        settings.ActiveTabIndex = 0;
+        settings.ClientSideEvents.TabClick = "OnEmployeFunctionTabsClick";
+    }).GetHtml()

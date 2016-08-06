@@ -1,0 +1,499 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>F:\ASP_Published\hrms</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/Autofac.dll">
+      <publishTime>08/22/2015 14:52:56</publishTime>
+    </File>
+    <File Include="bin/Autofac.Integration.Mvc.dll">
+      <publishTime>08/22/2015 14:53:05</publishTime>
+    </File>
+    <File Include="bin/AutoMapper.dll">
+      <publishTime>11/06/2015 14:24:24</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.AspNet.dll">
+      <publishTime>08/22/2015 13:58:37</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.Core.dll">
+      <publishTime>08/22/2015 13:58:36</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OAuth.Consumer.dll">
+      <publishTime>08/22/2015 13:58:37</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OAuth.dll">
+      <publishTime>08/22/2015 13:58:36</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OpenId.dll">
+      <publishTime>08/22/2015 13:58:36</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OpenId.RelyingParty.dll">
+      <publishTime>08/22/2015 13:58:36</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>08/22/2015 09:53:51</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>08/22/2015 09:53:51</publishTime>
+    </File>
+    <File Include="bin/HNGHRMS.Data.dll">
+      <publishTime>08/06/2016 09:51:50</publishTime>
+    </File>
+    <File Include="bin/HNGHRMS.Infrastructure.dll">
+      <publishTime>08/06/2016 09:51:47</publishTime>
+    </File>
+    <File Include="bin/HNGHRMS.Model.dll">
+      <publishTime>08/06/2016 09:51:48</publishTime>
+    </File>
+    <File Include="bin/HNGHRMS.Service.dll">
+      <publishTime>08/06/2016 09:51:50</publishTime>
+    </File>
+    <File Include="bin/HNGHRMS.Web.dll">
+      <publishTime>08/06/2016 09:52:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
+      <publishTime>08/22/2015 10:10:29</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.EntityFramework.dll">
+      <publishTime>08/22/2015 10:10:29</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
+      <publishTime>09/18/2015 11:06:58</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.dll">
+      <publishTime>09/19/2015 07:46:27</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Host.SystemWeb.dll">
+      <publishTime>09/19/2015 07:46:27</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.Cookies.dll">
+      <publishTime>09/18/2015 11:06:58</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.dll">
+      <publishTime>09/18/2015 11:06:58</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.OAuth.dll">
+      <publishTime>09/18/2015 11:06:58</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>08/22/2015 14:53:05</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.WebPages.OAuth.dll">
+      <publishTime>08/22/2015 13:58:37</publishTime>
+    </File>
+    <File Include="bin/MvcExtensions.AutoMapper.dll">
+      <publishTime>11/06/2015 16:41:17</publishTime>
+    </File>
+    <File Include="bin/MvcExtensions.dll">
+      <publishTime>11/06/2015 16:41:17</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>08/22/2015 13:59:16</publishTime>
+    </File>
+    <File Include="bin/NodaTime.dll">
+      <publishTime>10/17/2015 09:14:03</publishTime>
+    </File>
+    <File Include="bin/Owin.dll">
+      <publishTime>09/18/2015 11:06:57</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>08/22/2015 13:59:17</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>09/07/2015 10:44:28</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>08/22/2015 13:59:18</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>08/22/2015 13:59:18</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>09/07/2015 10:44:28</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>09/07/2015 10:44:28</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>09/07/2015 10:44:28</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>09/07/2015 10:44:28</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>09/07/2015 10:44:28</publishTime>
+    </File>
+    <File Include="bin/WebMatrix.Data.dll">
+      <publishTime>08/22/2015 13:58:21</publishTime>
+    </File>
+    <File Include="bin/WebMatrix.WebData.dll">
+      <publishTime>08/22/2015 13:58:23</publishTime>
+    </File>
+    <File Include="Content/bootstrap-theme.min.css">
+      <publishTime>09/17/2015 14:42:45</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css">
+      <publishTime>09/17/2015 15:19:05</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css">
+      <publishTime>09/17/2015 14:42:45</publishTime>
+    </File>
+    <File Include="Content/bootstrap.WithDXMarkers.css">
+      <publishTime>09/17/2015 15:19:05</publishTime>
+    </File>
+    <File Include="Content/Images/AquaHeader.jpg">
+      <publishTime>08/22/2015 13:51:53</publishTime>
+    </File>
+    <File Include="Content/Images/BlackGlassHeader.jpg">
+      <publishTime>08/22/2015 13:51:54</publishTime>
+    </File>
+    <File Include="Content/Images/GlassHeader.jpg">
+      <publishTime>08/22/2015 13:51:54</publishTime>
+    </File>
+    <File Include="Content/Images/PlasticBlueHeader.jpg">
+      <publishTime>08/22/2015 13:51:54</publishTime>
+    </File>
+    <File Include="Content/Images/RedWineHeader.jpg">
+      <publishTime>08/22/2015 13:51:54</publishTime>
+    </File>
+    <File Include="Content/jquery-ui.css">
+      <publishTime>08/22/2015 13:53:00</publishTime>
+    </File>
+    <File Include="Content/jquery-ui.min.css">
+      <publishTime>08/22/2015 13:53:00</publishTime>
+    </File>
+    <File Include="Content/login.css">
+      <publishTime>09/17/2015 16:20:23</publishTime>
+    </File>
+    <File Include="Content/Site.css">
+      <publishTime>08/22/2015 13:51:54</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>08/22/2015 14:16:26</publishTime>
+    </File>
+    <File Include="Images/replacement_people.jpg">
+      <publishTime>09/17/2015 14:35:34</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>11/06/2015 16:41:21</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js">
+      <publishTime>08/22/2015 13:52:38</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>08/22/2015 13:52:40</publishTime>
+    </File>
+    <File Include="Scripts/globalize.cultures.js">
+      <publishTime>08/22/2015 13:52:53</publishTime>
+    </File>
+    <File Include="Scripts/globalize.js">
+      <publishTime>08/22/2015 13:52:50</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.11.3.min.js">
+      <publishTime>09/09/2015 14:26:34</publishTime>
+    </File>
+    <File Include="Scripts/jquery-2.1.4.js">
+      <publishTime>09/09/2015 14:00:59</publishTime>
+    </File>
+    <File Include="Scripts/jquery-2.1.4.min.js">
+      <publishTime>09/09/2015 14:00:59</publishTime>
+    </File>
+    <File Include="Scripts/jquery-2.1.4.min.map">
+      <publishTime>09/09/2015 14:00:59</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.10.3.js">
+      <publishTime>08/22/2015 13:52:49</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.10.3.min.js">
+      <publishTime>08/22/2015 13:52:49</publishTime>
+    </File>
+    <File Include="Scripts/jquery.unobtrusive-ajax.js">
+      <publishTime>09/09/2015 11:29:20</publishTime>
+    </File>
+    <File Include="Scripts/jquery.unobtrusive-ajax.min.js">
+      <publishTime>09/09/2015 11:29:19</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.js">
+      <publishTime>09/09/2015 14:01:16</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.min.js">
+      <publishTime>09/09/2015 14:01:16</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.js">
+      <publishTime>09/09/2015 11:29:00</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.min.js">
+      <publishTime>09/09/2015 11:29:00</publishTime>
+    </File>
+    <File Include="Scripts/knockout-3.0.0.debug.js">
+      <publishTime>08/22/2015 13:52:55</publishTime>
+    </File>
+    <File Include="Scripts/knockout-3.0.0.js">
+      <publishTime>08/22/2015 13:52:57</publishTime>
+    </File>
+    <File Include="Scripts/modernizr-2.6.2.js">
+      <publishTime>08/22/2015 13:52:41</publishTime>
+    </File>
+    <File Include="Scripts/notify.min.js">
+      <publishTime>10/21/2015 15:05:33</publishTime>
+    </File>
+    <File Include="Upload/Insurances/00001-INSURANCE-VL.pdf">
+      <publishTime>11/09/2015 15:13:47</publishTime>
+    </File>
+    <File Include="Views/Account/ChangePassword.cshtml">
+      <publishTime>08/22/2015 13:52:15</publishTime>
+    </File>
+    <File Include="Views/Account/ChangePasswordSuccess.cshtml">
+      <publishTime>08/22/2015 13:52:16</publishTime>
+    </File>
+    <File Include="Views/Account/Index.cshtml">
+      <publishTime>09/29/2015 10:18:21</publishTime>
+    </File>
+    <File Include="Views/Account/Login.cshtml">
+      <publishTime>09/19/2015 09:17:27</publishTime>
+    </File>
+    <File Include="Views/Account/Register.cshtml">
+      <publishTime>09/19/2015 08:48:29</publishTime>
+    </File>
+    <File Include="Views/Account/_AddUserForm.cshtml">
+      <publishTime>03/02/2016 16:35:50</publishTime>
+    </File>
+    <File Include="Views/Account/_UserAccountGridViewPartial.cshtml">
+      <publishTime>09/29/2015 09:59:37</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeContactTabs/_CbpEmployeeContactDetail.cshtml">
+      <publishTime>11/05/2015 09:15:13</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeContractTabs/_EmployeeContractAddForm.cshtml">
+      <publishTime>04/07/2016 10:19:35</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeContractTabs/_EmployeeContractsHistoryGridViewPartial.cshtml">
+      <publishTime>04/14/2016 09:32:19</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeContractTabs/_EmployeeContractUpdateForm.cshtml">
+      <publishTime>11/05/2015 17:05:35</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeDetail.cshtml">
+      <publishTime>05/05/2016 16:36:45</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeDetail/_EmployeeDetailInfor.cshtml">
+      <publishTime>08/06/2016 09:06:08</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeDetail/_EmployeeDetailReport.cshtml">
+      <publishTime>04/19/2016 09:31:23</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeDetail/_EmployeeFunctionTabs.cshtml">
+      <publishTime>04/27/2016 16:19:58</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeDetail/_EmployeeInforPhoto.cshtml">
+      <publishTime>04/14/2016 15:23:19</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeInsuranceTabs/_EmployeeInsuranceTabGridViewPartial.cshtml">
+      <publishTime>08/05/2016 15:42:24</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeInsuranceTabs/_EmployeeMandatoryInsuranceAddForm.cshtml">
+      <publishTime>08/05/2016 14:55:56</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeInsuranceTabs/_EmployeeVoluntaryInsuranceAddForm.cshtml">
+      <publishTime>11/09/2015 13:55:52</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeJobTabs/_CbpEmployeeJob.cshtml">
+      <publishTime>04/12/2016 22:15:10</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeList/_EmployeeSimpleAddForm.cshtml">
+      <publishTime>04/28/2016 15:26:41</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeList/_EmployeesListGridViewPartial.cshtml">
+      <publishTime>04/28/2016 11:17:37</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeSalaryTabs/_CbpSalaryComponentInfor.cshtml">
+      <publishTime>04/12/2016 14:27:36</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeSalaryTabs/_EmployeeSalaryComponentAddForm.cshtml">
+      <publishTime>05/05/2016 15:58:05</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeeSalaryTabs/_EmployeeSalaryTabGridViewPartial.cshtml">
+      <publishTime>05/05/2016 16:33:57</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeesExperienceTabs/_EmployeesTransferTabGridViewPartial.cshtml">
+      <publishTime>08/03/2016 22:25:21</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeesTerminate/_CbpEmployeeTerminateInfor.cshtml">
+      <publishTime>03/21/2016 15:50:26</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeesTerminate/_CmbEmployeeTerminate.cshtml">
+      <publishTime>03/29/2016 14:17:51</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeesTerminate/_EmployeesTerminateGridViewPartial.cshtml">
+      <publishTime>03/03/2016 16:29:12</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeesTransfer/_CbpEmployeeTransfer.cshtml">
+      <publishTime>08/04/2016 15:25:40</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeesTransfer/_CmbEmployeeTransferList.cshtml">
+      <publishTime>08/04/2016 08:34:07</publishTime>
+    </File>
+    <File Include="Views/Employee/EmployeesTransfer/_EmployeesTransferGridViewPartial.cshtml">
+      <publishTime>08/03/2016 22:07:31</publishTime>
+    </File>
+    <File Include="Views/Employee/Index.cshtml">
+      <publishTime>04/28/2016 15:53:52</publishTime>
+    </File>
+    <File Include="Views/Employee/Terminate.cshtml">
+      <publishTime>04/14/2016 08:58:45</publishTime>
+    </File>
+    <File Include="Views/Employee/TransferEmployee.cshtml">
+      <publishTime>08/04/2016 09:50:59</publishTime>
+    </File>
+    <File Include="Views/General/Company/_CompanyGridViewPartial.cshtml">
+      <publishTime>04/28/2016 14:57:58</publishTime>
+    </File>
+    <File Include="Views/General/Contract.cshtml">
+      <publishTime>04/07/2016 08:34:53</publishTime>
+    </File>
+    <File Include="Views/General/Contract/_ContractTypeGridViewPartial.cshtml">
+      <publishTime>04/07/2016 14:20:38</publishTime>
+    </File>
+    <File Include="Views/General/EmployeesImport.cshtml">
+      <publishTime>03/31/2016 23:24:08</publishTime>
+    </File>
+    <File Include="Views/General/EmployeesImport/_EmployeesImportUploadFileForm.cshtml">
+      <publishTime>04/22/2016 10:39:19</publishTime>
+    </File>
+    <File Include="Views/General/EmployeesImport/_EmployeesImportUploadFileGridview.cshtml">
+      <publishTime>05/23/2016 09:14:34</publishTime>
+    </File>
+    <File Include="Views/General/EmployeesImport/_FileUpLoadControl.cshtml">
+      <publishTime>03/25/2016 09:34:25</publishTime>
+    </File>
+    <File Include="Views/General/Index.cshtml">
+      <publishTime>04/28/2016 14:57:25</publishTime>
+    </File>
+    <File Include="Views/General/Position.cshtml">
+      <publishTime>03/25/2016 08:33:21</publishTime>
+    </File>
+    <File Include="Views/General/Position/_PositionGridViewPartial.cshtml">
+      <publishTime>04/08/2016 11:29:49</publishTime>
+    </File>
+    <File Include="Views/General/Role.cshtml">
+      <publishTime>09/21/2015 11:34:55</publishTime>
+    </File>
+    <File Include="Views/General/SalaryComponent.cshtml">
+      <publishTime>04/07/2016 13:56:42</publishTime>
+    </File>
+    <File Include="Views/General/SalaryComponent/_SalaryComponentGridViewPartial.cshtml">
+      <publishTime>04/11/2016 10:19:55</publishTime>
+    </File>
+    <File Include="Views/Home/Charts/_CompanyTotalEmployeeQuantityReport.cshtml">
+      <publishTime>10/13/2015 13:54:21</publishTime>
+    </File>
+    <File Include="Views/Home/Charts/_CompanyTotalInsuranceChart.cshtml">
+      <publishTime>03/17/2016 11:15:41</publishTime>
+    </File>
+    <File Include="Views/Home/Charts/_CompanyTotalSalaryChart.cshtml">
+      <publishTime>10/13/2015 13:53:54</publishTime>
+    </File>
+    <File Include="Views/Home/Charts/_EmployeesQuantityTypeByCompanyChart.cshtml">
+      <publishTime>04/05/2016 15:22:11</publishTime>
+    </File>
+    <File Include="Views/Home/Charts/_EmployeesQuantityTypeByDateChart.cshtml">
+      <publishTime>04/05/2016 15:23:35</publishTime>
+    </File>
+    <File Include="Views/Home/GeneralReport/_CompanyEmployeeInsuranceReportGridView.cshtml">
+      <publishTime>04/22/2016 14:42:31</publishTime>
+    </File>
+    <File Include="Views/Home/GeneralReport/_CompanyEmployeeQuantityReportGridView.cshtml">
+      <publishTime>04/22/2016 14:43:43</publishTime>
+    </File>
+    <File Include="Views/Home/GeneralReport/_CompanyEmployeeRealSalaryReportGridView.cshtml">
+      <publishTime>05/05/2016 10:29:32</publishTime>
+    </File>
+    <File Include="Views/Home/GeneralReport/_CompanyEmployeeSalaryReportGridView.cshtml">
+      <publishTime>04/28/2016 14:49:08</publishTime>
+    </File>
+    <File Include="Views/Home/Index.cshtml">
+      <publishTime>08/03/2016 08:14:44</publishTime>
+    </File>
+    <File Include="Views/Home/NewEmployeeReport/_NewEmployeeReportGridView.cshtml">
+      <publishTime>04/22/2016 10:41:12</publishTime>
+    </File>
+    <File Include="Views/Home/NewEmployeesReport.cshtml">
+      <publishTime>04/06/2016 16:52:13</publishTime>
+    </File>
+    <File Include="Views/Home/TerminatedEmployeeReport/_TerminatedEmployeeGridView.cshtml">
+      <publishTime>04/22/2016 10:43:33</publishTime>
+    </File>
+    <File Include="Views/Home/TerminatedEmployeesReport.cshtml">
+      <publishTime>04/06/2016 16:52:19</publishTime>
+    </File>
+    <File Include="Views/Home/TransferEmployeeReport/_TransferEmployeeReportGridView.cshtml">
+      <publishTime>08/03/2016 15:11:40</publishTime>
+    </File>
+    <File Include="Views/Home/TransferEmployeesReport.cshtml">
+      <publishTime>08/03/2016 15:06:47</publishTime>
+    </File>
+    <File Include="Views/Home/_CompanyComboBox.cshtml">
+      <publishTime>08/03/2016 15:06:34</publishTime>
+    </File>
+    <File Include="Views/Home/_DateReportDateEdit.cshtml">
+      <publishTime>03/31/2016 09:44:35</publishTime>
+    </File>
+    <File Include="Views/Shared/ContentLeftPartialView.cshtml">
+      <publishTime>04/18/2016 08:50:18</publishTime>
+    </File>
+    <File Include="Views/Shared/DisplayTemplates/Boolean.cshtml">
+      <publishTime>08/22/2015 13:53:00</publishTime>
+    </File>
+    <File Include="Views/Shared/EditorTemplates/Boolean.cshtml">
+      <publishTime>08/22/2015 13:53:00</publishTime>
+    </File>
+    <File Include="Views/Shared/EditorTemplates/DateTime.cshtml">
+      <publishTime>08/22/2015 13:53:01</publishTime>
+    </File>
+    <File Include="Views/Shared/EditorTemplates/Decimal.cshtml">
+      <publishTime>08/22/2015 13:53:01</publishTime>
+    </File>
+    <File Include="Views/Shared/EditorTemplates/EmailAddress.cshtml">
+      <publishTime>08/22/2015 13:53:04</publishTime>
+    </File>
+    <File Include="Views/Shared/EditorTemplates/MultilineText.cshtml">
+      <publishTime>08/22/2015 13:53:01</publishTime>
+    </File>
+    <File Include="Views/Shared/EditorTemplates/Password.cshtml">
+      <publishTime>08/22/2015 13:53:02</publishTime>
+    </File>
+    <File Include="Views/Shared/EditorTemplates/String.cshtml">
+      <publishTime>08/22/2015 13:53:02</publishTime>
+    </File>
+    <File Include="Views/Shared/HeaderPartialView.cshtml">
+      <publishTime>09/17/2015 16:26:30</publishTime>
+    </File>
+    <File Include="Views/Shared/LogOnPartialView.cshtml">
+      <publishTime>09/29/2015 10:18:53</publishTime>
+    </File>
+    <File Include="Views/Shared/_lightLayout.cshtml">
+      <publishTime>08/22/2015 13:52:21</publishTime>
+    </File>
+    <File Include="Views/Shared/_mainLayout.cshtml">
+      <publishTime>09/09/2015 14:11:53</publishTime>
+    </File>
+    <File Include="Views/Shared/_rootLayout.cshtml">
+      <publishTime>10/22/2015 08:24:54</publishTime>
+    </File>
+    <File Include="Views/Web.config">
+      <publishTime>09/21/2015 09:32:52</publishTime>
+    </File>
+    <File Include="Views/_ViewStart.cshtml">
+      <publishTime>08/22/2015 13:52:15</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>04/19/2016 17:00:33</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

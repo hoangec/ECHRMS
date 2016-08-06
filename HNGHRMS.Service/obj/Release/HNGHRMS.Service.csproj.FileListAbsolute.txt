@@ -18,3 +18,7 @@ D:\Code_Project\HNGHRMS\HNGHRMS.Service\bin\Release\Microsoft.AspNet.Identity.En
 D:\Code_Project\HNGHRMS\HNGHRMS.Service\obj\Release\HNGHRMS.Service.csprojResolveAssemblyReference.cache
 D:\Code_Project\HNGHRMS\HNGHRMS.Service\obj\Release\HNGHRMS.Service.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Service\obj\Release\HNGHRMS.Service.pdb
+D:\Code_Project\HNGHRMS\HNGHRMS.Service\bin\Release\AutoMapper.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Service\bin\Release\NodaTime.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Service\bin\Release\AutoMapper.xml
+D:\Code_Project\HNGHRMS\HNGHRMS.Service\bin\Release\NodaTime.xml

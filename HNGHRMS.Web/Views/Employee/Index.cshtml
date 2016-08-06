@@ -1,15 +1,123 @@
 ﻿@{
     ViewBag.Title = "Quản lý nhân viên";
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
 }
 
-<h3 style="margin-left:10px">Tuyển dụng</h3>
+<script src="~/Scripts/notify.min.js"></script>
+<script type="text/javascript">
+    function EmployeeDetailViewClick(s, e, url) {
+        var key = s.GetRowKey(e.visibleIndex);        
+        if (e.buttonID == "btnViewDetail") {
+            var destUrl = url + "/" + key;
+            window.location.href = destUrl;
+        }
+    }
+    function OnBtnEmployeeAddClick(s, e) {
+        var status = EmployeeFormLayout.GetItemByName("employeeSimpleLayoutAddForm").GetVisible();
+        EmployeeFormLayout.GetItemByName("employeeSimpleLayoutAddForm").SetVisible(!status);
+        // Clears
+        ClearValueLayoutEmployeeSimpleAddForm();
+    }
+    function ClearValueLayoutEmployeeSimpleAddForm() {
+        txtEmployeeSimpleAddFormEmployeeCode.SetValue("");
+        txtEmployeeSimpleAddFormFirstName.SetText("");
+        txtEmployeeSimpleAddFormLastName.SetText("");
+        txtEmployeeSimpleAddFormDepartement.SetText("");
+        txtEmployeeSimpleAddFormNationaity.SetText("");
+        txtEmployeeSimpleAddFormIdentityNo.SetText("");
+        txtEmployeeSimpleAddFormSalary.SetText("0");
+    }
+    function OnbtnEmployeeSimpleCancelClick(s, e) {        
+        EmployeeFormLayout.GetItemByName("employeeSimpleLayoutAddForm").SetVisible(false);
+    }
+    function employeeSimpleAddSuccess(data) {
+        
+        if (data.status == "Success") {
+            $.notify("Đã thêm thành công nhân viên với mã: " + data.message, "success");
+            EmployeesGridView.PerformCallback();
+            ClearValueLayoutEmployeeSimpleAddForm();
+        }
+        else {
+            $.notify("Thêm nhân viên thất bại: " + data.message, "error");
+        }
+    }
+
+    function OntxtEmployeeSimpleAddFormEmployeeCodeClick(s,e)
+    {
+        var companyId = cmbEmployeeSimpleAddFormCompany.GetValue();
+     
+        $.ajax({
+            method: "POST",
+            url: '@Url.Action("AjaxGetEmployeeNumberCode", "Employee")',
+            dataType: 'json',
+            data: { CompanyId: companyId}
+        }).done(function(result) {
+            if (result.status == "OK") {
+                txtEmployeeSimpleAddFormEmployeeCode.SetValue(result.message);
+                lblEmployeeSimpleAddFormEmployeeCodeGenerateStatus.SetText("")
+            }
+            else {                
+                if (result.message == "OFR") {
+                    lblEmployeeSimpleAddFormEmployeeCodeGenerateStatus.SetText("Vượt dãy mã công ty quy định")
+                }
+                else {
+                    lblEmployeeSimpleAddFormEmployeeCodeGenerateStatus.SetText("Không tạo được mã, xin kiêm tra lại. Hoặc nhập tay");
+                }
+            }
+        });
+    }
+</script>
+<h3 style="margin-left:10px">Danh sách nhân viên</h3>
 @Html.DevExpress().FormLayout(settings=>{
     settings.Name = "EmployeeFormLayout";
+    settings.Width = Unit.Percentage(100);
+    settings.Items.Add(item => {
+        item.ShowCaption = DefaultBoolean.False;
+        item.SetNestedContent(() =>
+        {            
+            Html.DevExpress().Button(btnSetting =>
+            {
+                btnSetting.Text = "Thêm mới nhân viên";
+                btnSetting.Name = "btnNewEmployeeAdd";
+                btnSetting.ClientSideEvents.Click = "OnBtnEmployeeAddClick";
+            }).Render();
+            Html.DevExpress().Button(btnSetting =>
+            {
+                btnSetting.Name = "btnEmployeeImport";
+                btnSetting.Text = "Tải danh sách nhân viên";
+                btnSetting.Style.Value = "margin-left: 5px;";
+                btnSetting.RouteValues = new { Controller = "General", Action = "EmployeesImport" };
+            }).Render();
+        });
+    });
+    settings.Items.Add(item =>
+    {
+        item.Name = "employeeSimpleLayoutAddForm";
+        item.ClientVisible = false;
+        item.ShowCaption = DefaultBoolean.False;
+        item.SetNestedContent(() =>
+        {
+            using (Ajax.BeginForm(null,
+                    new RouteValueDictionary { { "controller", "Employee" }, { "action", "AjaxEmployeeSimpleAdd" } },
+                    new AjaxOptions() { OnSuccess = "employeeSimpleAddSuccess" }))
+            {
+                Html.RenderPartial("EmployeeList/_EmployeeSimpleAddForm", new HNGHRMS.Web.ViewModels.EmployeeSimpleFormModel() 
+                {   CompanyId = ViewBag.FirstComapanyId, 
+                    PositionId = ViewBag.FirstPositionId , 
+                    JoinedDate = DateTime.Now,
+                    BirthDay = DateTime.Now,
+                    IdentityDateOfIssue = DateTime.Now,
+                });
+            }
+        });
+    });
     settings.Items.Add(item => {
         item.Caption = "Danh sách nhân viên";
-        item.CaptionSettings.Location = LayoutItemCaptionLocation.Bottom;
+        item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;        
         item.SetNestedContent(()=>{
-            ViewContext.Writer.Write(@Html.Action("EmployeesGridViewPartial"));
+            //ViewContext.Writer.Write(@Html.Action("EmployeesListGridViewPartial"));
+            Html.RenderAction("EmployeesListGridViewPartial", "Employee");
         });
     });
 }).GetHtml()

@@ -4,5 +4,6 @@
     set.Properties.ValueField = "Value";
     set.Properties.TextField = "Text";
     set.Properties.ValueType = typeof(int);
-    set.Properties.ClientSideEvents.ValueChanged = "CompanySelectChanged";
+    set.Properties.ClientSideEvents.ValueChanged = "CompanySelectChanged";   
+    set.Width = Unit.Pixel(300);
 }).BindList(ViewData["companies"]).Bind(ViewData["SelectedCompany"]).GetHtml()

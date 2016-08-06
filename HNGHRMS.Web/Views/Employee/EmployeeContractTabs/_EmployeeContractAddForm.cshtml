@@ -1,0 +1,94 @@
+﻿@model HNGHRMS.Web.ViewModels.EmployeeContractAddFormModel
+
+@Html.DevExpress().FormLayout(settings => {    
+    settings.Name = "employeeContractAddForm";    
+    settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Thông tin hợp đồng";
+        groupSettings.ColCount = 3;
+        groupSettings.Items.Add(m => m.EmployeeContractId, item =>
+        {
+            item.ColSpan = 3;
+            item.ClientVisible = false;
+        });
+        groupSettings.Items.Add(m => m.ContractNo, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSettings.Properties.MaskSettings.Mask = "\\HĐ\\LĐ/" + "######";
+            txtSettings.ShowModelErrors = true;
+        });
+        
+        groupSettings.Items.Add(m => m.ContractTypeId, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+            ComboBoxSettings cmbSetting = (ComboBoxSettings)item.NestedExtensionSettings;
+            cmbSetting.Properties.DataSource = ViewData["ContractTypeList"];
+            cmbSetting.Properties.TextField = "ContractTypeName";
+            cmbSetting.Properties.ValueField = "Id";
+            cmbSetting.ShowModelErrors = true;
+        });
+        groupSettings.Items.Add(m => m.StartDate, item =>
+        {
+
+        });
+        groupSettings.Items.Add(m => m.Remark, item =>
+        {
+            item.ColSpan = 3;
+            item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.Memo;
+            MemoSettings memoSetting = (MemoSettings)item.NestedExtensionSettings;
+            memoSetting.Properties.Rows = 3;
+            memoSetting.Properties.Columns = 55;
+        });
+        groupSettings.Items.Add(m => m.ContractAttachFile, item =>
+        {
+            item.ShowCaption = DefaultBoolean.False;
+            item.ClientVisible = false;
+
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.ShowCaption = DefaultBoolean.False;
+            item.Caption = "File tải";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.HyperLink;
+            HyperLinkSettings hyperlinkSettings = (HyperLinkSettings)item.NestedExtensionSettings;
+            hyperlinkSettings.Name = "ContractAddAttachFileClient";
+            hyperlinkSettings.ClientVisible = false;
+            hyperlinkSettings.Properties.ClientInstanceName = "ContractAddAttachFileClient";
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.Name = "ContractAddUploadFile";
+            item.Caption = "Tải file đính kèm";
+            item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            item.ColSpan = 3;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.UploadControl;
+            UploadControlSettings uploadSettings = (UploadControlSettings)item.NestedExtensionSettings;
+            uploadSettings.ShowUploadButton = true;
+            uploadSettings.CallbackRouteValues = new { Controller = "Employee", Action = "ContractAddAttachFileUploadControlCallbackAction" };
+            uploadSettings.ClientSideEvents.FileUploadComplete = "OnContractAddUploadFileComplete";
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.ColSpan = 3;
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() =>
+            {
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnAddContractSave";
+                    btnSettings.Text = "Lưu";
+                    btnSettings.UseSubmitBehavior = true;
+                }).Render();
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnAddContractCancel";
+                    btnSettings.Text = "Hủy";
+                    btnSettings.Style.Add("margin-left", "5px");
+                    btnSettings.ClientSideEvents.Click = "function(s,e){resetContractAddFormLayout();setContractAddFormLayoutVisible()}";
+                }).Render();
+            });
+        });
+    });   
+}).Bind(Model).GetHtml()

@@ -1,0 +1,124 @@
+﻿@model IEnumerable<HNGHRMS.Web.ViewModels.EmployeeContractsViewModel>
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        
+        settings.Name = "gridEmployeeContractsHistory";
+        settings.CallbackRouteValues = new { Controller = "Employee", Action = "EmployeesContractsGridView"};
+        settings.Style.Add("margin-top", "10px");
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.ClientSideEvents.BeginCallback = "OnGridEmployeeContractHistoryCallback";
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.Width = 100;
+        settings.CommandColumn.ShowSelectCheckbox = (bool)ViewData["IsEnable"]; 
+        settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.Page;        
+        settings.KeyFieldName = "EmployeeContractId";
+        //
+        settings.HtmlRowPrepared = (sender, e) =>
+        {
+            if (e.RowType == GridViewRowType.Data)
+            {
+                DateTime endDate = Convert.ToDateTime(e.GetValue("EndDate"));
+                if ((endDate - DateTime.Now).Days <= 7 && (endDate - DateTime.Now).Days > 0)
+                {
+                    e.Row.BackColor = System.Drawing.Color.Yellow;
+                }
+                else if (endDate < DateTime.Now)
+                {
+                    e.Row.BackColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    e.Row.BackColor = System.Drawing.Color.White;
+                }
+            }
+        };
+        //
+        settings.Columns.Add(col => {
+            col.Caption = "#";           
+            col.SetDataItemTemplateContent(c => {
+                Html.DevExpress().HyperLink(hyperLinkSettings => {
+                    hyperLinkSettings.Properties.Text = "Sửa";
+                    hyperLinkSettings.Name = "change-" + c.VisibleIndex;
+                    hyperLinkSettings.NavigateUrl = "javascript:void(0)";
+                    hyperLinkSettings.Properties.ClientSideEvents.Click = "OncontractHistoryUpdateClick";
+                    hyperLinkSettings.Enabled = (bool)ViewData["IsEnable"];
+                }).Render();
+            });
+        });
+        //
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "EmployeeContractId";          
+        });
+        settings.Columns.Add(col =>{
+            col.FieldName = "ContractNo";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ContractType.Id";
+            col.Visible = false;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.Caption = "Loại hợp đồng";
+            col.FieldName = "ContractType.ContractTypeName";
+            //col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            //ComboBoxProperties cmbPros = (ComboBoxProperties)col.PropertiesEdit;
+            //cmbPros.DataSource = ViewData["ContractTypeList"];
+            //cmbPros.TextField = "ContractTypeName";
+            //cmbPros.ValueField = "Id";
+            //cmbPros.ValueType = typeof(int);
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "StartDate";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;            
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "EndDate";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+        });
+
+        
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ContractAttachFile";
+            col.ColumnType = MVCxGridViewColumnType.HyperLink;
+            HyperLinkProperties hyperPros = col.PropertiesEdit as HyperLinkProperties;
+            
+            col.SetDataItemTemplateContent(item =>
+            {
+                Html.DevExpress().HyperLink(link =>
+                {                    
+                    if (item.Text == "&nbsp;")
+                    {
+                        link.Properties.Text = "N\\A";                        
+                    }
+                    else
+                    {
+                        link.Properties.Text = item.Text;
+                        link.NavigateUrl = string.Format("~/Upload/Contracts/{0}", item.Text);
+                    }
+                   
+                }).Render();                                
+            });
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Remark";
+        });
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

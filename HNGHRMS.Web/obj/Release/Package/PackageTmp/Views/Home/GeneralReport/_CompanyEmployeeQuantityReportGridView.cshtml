@@ -1,0 +1,96 @@
+@{
+	var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "CompanyEmployeeQuantityReportGridView";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "CompanyEmployeeQuantityReportByDate" };
+		
+        settings.SettingsPager.PageSize = 20;
+		settings.SettingsPager.Visible = true;
+		settings.Settings.ShowGroupPanel = false;
+		settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        
+        settings.KeyFieldName = "Id";
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Id";
+            col.Visible = false;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CompanyName";
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            col.MinWidth = 250;
+        });
+        settings.Columns.Add(col => {
+            col.FieldName = "CurrentEmployees";
+            col.PropertiesEdit.DisplayFormatString = "n0";
+        });
+        settings.Columns.Add(col => {
+            col.FieldName = "NewEmployees";
+            col.ColumnType = MVCxGridViewColumnType.HyperLink;
+            col.PropertiesEdit.DisplayFormatString = "n0";
+            col.SetDataItemTemplateContent(item => {
+                Html.DevExpress().HyperLink(link =>
+                {
+                    string args = item.KeyValue.ToString() + "-"
+                        + DataBinder.Eval(item.DataItem, "DateReportStart").ToString().Replace('/', '-') + "-"
+                        + DataBinder.Eval(item.DataItem, "DateReportEnd").ToString().Replace('/', '-');
+                    link.NavigateUrl = Url.Action("NewEmployeesReport", "Home", new { DataQuery = args });
+                    link.Properties.Text = item.Text;    
+                }).Render();
+            });
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "NumArriveTransferEmployee";
+//            col.ColumnType = MVCxGridViewColumnType.HyperLink;
+            col.PropertiesEdit.DisplayFormatString = "n0";
+            //col.SetDataItemTemplateContent(item => {
+            //    Html.DevExpress().HyperLink(link =>
+            //    {
+            //        string args = item.KeyValue.ToString() + "-" + DataBinder.Eval(item.DataItem, "DateReportStart").ToString().Replace('/', '-');
+            //        link.NavigateUrl = Url.Action("TerminatedEmployeesReport", "Home", new { DataQuery = args });
+            //        link.Properties.Text = item.Text;  
+            //    }).Render();
+            //});
+
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "NumLeaveTransferEmployee";
+           // col.ColumnType = MVCxGridViewColumnType.HyperLink;
+            col.PropertiesEdit.DisplayFormatString = "n0";
+            //col.SetDataItemTemplateContent(item =>
+            //{
+            //    Html.DevExpress().HyperLink(link =>
+            //    {
+            //        string args = item.KeyValue.ToString() + "-" + DataBinder.Eval(item.DataItem, "DateReportStart").ToString().Replace('/', '-');
+            //        link.NavigateUrl = Url.Action("TerminatedEmployeesReport", "Home", new { DataQuery = args });
+            //        link.Properties.Text = item.Text;
+            //    }).Render();
+            //});
+
+        });
+        settings.Columns.Add(col => {
+            col.FieldName = "TerminatedEmployees";
+            col.ColumnType = MVCxGridViewColumnType.HyperLink;
+            col.PropertiesEdit.DisplayFormatString = "n0";
+            col.SetDataItemTemplateContent(item => {
+                Html.DevExpress().HyperLink(link =>
+                {
+                    string args = item.KeyValue.ToString() + "-"
+                        + DataBinder.Eval(item.DataItem, "DateReportStart").ToString().Replace('/', '-') + "-"
+                        + DataBinder.Eval(item.DataItem, "DateReportEnd").ToString().Replace('/', '-');
+                    link.NavigateUrl = Url.Action("TerminatedEmployeesReport", "Home", new { DataQuery = args });
+                    link.Properties.Text = item.Text;
+                }).Render();
+            });
+
+        });
+
+        settings.Columns.Add("DateReportStart").PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+        settings.Columns.Add("DateReportEnd").PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+    });
+}
+@grid.Bind(Model).GetHtml()

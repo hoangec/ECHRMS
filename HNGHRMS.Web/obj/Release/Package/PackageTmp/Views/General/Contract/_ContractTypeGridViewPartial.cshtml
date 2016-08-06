@@ -1,0 +1,75 @@
+﻿
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "SalaryComponentGridViewPartial";
+        settings.CallbackRouteValues = new { Controller = "General", Action = "ContractTypeGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "General", Action = "ContractTypeAdd" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "General", Action = "ContractTypeUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "General", Action = "ContractTypeDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Settings.ShowFooter = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Id";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ContractTypeName";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Duration";            
+            col.SetDataItemTemplateContent(item =>
+            {
+                Html.DevExpress().Label(lbl =>
+                {
+                    string args = DataBinder.Eval(item.DataItem, "Duration").ToString();
+                    if (args == "0")
+                    {
+                        lbl.Text = "Không kỳ hạn";
+                    }
+                    else
+                    {
+                        lbl.Text = item.Text.Trim();
+                    }
+                    
+                }).Render();
+            });
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            TextBoxProperties txtPro = (TextBoxProperties)col.PropertiesEdit;
+            txtPro.MaskSettings.Mask = "<0..36>";                        
+            txtPro.MaskSettings.ShowHints = true;
+        });
+        settings.SettingsCommandButton.NewButton.Text = "Thêm";
+        settings.SettingsCommandButton.EditButton.Text = "Sửa";
+        settings.SettingsCommandButton.DeleteButton.Text = "Xóa";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        if (ViewData["EditErrorOnDelete"] != null)
+        {          
+            settings.SetFooterRowTemplateContent(c =>
+            {
+                Html.ViewContext.Writer.Write(ViewData["EditErrorOnDelete"]);
+            });
+        }
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);      
+    }
+}
+@grid.Bind(Model).GetHtml()

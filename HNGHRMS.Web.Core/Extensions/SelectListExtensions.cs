@@ -12,14 +12,26 @@ namespace HNGHRMS.Web.Core.Extensions
     {
        public static IEnumerable<SelectListItem> ToSelectListItems(this IEnumerable<Company> companies,int selectedId = 0)
         {
-            return companies.OrderBy(com => com.CompanyId)
+            return companies.OrderBy(com => com.Id)
                              .Select(com =>
                                  new SelectListItem
                                  {
-                                     Selected = (com.CompanyId == selectedId),
+                                     Selected = (com.Id == selectedId),
                                      Text = com.CompanyName,
-                                     Value = com.CompanyId.ToString()
+                                     Value = com.Id.ToString()
                                  });
         }
+
+       public static IEnumerable<SelectListItem> ToSelectListItems(this IEnumerable<Position> positions, int selectedId = 0)
+       {
+           return positions.OrderBy(pos => pos.Id)
+                            .Select(pos =>
+                                new SelectListItem
+                                {
+                                    Selected = (pos.Id == selectedId),
+                                    Text = pos.PositionName,
+                                    Value = pos.Id.ToString()
+                                });
+       }
     }
 }

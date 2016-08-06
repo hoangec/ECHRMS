@@ -1,0 +1,126 @@
+﻿
+@model HNGHRMS.Web.ViewModels.EmployeeContractUpdateFormModel
+@Html.DevExpress().FormLayout(settings =>
+    {
+        settings.Name = "employeeContractUpdateForm";
+        settings.Items.AddGroupItem(groupSettings =>
+        {
+            groupSettings.Caption = "Cập nhập thông tin hợp đồng";
+            groupSettings.ColCount = 3;
+            groupSettings.Items.Add(m => m.ContractUpdateId, item =>
+            {
+                item.ColSpan = 3;
+                item.ClientVisible = false;
+            });
+            groupSettings.Items.Add(m => m.ContractUpdateNo, item =>
+            {
+                item.Caption = "Số hợp đồng";
+                item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+                TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+                txtSettings.ShowModelErrors = true;
+                txtSettings.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+            });
+
+            groupSettings.Items.Add(m => m.ContractUpdateTypeId, item =>
+            {
+                item.Caption = "Loại hợp đồng";
+                item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+                ComboBoxSettings cmbSetting = (ComboBoxSettings)item.NestedExtensionSettings;
+                cmbSetting.Properties.DataSource = ViewData["ContractTypeList"];
+                cmbSetting.Properties.TextField = "ContractTypeName";
+                cmbSetting.Properties.ValueField = "Id";
+            });
+            groupSettings.Items.Add(m => m.ContractUpdateStartDate, item =>
+            {
+                item.Caption = "Ngày bắt đầu";
+                item.NestedExtensionType = FormLayoutNestedExtensionItemType.DateEdit;
+            });
+            groupSettings.Items.Add(m => m.ContractUpdateRemark, item =>
+            {
+                item.Caption = "Ghi chú";
+                item.ColSpan = 3;
+                item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                item.NestedExtensionType = FormLayoutNestedExtensionItemType.Memo;
+                MemoSettings memoSetting = (MemoSettings)item.NestedExtensionSettings;
+                memoSetting.Properties.Rows = 3;
+                memoSetting.Properties.Columns = 55;
+            });
+            groupSettings.Items.Add(m => m.ContractUpdateAttachFile, item =>
+            {
+                item.ShowCaption = DefaultBoolean.False;
+                item.ClientVisible = false;
+
+            });
+
+            groupSettings.Items.Add(item =>
+            {
+                item.Caption = "File đính kèm";
+                item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                item.ColSpan = 3;
+                item.SetNestedContent(() =>
+                {
+                    Html.DevExpress().Button(btnSettings =>
+                    {
+                        btnSettings.Name = "btnContractDeleteAttachFile";
+                        btnSettings.Text = "Xóa";
+                        btnSettings.RenderMode = ButtonRenderMode.Button;
+                        btnSettings.Images.Image.IconID = IconID.ActionsClear16x16;
+                        btnSettings.ClientEnabled = true;
+                        btnSettings.EnableClientSideAPI = true;
+                        btnSettings.ClientSideEvents.Click = "OnbtnContractDeleteAttachFileClick";
+                            
+
+                    }).Render();
+                    Html.DevExpress().HyperLink(hyperlinkSettings =>
+                    {
+                        hyperlinkSettings.Name = "ContractUpdateAttachFileClient";
+                        hyperlinkSettings.Style.Add("margin-left", "10px");
+                        hyperlinkSettings.Properties.ClientInstanceName = "ContractUpdateAttachFileClient";
+                    }).Render();
+                });
+            });
+            groupSettings.Items.Add(item =>
+            {
+                item.Name = "ContractUpdateUploadFile";
+                item.Caption = "Tải File mới";
+                item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                item.ColSpan = 3;
+                item.NestedExtensionType = FormLayoutNestedExtensionItemType.UploadControl;
+                UploadControlSettings uploadSettings = (UploadControlSettings)item.NestedExtensionSettings;
+                uploadSettings.ShowUploadButton = true;
+                uploadSettings.CallbackRouteValues = new { Controller = "Employee", Action = "ContractUpdateUploadAttachFileUploadControlCallbackAction" };
+                uploadSettings.ClientSideEvents.FileUploadComplete = "OnContractUpdateUploadFileComplete";
+            });
+            groupSettings.Items.Add(item =>
+            {
+                item.ColSpan = 3;
+                item.ShowCaption = DefaultBoolean.False;
+                item.SetNestedContent(() =>
+                {
+                    ViewContext.Writer.Write("<hr />");
+                });
+            });
+            groupSettings.Items.Add(item =>
+            {
+                item.ColSpan = 3;
+                item.ShowCaption = DefaultBoolean.False;
+                item.SetNestedContent(() =>
+                {
+                    Html.DevExpress().Button(btnSettings =>
+                    {
+                        btnSettings.Name = "btnUpdateContractSave";
+                        btnSettings.Text = "Lưu";
+                        btnSettings.UseSubmitBehavior = true;
+                    }).Render();
+                    Html.DevExpress().Button(btnSettings =>
+                    {
+                        btnSettings.Name = "btnUpdateContractCancel";
+                        btnSettings.Text = "Hủy";
+                        btnSettings.Style.Add("margin-left", "5px");
+                        btnSettings.ClientSideEvents.Click = "function(s,e){setContractUpdateFormLayoutVisible(false);setContractFunctionButtonEnable(true);}";
+                    }).Render();
+                });
+            });
+        });
+    }).GetHtml()
+

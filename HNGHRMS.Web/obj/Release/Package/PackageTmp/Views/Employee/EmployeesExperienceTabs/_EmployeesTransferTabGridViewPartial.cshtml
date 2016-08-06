@@ -1,0 +1,166 @@
+﻿@model IEnumerable<HNGHRMS.Web.ViewModels.TransferEmployeeGridViewModel>
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "EmployeesTransferTabGridView";
+        settings.CallbackRouteValues = new { Controller = "Employee", Action = "EmployeesTransferGridViewPartialByEmployeeId" };        
+        settings.ClientSideEvents.BeginCallback = "OnEmployeeTransferTabGridViewBeginCallBack";
+       
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Employee", Action = "EmployeesTransferTabGridViewPartialDelete" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Employee", Action = "EmployeesTransferTabGridViewPartialUpdate" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.SettingsText.ConfirmDelete = "Thông tin nhân viên sẽ được phục hồi lại thời điểm trước đó !";
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        settings.SettingsCommandButton.DeleteButton.Text = "Xóa";
+        settings.SettingsCommandButton.EditButton.Text = "Sửa";
+        settings.CommandColumn.ShowDeleteButton = (bool)ViewData["IsEnable"];
+        settings.CommandColumn.ShowEditButton = (bool)ViewData["IsEnable"];
+        settings.CommandColumn.Width = 100;
+        settings.KeyFieldName = "ExperienceId";
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsPager.Visible = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;        
+        settings.Columns.Add(col =>
+        {            
+            col.FieldName = "ExperienceId";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OldCompanyName";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col => {
+            col.FieldName = "OldPositionName";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+            col.FieldName = "OldDepartement";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OldJoinedDate";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "TransferDate";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ExperienceYears";
+            col.EditFormSettings.Visible = DefaultBoolean.False;       
+        });
+        settings.Columns.Add(col =>
+        {
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+            col.FieldName = "Reason";
+        });
+       
+
+        //settings.CellEditorInitialize = (sender, e) =>
+        //{
+        //    if ((sender as MVCxGridView).IsNewRowEditing)
+        //    {
+        //        if (e.Column.FieldName == "CompanyId" || e.Column.FieldName == "Gender")
+        //        {
+        //            (e.Editor as ASPxComboBox).SelectedIndex = 0;
+        //        }
+        //        if (e.Column.FieldName == "JoinedDate")
+        //        {
+        //            (e.Editor as ASPxDateEdit).Date = DateTime.Now;
+        //        }
+        //    }
+        //};
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OldSalary";
+            col.EditFormSettings.Visible = DefaultBoolean.False;        
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            
+            TextBoxProperties textBoxPro = col.PropertiesEdit as TextBoxProperties;
+            textBoxPro.DisplayFormatString = "c0";            
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "AttachFile";
+            col.ReadOnly = true;
+            col.PropertiesEdit.ClientInstanceName = "ExperienceAttachFile";            
+            col.SetDataItemTemplateContent(item =>
+            {
+                Html.DevExpress().HyperLink(link =>
+                {
+                    if (item.Text == "&nbsp;")
+                    {
+                        link.Properties.Text = "N\\A";
+                    }
+                    else
+                    {
+                        link.Properties.Text = item.Text;
+                        link.NavigateUrl = string.Format("~/Upload/Experiences/{0}", item.Text);
+                    }
+
+                }).Render();
+            });
+        });
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Tải file";
+            column.Visible = false;
+            column.EditFormSettings.Visible = DefaultBoolean.True;
+            column.EditFormSettings.VisibleIndex = 11;
+            column.SetEditItemTemplateContent(c =>
+            {
+                using (Html.BeginForm())
+                {
+                    Html.DevExpress().TextBox(txtSettings =>
+                    {
+                        txtSettings.ClientVisible = false;
+                        txtSettings.Name = "txtExperienceTabEmployeeId";
+                        string employeeId = DataBinder.Eval(c.DataItem, "EmployeeId").ToString();
+                        txtSettings.Text = employeeId;
+                    }).GetHtml();
+                    Html.DevExpress().TextBox(txtSettings =>
+                    {
+                        txtSettings.ClientVisible = false;
+                        txtSettings.Name = "txtExperienceTabExperienceId";
+                        string experienceId = DataBinder.Eval(c.DataItem, "ExperienceId").ToString();
+                        txtSettings.Text = experienceId;
+                    }).GetHtml();
+                    Html.DevExpress().Button(btnSettings =>
+                    {
+                        btnSettings.Name = "btnDeleteExperienceFileUpload";
+                        btnSettings.Text = "Xóa file đang đính kèm";
+                        btnSettings.Style.Value = "margin-bottom:5px";
+                        btnSettings.ClientSideEvents.Click = "OnbtnDeleteExperienceFileUploadClick";
+                    }).GetHtml();
+                    Html.DevExpress().UploadControl(ucSettings =>
+                    {
+                        ucSettings.Name = "EmployeeTransferTabUploadFile";
+                        ucSettings.CallbackRouteValues = new { Controller = "Employee", Action = "EmployeeTransferTabAttachFileUploadControlCallbackAction" };
+                        ucSettings.ClientSideEvents.FileUploadComplete = "OnExperienceFileUploadComplate";
+                        ucSettings.ShowUploadButton = true;
+                    }).GetHtml();
+                  
+
+                }
+            });
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

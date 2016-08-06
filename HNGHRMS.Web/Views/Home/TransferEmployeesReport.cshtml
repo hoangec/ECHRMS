@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "Báo cáo điều chuyển ";
+}
+
+<h3 style="margin-left:10px">Báo cáo nhân viên điều chuyển</h3>
+<script type="text/javascript">
+
+    function CompanySelectChanged(s, e) {
+        var startDate = TransferEmployeeReportStartDate.GetDate();
+        var endDate = TransferEmployeeReportEndDate.GetDate();
+        if (CheckDifference(startDate, endDate)) {
+            TransferEmpployeeReportCompareDateStatus.SetText("")
+            TransferEmployeeReportGridView.PerformCallback();
+        } else {
+            TransferEmpployeeReportCompareDateStatus.SetText("Ngày bắt đầu không được lớn hơn ngày kết thúc !")
+        }
+    }
+
+
+    function CheckDifference(startDate, endDate) {
+        if (startDate > endDate) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    function OnTransferEmployeeBeginCallBack(s, e) {
+
+        e.customArgs['CompanyId'] = companySelect.GetValue();
+        e.customArgs['StartSelectedDate'] = TransferEmployeeReportStartDate.GetValue().toLocaleDateString('vi-VN');
+        e.customArgs['EndSelectedDate'] = TransferEmployeeReportEndDate.GetValue().toLocaleDateString('vi-VN');
+
+    }
+
+    function OnTransferEmployeeReportDateChange(s, e) {
+        var startDate = TransferEmployeeReportStartDate.GetDate();
+        var endDate = TransferEmployeeReportEndDate.GetDate();
+        if (CheckDifference(startDate, endDate)) {
+            TransferEmpployeeReportCompareDateStatus.SetText("")
+            TransferEmployeeReportGridView.PerformCallback();
+        } else {
+            TransferEmpployeeReportCompareDateStatus.SetText("Ngày bắt đầu không được lớn hơn ngày kết thúc !")
+        }
+      
+    }
+
+    function OnBtnTransferEmployeeExportClick(s, e)
+    {
+        var startDate = TransferEmployeeReportStartDate.GetValue().toLocaleDateString('vi-VN').replace("/", "-").replace("/", "-");      
+        var endDate = TransferEmployeeReportEndDate.GetValue().toLocaleDateString('vi-VN').replace("/", "-").replace("/", "-");
+        var companyId = companySelect.GetValue();
+        var query = companyId + "-" + startDate + "-" + endDate;
+        var actionParams = $("form").attr("action").split("?QueryString=");
+        actionParams[1] = query;        
+        $("form").attr("action", actionParams.join("?QueryString="));
+    }
+</script>
+
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "EmpolyeeFormLayout";
+    settings.Items.AddGroupItem(groupSettings =>
+    {
+       // groupSettings.Name = "companyAndDateSelect";
+        groupSettings.Caption = "Tiêu chí báo cáo";
+        groupSettings.ColCount = 3;
+        groupSettings.Items.Add(itemSettins =>
+        {
+            itemSettins.Caption = "Công ty";            
+            itemSettins.SetNestedContent(() =>
+            {
+                Html.RenderPartial("_CompanyComboBox");
+            });
+
+        });
+        groupSettings.Items.Add(itemSettings =>
+        {
+            itemSettings.Caption = "Ngày bắt đầu";
+            itemSettings.Name = "TransferEmployeeReportStartDate";
+            itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.DateEdit;
+            DateEditSettings dateSettings = (DateEditSettings)itemSettings.NestedExtensionSettings;
+            dateSettings.Date = ViewBag.StartChoiceDate;
+            dateSettings.Properties.ClientSideEvents.ValueChanged = "OnTransferEmployeeReportDateChange";
+        });
+        groupSettings.Items.Add(itemSettings =>
+        {
+            itemSettings.Caption = "Ngày kết thúc";
+            itemSettings.Name = "TransferEmployeeReportEndDate";            
+            itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.DateEdit;
+            DateEditSettings dateSettings = (DateEditSettings)itemSettings.NestedExtensionSettings;
+            dateSettings.Date = ViewBag.EndChoiceDate;
+            dateSettings.Properties.ClientSideEvents.ValueChanged = "OnTransferEmployeeReportDateChange";
+            
+        });
+        groupSettings.Items.AddEmptyItem();
+        groupSettings.Items.Add(itemSettings =>
+        {
+            
+            itemSettings.Name = "TransferEmpployeeReportCompareDateStatus";
+            itemSettings.ShowCaption = DefaultBoolean.False;
+            itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.Label;
+            LabelSettings lblSet = (LabelSettings)itemSettings.NestedExtensionSettings;
+            lblSet.Properties.ClientInstanceName = "TransferEmpployeeReportCompareDateStatus";
+            lblSet.Style.Value = "color:red;";
+            lblSet.Width = Unit.Percentage(50);
+
+        });
+    });
+    settings.Items.Add(itemSettins =>
+    {
+       // itemSettins.Name = "gridviewEmployees";
+        itemSettins.Caption = "Danh sách nhân viên";
+        itemSettins.HorizontalAlign = FormLayoutHorizontalAlign.Left;
+        itemSettins.VerticalAlign = FormLayoutVerticalAlign.Bottom;
+        itemSettins.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+        itemSettins.SetNestedContent(() =>
+        {
+            using (Html.BeginForm("TransferEmployeeReportExportTo","Home"))
+            {
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "BtnTransferEmployeeExport";
+                    btnSettings.Text = "Xuất Excel";
+                    btnSettings.Images.Image.IconID = IconID.ExportExporttoxlsx32x32office2013;
+                    btnSettings.RenderMode = ButtonRenderMode.Link;
+                    btnSettings.UseSubmitBehavior = true;
+                    btnSettings.ClientSideEvents.Click = "OnBtnTransferEmployeeExportClick";
+                    btnSettings.Style.Value = "margin-bottom:5px";
+                }).GetHtml();
+                Html.RenderPartial("TransferEmployeeReport/_TransferEmployeeReportGridView", ViewData["experiences"]);
+           }
+        });
+    });
+}).GetHtml()
+

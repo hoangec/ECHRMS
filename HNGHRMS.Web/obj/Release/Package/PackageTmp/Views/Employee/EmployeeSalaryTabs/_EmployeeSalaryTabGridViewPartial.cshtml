@@ -1,0 +1,129 @@
+﻿
+@model IEnumerable<HNGHRMS.Web.ViewModels.EmployeeSalaryComponentViewModel>
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "gridEmployeeSalary";
+        settings.CallbackRouteValues = new { Controller = "Employee", Action = "EmployeeSalaryGridView" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Employee", Action = "EmployeeSalaryGridViewDelete" };
+        settings.Style.Add("margin-top", "10px");
+       // settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.ClientSideEvents.BeginCallback = "OnGridEmployeeSalaryBeginCallback";
+        settings.ClientSideEvents.EndCallback = "OnGridEmployeeSalaryEndCallback";     
+        //
+        settings.Settings.ShowFooter = true;
+        settings.CustomJSProperties = (s, e) =>
+        {
+            if (ViewData["realSalary"] != null)
+            {
+                e.Properties["cpRealSalary"] = ViewData["realSalary"].ToString();
+            }          
+        };
+        
+        settings.Styles.Footer.ForeColor = System.Drawing.Color.Red;
+        settings.Styles.Footer.Wrap = DefaultBoolean.True;        
+        //settings.CustomSummaryCalculate = (s, e) =>
+        //{
+        //    ASPxSummaryItem summary = e.Item as ASPxSummaryItem;
+        //    if (summary.FieldName != "Amount")
+        //        return;
+
+        //    if (e.IsTotalSummary)
+        //    {
+        //        int totalValue = 0;
+                
+        //        foreach (object value in ((MVCxGridView)s).GetSelectedFieldValues("Amount"))
+        //        {
+        //            totalValue += Convert.ToInt32(value);
+        //        }
+        //        //e.TotalValue = e.
+        //        e.TotalValueReady = true;
+        //    }
+        //};
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowDeleteButton = (bool)ViewData["IsEnable"];
+        //settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.Width = 100;
+        settings.KeyFieldName = "Id";                
+        //
+        
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Id";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "SalaryComponentName";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "IsMainSalary";
+            col.ColumnType = MVCxGridViewColumnType.CheckBox;
+            CheckBoxProperties chbPros = col.PropertiesEdit as CheckBoxProperties;
+            chbPros.DisplayTextChecked = "Lương cố định";
+            chbPros.DisplayTextUnchecked = "Khác";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "IsExtra";
+            col.ColumnType = MVCxGridViewColumnType.CheckBox;
+            CheckBoxProperties chbPros = col.PropertiesEdit as CheckBoxProperties;
+            chbPros.DisplayTextChecked = "Điều chỉnh tăng";
+            chbPros.DisplayTextUnchecked = "Điều chỉnh giảm";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "SalaryPayFrequency";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties cmbPros = col.PropertiesEdit as ComboBoxProperties;
+            cmbPros.DataSource = new SelectList(new[]{
+                new SelectListItem{Text = "Một lần",Value=HNGHRMS.Model.Enums.SalaryPayFerequency.OneTime.ToString()},
+                new SelectListItem{Text = "Hàng tháng", Value=HNGHRMS.Model.Enums.SalaryPayFerequency.Monthly.ToString()},
+                new SelectListItem{Text = "Tùy chọn", Value=HNGHRMS.Model.Enums.SalaryPayFerequency.Custom.ToString()}
+            }, "Value", "Text");
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "StartApplyDate";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "EndApplyDate";
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+        });
+        settings.TotalSummary.Add(new ASPxSummaryItem() { SummaryType = DevExpress.Data.SummaryItemType.Custom, FieldName = "Amount", ShowInColumn = "Amount" });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Amount";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Remark";
+        });
+        if (ViewData["EditErrorOnDelete"] != null)
+        {                            
+            settings.SetFooterRowTemplateContent(c =>
+            {
+                Html.ViewContext.Writer.Write(ViewData["EditErrorOnDelete"]);
+            });
+        }
+        if ((bool)ViewData["HaveSalaryComponent"] == false)
+        {
+            settings.SetFooterRowTemplateContent(c =>
+            {
+                Html.ViewContext.Writer.Write("Nhân viên không có giá trị lương");
+            });
+        }
+    });
+
+    //if (ViewData["EditError"] != null)
+    //{
+    //    grid.SetEditErrorText((string)ViewData["EditError"]);
+    //}
+}
+@grid.Bind(Model).GetHtml()

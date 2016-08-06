@@ -1,0 +1,172 @@
+﻿
+@model IEnumerable<HNGHRMS.Web.ViewModels.InsuranceGridView>
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "gridEmployeeInsurance";
+        settings.CallbackRouteValues = new { Controller = "Employee", Action = "EmployeeInsuranceGridView" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Employee", Action = "EmployeeInsuranceGridViewDelete" };
+        settings.Style.Add("margin-top", "10px");
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.ClientSideEvents.BeginCallback = "OnGridEmployeeInsuranceCallback";
+        settings.ClientSideEvents.EndCallback = "OnGridEmployeeInsuranceEndCallback";        
+        //
+        settings.CustomJSProperties = (s, e) => {
+            if (ViewData["realSalary"] != null)
+            {
+                e.Properties["cpRealSalary"] = ViewData["realSalary"].ToString();
+            }
+            if (ViewData["hasMandatory"] != null)
+            {
+                e.Properties["cpHasMandatory"] = ViewData["hasMandatory"].ToString();
+            }
+            if (ViewData["hasVoluntary"] != null)
+            {
+                e.Properties["cpHasVoluntary"] = ViewData["hasVoluntary"].ToString();
+            }
+            if (ViewData["deleteStatus"] != null) { 
+                e.Properties["cpStatus"] = ViewData["deleteStatus"].ToString();
+            }
+            else
+            {
+                e.Properties["cpStatus"] = null;
+            }
+        };
+        //
+        settings.HtmlRowPrepared = (sender, e) =>
+        {
+          if (e.RowType == GridViewRowType.Data)
+          {              
+              bool isHistory = Convert.ToBoolean(e.GetValue("IsHistory"));
+              if (isHistory)
+              {
+                  e.Row.BackColor = System.Drawing.Color.Blue;
+              }           
+          }
+        };
+        //
+        //
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowDeleteButton = (bool)ViewData["IsEnable"];
+        settings.CommandColumn.Width = 100;
+        settings.KeyFieldName = "Id";                
+        //
+        
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Id";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "InsuranceNo";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DateOfIssue";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "InsuranceType";                
+        });
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Amount";
+        });
+        settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "LabratorAmount");
+        settings.Columns.AddBand(employeeBand => {
+            employeeBand.Caption = "Nhân viên";
+            employeeBand.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            employeeBand.HeaderStyle.BackColor = System.Drawing.Color.Yellow;          
+            employeeBand.Columns.Add(col =>
+            {
+                col.FieldName = "LabaratorRatePercent";
+            });
+            employeeBand.Columns.Add(col =>
+            {
+                col.FieldName = "LabratorAmount";
+                col.SetHeaderCaptionTemplateContent(c =>
+                {
+                    ASPxGridView gridInsurance = c.Grid;
+                    ASPxSummaryItem summary = gridInsurance.TotalSummary["LabratorAmount", DevExpress.Data.SummaryItemType.Sum];
+                    GridViewDataColumn cl = c.Column as GridViewDataColumn;
+
+                    string text = summary.GetTotalFooterDisplayText(cl, gridInsurance.GetTotalSummaryValue(summary));
+                    string summaryText = string.Format("{0}\r\n({1})", col.Caption, text);
+
+                    ViewContext.Writer.Write(summaryText);
+                });
+            });
+        });                     
+        //
+        settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "CompanyAmount");
+        settings.Columns.AddBand(companyBand => {
+            companyBand.Caption = "Công ty";
+            companyBand.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            companyBand.HeaderStyle.BackColor = System.Drawing.Color.YellowGreen;    
+            companyBand.Columns.Add(col =>
+            {
+                col.FieldName = "CompanyRatePercent";
+            });           
+            companyBand.Columns.Add(col =>
+            {
+                col.FieldName = "CompanyAmount";
+                col.SetHeaderCaptionTemplateContent(c =>
+                {
+                    ASPxGridView gridInsurance = c.Grid;
+                    ASPxSummaryItem summary = gridInsurance.TotalSummary["CompanyAmount", DevExpress.Data.SummaryItemType.Sum];
+                    GridViewDataColumn cl = c.Column as GridViewDataColumn;
+
+                    string text = summary.GetTotalFooterDisplayText(cl, gridInsurance.GetTotalSummaryValue(summary));
+                    string summaryText = string.Format("{0}\r\n({1})", col.Caption, text);
+
+                    ViewContext.Writer.Write(summaryText);
+                });
+            });
+        });
+       
+        //
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "AttachFile";
+            col.SetDataItemTemplateContent(item =>
+            {
+                Html.DevExpress().HyperLink(link =>
+                {
+                    if (item.Text == "&nbsp;")
+                    {
+                        link.Properties.Text = "N\\A";
+                    }
+                    else
+                    {
+                        link.Properties.Text = item.Text;
+                        link.NavigateUrl = string.Format("~/Upload/Insurances/{0}", item.Text);
+                    }
+
+                }).Render();
+            });
+        });
+        //
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "HistoryCompanyName";
+            col.Width = Unit.Pixel(200);
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "HistoryPositionName";
+        });
+    });
+    
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

@@ -15,9 +15,10 @@ using HNGHRMS.Model.Models;
 using AutoMapper;
 using DevExpress.Web.Mvc;
 using System.Web.Script.Serialization;
+using HNGHRMS.Service.Interface;
 namespace HNGHRMS.Web
 {
-    [Authorize(Roles = "Admin")]
+   [Authorize(Roles = "Admin")]
     public class AccountController : Controller
     {
         //public AccountController()

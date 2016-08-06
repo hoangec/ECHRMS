@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Thiết lập chung";
+}
+
+<h3 style="margin-left:10px">Vị trí chức vụ</h3>
+
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "PostionFormLayout";
+    settings.Items.Add(item =>
+    {
+        item.Caption = "Danh sách chức vụ";
+        item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+        item.SetNestedContent(() =>
+        {
+            ViewContext.Writer.Write(Html.Action("PositionGridViewPartial","General"));
+        });
+    });
+}).GetHtml()

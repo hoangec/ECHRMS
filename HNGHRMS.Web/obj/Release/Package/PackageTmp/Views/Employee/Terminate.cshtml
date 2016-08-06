@@ -37,15 +37,22 @@
     }
 
     function OnCmbEmployeeListEndCallBack(s, e) {
-        s.SetSelectedIndex(0);
-        var employeeId = s.GetValue();
-        cbpEmployeeTerminatedInformation.PerformCallback({ id: employeeId });
+        s.SetSelectedIndex(0);        
+        if (s.GetValue() != null) {
+            var employeeId = s.GetValue();
+            cbpEmployeeTerminatedInformation.PerformCallback({ id: employeeId });
+        } else {
+            cbpEmployeeTerminatedInformation.PerformCallback({ id: 0 });
+        }
+       
     }
 
     function OnTerminatedDateValidation(s, e) {        
         var terminatedDate = e.value;      
         var today = new Date();
-        if (terminatedDate >= today) {
+        terminatedDate.setHours(0, 0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0, 0);
+        if (terminatedDate > today) {
             e.isValid = false;
             e.errorText = "Ngày thôi việc lớn hơn ngày hiện tại";
         }
@@ -67,8 +74,9 @@
                 itemSettings.VerticalAlign = FormLayoutVerticalAlign.Top;
                 itemSettings.Caption = "Danh sách nhân viên";
                 itemSettings.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
-                itemSettings.SetNestedContent(() => {                    
-                    Html.RenderPartial("_CmbEmployeeList", ViewData["Employees"]);
+                itemSettings.SetNestedContent(() =>
+                {
+                    Html.RenderPartial("EmployeesTerminate/_CmbEmployeeTerminate", ViewData["Employees"]);
                 });
             });
             groupSettings.Items.Add(itemSettings => {
@@ -85,7 +93,7 @@
                         }))
                     //ViewContext.Writer.Write("<div id=\"terminateInfor\" >");
                     {
-                        Html.RenderPartial("_CbpEmployeeInfor", ViewData["TerminateFormModel"]);  
+                        Html.RenderPartial("EmployeesTerminate/_CbpEmployeeTerminateInfor", ViewData["TerminateFormModel"]);  
                     }
                    // ViewContext.Writer.Write("</div>");   
                 });
@@ -98,7 +106,7 @@
                 itemSettings.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
                 itemSettings.SetNestedContent(() =>
                 {
-                    Html.RenderPartial("_EmployeesTerminateGridViewPartial", ViewData["EmployeesTerminated"]);
+                    Html.RenderPartial("EmployeesTerminate/_EmployeesTerminateGridViewPartial", ViewData["EmployeesTerminated"]);
                 });
             });
         });

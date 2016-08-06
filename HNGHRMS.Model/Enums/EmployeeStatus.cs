@@ -9,6 +9,7 @@ namespace HNGHRMS.Model.Enums
     public enum EmployeeStatus
     {
         Present,
-        Terminated
+        Terminated,
+        Transfer
     }
 }

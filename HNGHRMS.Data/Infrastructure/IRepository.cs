@@ -18,5 +18,7 @@ namespace HNGHRMS.Data.Infrastructure
             
         IEnumerable<T> GetAll();
         IEnumerable<T> GetMany(Expression<Func<T,bool>> where);
+
+        IEnumerable<T> ExecWithStoreProcedure(string query, params object[] parameters);
     }
 }

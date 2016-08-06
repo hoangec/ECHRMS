@@ -1,0 +1,20 @@
+﻿@Html.DevExpress().Chart(chartSettings =>
+{
+    chartSettings.Name = "EmployeesQuantityTypeByCompanyChart";
+    chartSettings.CallbackRouteValues = new { Controller = "Home", Action = "GetEmployeesQuantityTypeByCompanyChart" };
+    chartSettings.Width = 990;
+    chartSettings.SeriesTemplate.ValueScaleType = ScaleType.Numerical;
+    chartSettings.SeriesTemplate.ChangeView(DevExpress.XtraCharts.ViewType.Bar);
+    chartSettings.SeriesDataMember = "Types";
+    chartSettings.SeriesTemplate.ArgumentDataMember = "Company";
+    chartSettings.SeriesTemplate.ValueDataMembers[0] = "Quantity";
+    chartSettings.EmptyChartText.Text = "Không có dự liệu";
+
+    
+    Axis2D axisY = ((XYDiagram)chartSettings.Diagram).AxisY;
+    axisY.NumericScaleOptions.GridSpacing = 1;
+    axisY.NumericScaleOptions.AutoGrid = true;
+    axisY.Title.Text = "Số nhân viên";
+    axisY.Interlaced = false;    
+    axisY.Title.Visibility = DefaultBoolean.True;
+}).Bind(Model).GetHtml()

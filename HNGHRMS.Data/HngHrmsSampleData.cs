@@ -8,8 +8,6 @@ using HNGHRMS.Data.Models;
 using HNGHRMS.Model.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-
-
 namespace HNGHRMS.Data
 {
     public class HngHrmsSampleData : DropCreateDatabaseIfModelChanges<HngHrmsEntities>
@@ -17,9 +15,10 @@ namespace HNGHRMS.Data
         protected override void Seed(HngHrmsEntities context)
         {
             // Role Cretea
-            ApplicationRole adminRole = new ApplicationRole() { 
+            ApplicationRole adminRole = new ApplicationRole()
+            {
                 Id = Guid.NewGuid().ToString(),
-                Name = "Admin",                
+                Name = "Admin",
             };
             ApplicationRole managerRole = new ApplicationRole()
             {
@@ -40,22 +39,23 @@ namespace HNGHRMS.Data
             context.Roles.Add(managerRole);
             context.Roles.Add(superUserRole);
             context.Roles.Add(userRole);
-            
+
             // User 
             if (!(context.Users.Any(u => u.UserName == "admin")))
             {
                 var userStore = new UserStore<ApplicationUser>(context);
                 var userManager = new UserManager<ApplicationUser>(userStore);
-                var userToInsert = new ApplicationUser {
-                    UserName = "admin", 
+                var userToInsert = new ApplicationUser
+                {
+                    UserName = "admin",
                     FirstName = "Hoang",
                     LastName = "Vo",
                     Email = "hoang.vo@hagl.com.vn",
                     CompaniesRole = "null",
-                   RoleId = "Admin"
+                    RoleId = "Admin"
                 };
                 userManager.Create(userToInsert, "123456");
-                userManager.AddToRole(userToInsert.Id,"Admin");
+                userManager.AddToRole(userToInsert.Id, "Admin");
             }
 
 

@@ -11,7 +11,7 @@ using HNGHRMS.Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Globalization;
-using HNGHRMS.Web.Core.Helper;
+using HNGHRMS.Web.Helpper;
 namespace HNGHRMS
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 

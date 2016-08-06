@@ -1,0 +1,53 @@
+﻿@model HNGHRMS.Web.ViewModels.EmployeesUploadViewModel
+
+@Html.DevExpress().FormLayout(settings => {
+
+    settings.Name = "EmployeesImportFormLayout";
+    settings.ColCount = 2;
+    settings.Items.Add(m => m.CompanyId, item =>
+        {
+            item.Name = "CompanyList";
+            item.Caption = "Công ty";
+            
+            item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+            ComboBoxSettings cmbSetting = (ComboBoxSettings)item.NestedExtensionSettings;
+            cmbSetting.Properties.DataSource = Model.CompanyList;
+            cmbSetting.Properties.TextField = "CompanyName";
+            cmbSetting.Properties.ValueField = "Id";
+            cmbSetting.Width = Unit.Pixel(300);
+        });
+    settings.Items.Add(m => m.PositionId, item =>
+    {
+        item.Name = "PositionList";
+        item.Caption = "Chức vụ";
+        item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+        item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+        ComboBoxSettings cmbSetting = (ComboBoxSettings)item.NestedExtensionSettings;
+        cmbSetting.Properties.DataSource = Model.PositionList;
+        cmbSetting.Properties.TextField = "PositionName";
+        cmbSetting.Properties.ValueField = "Id";
+        cmbSetting.Width = Unit.Pixel(200);
+    });
+    settings.Items.Add(item =>
+    {
+        item.ColSpan = 2;
+        item.Caption = "Chọn file tải";
+        item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+        item.NestedExtensionType = FormLayoutNestedExtensionItemType.UploadControl;
+        UploadControlSettings uploadSetting = (UploadControlSettings)item.NestedExtensionSettings;
+        uploadSetting.CallbackRouteValues = new { Controller = "General", Action = "EmployeesImportUploadControlCallbackAction" };        
+        uploadSetting.Name = "EmployeesExcelImportUploadFile";        
+        uploadSetting.ClientSideEvents.FileUploadComplete = "OnEmployeesImportFileUploadComplete";
+        uploadSetting.ShowUploadButton = true;
+        uploadSetting.ShowProgressPanel = true;
+        if (Model.CompanyId == 0 || Model.PositionId == 0)
+        {
+            uploadSetting.Enabled = false;
+        }
+        else
+        {
+            uploadSetting.Enabled = true;
+        }        
+    });
+}).GetHtml()

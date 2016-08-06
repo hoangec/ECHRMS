@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -54,19 +57,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompanyService\CompanyService.cs" />
-    <Compile Include="CompanyService\ICompanyService.cs" />
-    <Compile Include="EmployeeService\EmployeeService.cs" />
-    <Compile Include="EmployeeService\IEmployeeService.cs" />
+    <Compile Include="AutoMapperBootStrapper.cs" />
+    <Compile Include="Implementations\CompanyService.cs" />
+    <Compile Include="Interface\ICompanyService.cs" />
+    <Compile Include="Implementations\ContractService.cs" />
+    <Compile Include="Interface\IContractService.cs" />
+    <Compile Include="Implementations\EmployeeService.cs" />
+    <Compile Include="Interface\IEmployeeService.cs" />
+    <Compile Include="Implementations\ExperienceService.cs" />
+    <Compile Include="Implementations\InsuranceService.cs" />
+    <Compile Include="Implementations\SalaryService.cs" />
+    <Compile Include="Interface\IExperienceService.cs" />
+    <Compile Include="Interface\IInsuranceService.cs" />
+    <Compile Include="Interface\ISalaryService.cs" />
+    <Compile Include="Mapping\EmployeeSalaryComponentMapper.cs" />
+    <Compile Include="Mapping\InsuranceMapper.cs" />
+    <Compile Include="Messaging\ContractService\DeleteContractTypeByIdResponse.cs" />
+    <Compile Include="Messaging\EmployeeService\CreateEmployeeResponse.cs" />
+    <Compile Include="Messaging\EmployeeService\CreateEmployeesImportExcelToDBResponse.cs" />
+    <Compile Include="Messaging\EmployeeService\GetEmployeesImportReadExcelFileResponse.cs" />
+    <Compile Include="Messaging\ExperienceService\CreateExperienceForEmployeeRequest.cs" />
+    <Compile Include="Messaging\ExperienceService\CreateExperienceForEmployeeResponse.cs" />
+    <Compile Include="Messaging\ExperienceService\DeleteExperienceByIdResponse.cs" />
+    <Compile Include="Messaging\ExperienceService\GetExperienceByEmployeeIdRequest.cs" />
+    <Compile Include="Messaging\InsuranceService\GetInsuranceByEmployeeIdRequest.cs" />
+    <Compile Include="Messaging\InsuranceService\GetInsuranceByEmployeeIdResponse.cs" />
+    <Compile Include="Messaging\InsuranceService\InsuranceDeleteByIdRequest.cs" />
+    <Compile Include="Messaging\InsuranceService\InsuranceDeleteByIdResponse.cs" />
+    <Compile Include="Messaging\InsuranceService\VoluntaryInsuranceAddResponse.cs" />
+    <Compile Include="Messaging\InsuranceService\VoluntaryInsuranceAddRequest.cs" />
+    <Compile Include="Messaging\InsuranceService\MandatoryInsuranceAddRequest.cs" />
+    <Compile Include="Messaging\InsuranceService\MandatoryInsuranceAddResponse.cs" />
+    <Compile Include="Messaging\SalaryService\DeleteEmpSalaryComponentResponse.cs" />
+    <Compile Include="Messaging\SalaryService\DeleteSalaryComponentByIdResponse.cs" />
+    <Compile Include="Messaging\SalaryService\EditSalaryComponentResponse.cs" />
+    <Compile Include="Messaging\SalaryService\CreateSalaryComponentResponse.cs" />
+    <Compile Include="Messaging\SalaryService\AddSalaryComponentFoRequest.cs" />
+    <Compile Include="Messaging\SalaryService\AddSalaryComponentForEmployeeResponse.cs" />
+    <Compile Include="Messaging\SalaryService\GetSalaryComponentByEmployeeRequest.cs" />
+    <Compile Include="Messaging\SalaryService\GetSalaryComponentByEmployeeResponse.cs" />
+    <Compile Include="Messaging\SalaryService\GetAllSalaryComponentResponse.cs" />
+    <Compile Include="Messaging\SalaryService\GetSalaryComponentByIdRequest.cs" />
+    <Compile Include="Messaging\SalaryService\GetSalaryComponentByIdResponse.cs" />
+    <Compile Include="Interface\IPositionService.cs" />
+    <Compile Include="Implementations\PositionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportService\IReportService.cs" />
-    <Compile Include="ReportService\ReportService.cs" />
-    <Compile Include="TerminateService\TerminateService.cs" />
-    <Compile Include="TerminateService\ITerminateService.cs" />
+    <Compile Include="Interface\IReportService.cs" />
+    <Compile Include="Implementations\ReportService.cs" />
+    <Compile Include="Implementations\TerminateService.cs" />
+    <Compile Include="Interface\ITerminateService.cs" />
     <Compile Include="UserService\IRoleService.cs" />
     <Compile Include="UserService\IUserService.cs" />
     <Compile Include="UserService\RoleService.cs" />
     <Compile Include="UserService\UserService.cs" />
+    <Compile Include="ViewModels\EmployeeSalaryComponentViewModel.cs" />
+    <Compile Include="ViewModels\InsuranceView.cs" />
+    <Compile Include="ViewModels\SalaryComponentView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HNGHRMS.Data\HNGHRMS.Data.csproj">
@@ -86,6 +132,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

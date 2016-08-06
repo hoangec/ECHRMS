@@ -1,0 +1,16 @@
+﻿@model HNGHRMS.Web.ViewModels.EmployeeInfoModel
+@Html.DevExpress().BinaryImageFor(m => m.Photo, imageSetting => {
+    imageSetting.Width = 100;
+    imageSetting.Height =60;
+    imageSetting.Properties.EnableServerResize = true;
+    imageSetting.Properties.ImageSizeMode = ImageSizeMode.FitProportional;
+    imageSetting.Properties.CallbackRouteValues = new {Action = "EmployeePhotoUpdate",Controller = "Employee"};
+    imageSetting.Properties.EditingSettings.Enabled = true;
+    //imageSetting.Properties.EditingSettings.UploadSettings.UploadValidationSettings.MaxFileSize = 2048;
+    imageSetting.Properties.EditingSettings.UploadSettings.UploadValidationSettings.AllowedFileExtensions = new string[] { ".jpg", ".png" };
+    imageSetting.Properties.EditingSettings.UploadSettings.UploadValidationSettings.NotAllowedFileExtensionErrorText = "Chỉ định dạng .jpg và png được hỗ trợ";
+ //   imageSetting.Properties.EditingSettings.UploadSettings.UploadValidationSettings.MaxFileSizeErrorText = "Kích thước file nhỏ hơn 1 MBytes";
+    imageSetting.ClientEnabled = false;
+    imageSetting.Properties.ClientInstanceName = "employeeInforPhoto";
+
+}).GetHtml()

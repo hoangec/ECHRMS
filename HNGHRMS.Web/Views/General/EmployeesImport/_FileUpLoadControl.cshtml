@@ -1,0 +1,14 @@
+﻿
+@Html.DevExpress().UploadControl(settings =>
+{
+    settings.Name = "EmployeesExcelImportUploadFile";
+    settings.Style.Add("margin-bottom", "10px");
+    settings.CallbackRouteValues = new { Controller = "General", Action = "EmployeeUploadControlCallbackAction" };
+    settings.ClientSideEvents.FileUploadComplete = "OnEmployeesImportFileUploadComplete";
+   // settings.ClientSideEvents.UploadingProgressChanged = "OnFileUploading";
+    //settings.ClientSideEvents.FileUploadStart = "OnFileUploadBegin";
+    //settings.ValidationSettings.Assign(WebMvcDx.Controllers.UploadControlDemosHelper.ValidationSettings);
+    settings.ShowProgressPanel = true;    
+    settings.ShowUploadButton = true;
+    settings.UploadMode = UploadControlUploadMode.Advanced;
+}).GetHtml()

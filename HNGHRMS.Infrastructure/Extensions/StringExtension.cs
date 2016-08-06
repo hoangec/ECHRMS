@@ -12,10 +12,39 @@ namespace HNGHRMS.Infrastructure.Extensions
 
         public static DateTime ConvertToDate(this String str)
         {
-             DateTime result;
+             
+             DateTime result;             
              CultureInfo vi = new CultureInfo("vi-VN");
              DateTime.TryParseExact(str, "dd/MM/yyyy", vi, DateTimeStyles.None, out result);
              return result;
+        }
+        public static DateTime ConvertToDateStartEndDateFormart(this String str, Boolean IsStartDate)
+        {
+
+            DateTime result;
+            CultureInfo vi = new CultureInfo("vi-VN");
+            if (IsStartDate)
+            {
+                if (!DateTime.TryParseExact(str, "dd/MM/yyyy", vi, DateTimeStyles.None, out result))
+                {
+                    result = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                }
+            }
+            else {
+                if (!DateTime.TryParseExact(str, "dd/MM/yyyy", vi, DateTimeStyles.None, out result))
+                {
+                    result = DateTime.Now;
+                }
+            }
+          
+            return result;
+        }
+        public static DateTime ConvertToDateWithFormat(this String str,string Format)
+        {
+            DateTime result;
+            CultureInfo vi = new CultureInfo("vi-VN");
+            DateTime.TryParseExact(str, Format, vi, DateTimeStyles.None, out result);
+            return result;
         }
 
         public static Double ConvertToDouble(this String str)

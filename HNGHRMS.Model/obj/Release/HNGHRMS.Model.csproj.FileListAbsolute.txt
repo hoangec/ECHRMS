@@ -14,3 +14,5 @@ D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\Microsoft.AspNet.Identity.Enti
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\obj\Release\HNGHRMS.Model.csprojResolveAssemblyReference.cache
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\obj\Release\HNGHRMS.Model.dll
 D:\Code_Project\HNGHRMS\HNGHRMS.Model\obj\Release\HNGHRMS.Model.pdb
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\NodaTime.dll
+D:\Code_Project\HNGHRMS\HNGHRMS.Model\bin\Release\NodaTime.xml

@@ -1,0 +1,107 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "EmployeesTermintedGridView";
+        settings.CallbackRouteValues = new { Controller = "Employee", Action = "EmployeesTerminateGridViewPartial" };
+        settings.ClientSideEvents.EndCallback = "OnEmployeeTerminatedGridViewEndCallBack";
+       
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Employee", Action = "EmployeesTerminateGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.SettingsText.ConfirmDelete = "Bán có muốn khôi phục nhân viên này";
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        settings.SettingsCommandButton.DeleteButton.Text = "Khôi phục";
+        //settings.SettingsCommandButton.EditButton.Text = "Sữa";
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = false;
+        settings.CommandColumn.Width = 100;
+        settings.KeyFieldName = "EmployeeId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "EmployeeId";
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add("FullName");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Gender";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro = col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = new SelectList(new[]{
+                        new SelectListItem{Text = "Nam",Value=HNGHRMS.Model.Enums.Gender.Male.ToString()},
+                        new SelectListItem{Text = "Nữ", Value=HNGHRMS.Model.Enums.Gender.Female.ToString()}
+                    }, "Value", "Text");
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CompanyId";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro = col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = ViewBag.Companies;
+            comboBoxPro.ValueType = typeof(int);
+        });
+       // settings.Columns.Add("Position");    
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "PositionId";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties comboBoxPro = col.PropertiesEdit as ComboBoxProperties;
+            comboBoxPro.DataSource = ViewBag.Positions;
+            comboBoxPro.ValueType = typeof(int);         
+        });
+        settings.Columns.Add("Departement");       
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "JoinedDate";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+            DateEditProperties dateEditPro = col.PropertiesEdit as DateEditProperties;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "TerminationDate";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+            DateEditProperties dateEditPro = col.PropertiesEdit as DateEditProperties;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Reason";
+        });
+       
+
+        settings.CellEditorInitialize = (sender, e) =>
+        {
+            if ((sender as MVCxGridView).IsNewRowEditing)
+            {
+                if (e.Column.FieldName == "CompanyId" || e.Column.FieldName == "Gender")
+                {
+                    (e.Editor as ASPxComboBox).SelectedIndex = 0;
+                }
+                if (e.Column.FieldName == "JoinedDate")
+                {
+                    (e.Editor as ASPxDateEdit).Date = DateTime.Now;
+                }
+            }
+        };
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Salary";            
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            TextBoxProperties textBoxPro = col.PropertiesEdit as TextBoxProperties;
+            textBoxPro.DisplayFormatString = "c0";
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

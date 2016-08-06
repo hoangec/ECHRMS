@@ -72,7 +72,7 @@
             CheckBoxListSettings chBoxList = (CheckBoxListSettings)item.NestedExtensionSettings;
             chBoxList.Properties.DataSource = Model.CompanyList;
             chBoxList.Properties.TextField = "CompanyName";
-            chBoxList.Properties.ValueField = "CompanyId";
+            chBoxList.Properties.ValueField = "Id";
             chBoxList.Properties.ValueType = typeof(int);
             chBoxList.Properties.RepeatColumns = 4;
             chBoxList.Properties.ValidationSettings.RequiredField.IsRequired = true;

@@ -1,0 +1,115 @@
+﻿@model HNGHRMS.Web.ViewModels.SalaryComponentAddFormView
+
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "employeeSalaryComponentAddForm";    
+    settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Thêm chi phí lương";
+        groupSettings.ColCount = 3;
+        groupSettings.Items.Add(m => m.SalaryComponentEmployeeId, item =>
+        {
+            item.ColSpan = 3;
+            item.ClientVisible = false;
+        });
+        groupSettings.Items.Add(m => m.SalaryComponentName, item =>
+        {
+            item.ColSpan = 3;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSettings.ShowModelErrors = true;
+        });
+        groupSettings.Items.Add(m => m.IsExtra, item =>
+        {
+            
+        });
+        groupSettings.Items.Add(m => m.IsMainSalary, item =>
+        {
+
+        });
+        groupSettings.Items.Add(m => m.SalaryPayFrequency, item =>
+        {
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+            ComboBoxSettings cmbSettings = (ComboBoxSettings)item.NestedExtensionSettings;
+            cmbSettings.Properties.DataSource = new SelectList(new[]{
+                new SelectListItem{Text = "Một lần",Value=HNGHRMS.Model.Enums.SalaryPayFerequency.OneTime.ToString()},
+                new SelectListItem{Text = "Hàng tháng", Value=HNGHRMS.Model.Enums.SalaryPayFerequency.Monthly.ToString()},
+                new SelectListItem{Text = "Tùy chọn", Value=HNGHRMS.Model.Enums.SalaryPayFerequency.Custom.ToString()}
+            }, "Value", "Text");
+            cmbSettings.Properties.ClientSideEvents.ValueChanged = "OnCmbSalaryPayFrequencyChange";
+            cmbSettings.Properties.ClientInstanceName = "cmbEmpSalaryAddFormSalaryPayFerequancy";
+        });
+        groupSettings.Items.Add(m => m.Amount, item =>
+        {
+           // item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            TextBoxSettings txtSettings = (TextBoxSettings)item.NestedExtensionSettings;
+            txtSettings.Properties.DisplayFormatString = "c0";
+            txtSettings.Properties.MaskSettings.Mask = "<0..9999999999999g>";
+            txtSettings.Properties.MaskSettings.IncludeLiterals = MaskIncludeLiteralsMode.DecimalSymbol;
+            txtSettings.Properties.ClientInstanceName = "txtsalaryAddFormAmout";
+            txtSettings.ShowModelErrors = true;
+        });
+        groupSettings.Items.Add(m => m.ApplyDate, item =>
+        {
+           // item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.DateEdit;
+            DateEditSettings dateSettings = (DateEditSettings)item.NestedExtensionSettings;
+            dateSettings.ShowModelErrors = true;
+            dateSettings.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+          //  dateSettings.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+            dateSettings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+            dateSettings.Properties.ValidationSettings.RequiredField.ErrorText = "Nhập ngày bắt đầu";
+            dateSettings.Properties.ClientSideEvents.Validation = "OnEmployeeSalaryApplyDateValidation";
+            dateSettings.Properties.ClientInstanceName = "dateEmpSalaryAddFormStartApplyDate";
+        });
+        groupSettings.Items.Add(m => m.EndDate, item =>
+        {
+            // item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.DateEdit;
+            DateEditSettings dateSettings = (DateEditSettings)item.NestedExtensionSettings;
+            dateSettings.Enabled = true;
+            dateSettings.ClientEnabled = false;
+            dateSettings.Properties.EnableClientSideAPI = true;
+            dateSettings.ShowModelErrors = true;
+            dateSettings.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+            //  dateSettings.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+            dateSettings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+            dateSettings.Properties.ValidationSettings.RequiredField.ErrorText = "Nhập ngày kết thúc";
+            dateSettings.Properties.ClientSideEvents.Validation = "OnEmployeeSalaryEndApplyDateValidation";
+            dateSettings.Properties.ClientInstanceName = "dateEmpSalaryAddFormEndApplyDate";
+        });
+        groupSettings.Items.Add(m => m.SalaryComponentRemark, item =>
+        {
+            item.ColSpan = 3;
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.Memo;
+            item.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+            MemoSettings memoSettings = (MemoSettings)item.NestedExtensionSettings;
+            memoSettings.ShowModelErrors = true;
+            memoSettings.Properties.Rows = 3;
+            memoSettings.Properties.Columns = 80;                
+        });
+        groupSettings.Items.Add(item =>
+        {
+            item.ColSpan = 2;
+            item.ShowCaption = DefaultBoolean.False;
+            item.SetNestedContent(() =>
+            {
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnSalaryComponentSave";
+                    btnSettings.Text = "Lưu";
+                    btnSettings.UseSubmitBehavior = true;
+                }).Render();
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnSalaryComponentCancel";
+                    btnSettings.Text = "Hủy";
+                    btnSettings.Style.Add("margin-left", "5px");
+                    btnSettings.ClientSideEvents.Click = "function(s,e){}";
+                }).Render();
+            });
+        });
+    });
+}).Bind(Model).GetHtml()
+

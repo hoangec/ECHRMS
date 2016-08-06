@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using HNGHRMS.Web.Core.Validations;
+using HNGHRMS.Web.Validations;
 namespace HNGHRMS {
     public class RouteConfig {
         public static void RegisterRoutes(RouteCollection routes) {
@@ -33,19 +33,17 @@ namespace HNGHRMS {
              url: "Home/CompanyReportByDate/{selectedDate}",
              defaults: new { controller = "Home", action = "ComapanyReportByDate" }
             );
-            //routes.MapRoute(
-            // name: "Terminate",
-            // url: "Employee/EmployeeTerminatedAdd/{item}",
-            // defaults: new { controller = "Employee", action = "EmployeeTerminatedAdd",item = UrlParameter.Optional }
-            //);
+            routes.MapRoute(
+                 name: "Employee",
+             url: "Employee/Index/{id}",
+             defaults: new { controller = "Employee", action = "Index" , id = UrlParameter.Optional }
+            );
             routes.MapRoute(
                 name: "Default", // Route name
                 url: "{controller}/{action}/{id}", // URL with parameters
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
-
-            
-            
+      
         }
     }
 }
